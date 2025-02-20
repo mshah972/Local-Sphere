@@ -3,12 +3,664 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Local Sphere - Your Local Guide</title>
     <link href="./output.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+    </style>
 </head>
-<body>
-    <main>
-        <h1 class="text-3xl font-bold text-red-800 underline">Hello World!</h1>
-    </main>
+<body class="bg-custom-white">
+<main role="main">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true" data-slot="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="#"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Log
+                    in</a>
+                <div>
+                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="#"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[75vh] lg:rounded-4xl rounded-2xl">
+        <!-- Background Image -->
+        <img src="../static/chicagoPicture2.jpg" alt="Chicago Skyline"
+             class="absolute inset-0 w-full h-full object-cover"/>
+        <div class="absolute inset-0 bg-black/30"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center h-full px-4 pt-16 md:pt-15 text-white">
+            <!-- Greeting -->
+            <p class="font-mulish mb-2 text-sm lg:text-xl md:text-base">Good Morning ☀️</p>
+            <!-- Main Heading -->
+            <h1 class="font-mulish text-2xl md:text-4xl lg:text-6xl font-bold text-center leading-tight mb-8">
+                Craft Your Perfect Day in
+                <br>
+                <span id="city-name" class="font-poppins font-extrabold text-custom-white text-3xl md:text-5xl lg:text-6xl">Loading...</span>
+            </h1>
+        </div>
+
+        <!-- Planner Bar Container Desktop -->
+        <div class="@container absolute bottom-0 inset-x-0 mb-30 lg:mb-40 z-20 px-4 py-4 flex flex-warp justify-center hidden 2xl:inline-flex">
+            <div class="bg-white rounded-full shadow-xl flex items-center divide-x divide-gray-200 max-w-7xl w-full overflow-hidden">
+                <!-- 1) Location (Search Input) -->
+                <div class="flex items-center px-8 py-4">
+                    <div class="flex flex-col">
+                        <label for="location-search" class="font-mulish text-sm text-gray-500 md:text-[14px] mb-1">
+                            Place to Explore?
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <img class="h-5 w-auto" src="../static/location.svg"/>
+                            <input type="search" id="location-search" placeholder="Search location"
+                                   class="font-poppins font-medium text-normal rounded-md px-1 py-1 text-black"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2) Date Picker -->
+                <div class="flex items-center px-6 py-4">
+                    <div class="flex flex-col">
+                        <label for="adventure-date" class="font-mulish text-sm text-gray-500 mb-1">
+                            Pick Your Date
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <img class="h-5 w-auto" src="../static/calendar.svg"/>
+                            <input type="date" id="adventure-date"
+                                   class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black"
+                                   placeholder="Pick a date"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3) Preferred Time (Dropdown) -->
+                <div class="flex items-center px-6 py-4">
+                    <div class="flex flex-col">
+                        <label for="preferred-time" class="font-mulish text-sm text-gray-500 mb-1">
+                            Preferred Time
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <img class="h-5 w-auto" src="../static/dayORnight.png"/>
+                            <select id="preferred-time"
+                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option>Morning</option>
+                                <option>Afternoon</option>
+                                <option>Evening</option>
+                                <option>Night</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4) Guests (Dropdown Counter) -->
+                <div class="flex items-center px-6 py-4">
+                    <div class="flex flex-col">
+                        <label for="planning-for" class="font-mulish text-sm text-gray-500 mb-1">
+                            Planning For
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <img class="h-5 w-auto" src="../static/people.png">
+                            <select id="planning-for"
+                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option>1 Guest</option>
+                                <option>2 Guests</option>
+                                <option>3 Guests</option>
+                                <option>4 Guests</option>
+                                <option>5 Guests</option>
+                                <option>6 Guests</option>
+                                <option>7 Guests</option>
+                                <option>8 Guests</option>
+                                <option>9 Guests</option>
+                                <option>10+ Guests</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5) Activity 1 (Dropdown) -->
+                <div class="flex items-center px-6 py-4">
+                    <div class="flex flex-col">
+                        <label for="activity-1" class="font-mulish text-sm text-gray-500 mb-1">
+                            Activity 1
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <select id="activity-1"
+                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option selected>🍽️ Food</option>
+                                <option>🎭 Event</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6) Activity 2 (Dropdown) -->
+                <div class="flex items-center px-6 py-4">
+                    <div class="flex flex-col">
+                        <label for="activity-2" class="font-mulish text-sm text-gray-500 mb-1">
+                            Activity 2
+                        </label>
+                        <div class="flex items-center space-x-2">
+                            <select id="activity-2"
+                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option>🍽️ Food</option>
+                                <option selected>🎭 Event</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7) Final Button (e.g., "Plan") -->
+                <div class="flex items-center px-6 py-2">
+                    <button class="p-4 bg-custom-blue hover:bg-gray-700 text-white rounded-2xl">
+                        <!-- Planner Icon (Bag) -->
+                        <img class="h-6 w-auto" src="../static/search.svg"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Planner Bar Container Mobile -->
+        <div class="relative block 2xl:hidden px-4 mt-2 mb-8">
+            <div class="bg-white rounded-2xl shadow-md p-4 max-w-screen ml-2 mr-2 mx-auto">
+                <div class="flex flex-col items-center space-x-1 ml-1">
+                    <!-- Location Search -->
+                    <div class="flex flex-col w-full mt-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Place to Explore?
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <img class="h-4 w-auto" src="../static/location.svg" alt="Location Icon"/>
+                            <input type="search" id="location-search-mobile" placeholder="Search location"
+                                   class="font-poppins font-normal text-[13px] w-full rounded-md px-1 py-1 text-black"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full mt-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Pick Your Date
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <img class="h-4 w-auto" src="../static/calendar.svg" alt="Calendar Icon"/>
+                            <input type="date" id="adventure-date-mobile"
+                                   class="font-poppins text-[13px] font-normal rounded-md px-1 py-1 text-black"
+                                   placeholder="Pick a date"/>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full mt-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Preferred Time
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <img class="h-4 w-auto" src="../static/dayORnight.png" alt="Preferred Time Icon"/>
+                            <select id="preferred-time-mobile"
+                                    class="font-poppins text-[13px] font-normal rounded-lg px-1 py-1 text-black">
+                                <option>Morning</option>
+                                <option>Afternoon</option>
+                                <option>Evening</option>
+                                <option>Night</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full mt-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Planning For
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <img class="h-4 w-auto" src="../static/people.png" alt="People Icon">
+                            <select id="planning-for-mobile"
+                                    class="font-poppins text-[13px] font-normal rounded-md px-1 py-1 text-black">
+                                <option>1 Guest</option>
+                                <option>2 Guests</option>
+                                <option>3 Guests</option>
+                                <option>4 Guests</option>
+                                <option>5 Guests</option>
+                                <option>6 Guests</option>
+                                <option>7 Guests</option>
+                                <option>8 Guests</option>
+                                <option>9 Guests</option>
+                                <option>10+ Guests</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full mt-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Activity 1
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <select id="activity-1-mobile"
+                                    class="font-poppins text-[13px] font-normal rounded-md px-1 py-1 text-black">
+                                <option id="dinner-mb-activity-1" selected>🍽️ Food</option>
+                                <option id="event-mb-activity-1">🎭 Event</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full mt-2 mb-2">
+                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                            Activity 2
+                        </label>
+                        <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
+                            <select id="activity-2-mobile"
+                                    class="font-poppins text-[13px] font-normal rounded-md px-1 py-1 text-black">
+                                <option id="dinner-mb-activity-2">🍽️ Food</option>
+                                <option id="event-mb-activity-2" selected>🎭 Event</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <button class="font-poppins w-full bg-custom-white text-custom-blue font-semibold py-2 mt-6 mb-2 rounded-full hover:bg-custom-blue hover:text-white cursor-pointer">
+                    Plan It
+                </button>
+            </div>
+        </div>
+
+        <!-- Weather Container -->
+        <div class="absolute top-0 right-0 mt-8 mr-8 z-20">
+            <div class="bg-custom-white font-poppins text-custom-blue text-[10px] md:text-[12px] flex items-center space-x-1 px-3 py-2 rounded-full shadow-md">
+                <!-- Weather Icon -->
+                <img id="weather-icon" class="h-5 md:h-5 w-auto" src="../static/loading.svg" alt="Clear Icon"/>
+                <!-- Temperature Text -->
+                <span id="weather-temp" class="font-semibold">Loading...</span>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="mx-auto max-w-lg ml-5 md:ml-10 lg:ml-15 pt-5 pb-5 flex items-center space-x-3">
+        <!-- Avatars -->
+        <div class="flex -space-x-3">
+            <img
+                    class="size-6 lg:size-8 rounded-full bg-gray-50 border border-[2px] border-white border-solid"
+                    src="https://images.unsplash.com/photo-1505840717430-882ce147ef2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile Image"
+            />
+            <img
+                    class="size-6 lg:size-8 rounded-full bg-gray-50 border border-[2px] border-white border-solid"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile Image"
+            />
+            <img
+                    class="size-6 lg:size-8 rounded-full bg-gray-50 border border-[2px] border-white border-solid"
+                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile Image"
+            />
+            <img
+                    class="size-6 lg:size-8 rounded-full bg-gray-50 border border-[2px] border-white border-solid"
+                    src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile Image"
+            />
+            <img
+                    class="size-6 lg:size-8 rounded-full bg-gray-50 border border-[2px] border-white border-solid"
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="Profile Image"
+            />
+            <div class="font-poppins rounded-full bg-green-500 border border-[2px] border-white border-solid text-white w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center text-[8px] lg:text-sm font-semibold">
+                +10
+            </div>
+        </div>
+        
+        <p class="font-mulish text-black text-[10px] lg:text-sm md:text-base">
+            20+ people
+            <span class="text-custom-blue font-extrabold">planned</span>
+            their visit in the last 24 hours
+        </p>
+    </div>
+
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("companyButton");
+        const dropdownMenu = document.getElementById("companyDropdownMenu");
+        const dropdownIcon = document.getElementById("dropdownIcon");
+        const arrowPath = document.getElementById("arrowPath");
+
+        toggleButton.addEventListener("click", function () {
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+        const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+        const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+        const mobileArrowPath = document.getElementById("mobileArrowPath");
+
+        mobileDropdownButton.addEventListener("click", function () {
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMobileMenu = document.getElementById("openMobileMenu");
+        const closeMobileMenu = document.getElementById("closeMobileMenu");
+        const mobileBackdrop = document.getElementById("mobileBackdrop");
+
+        // Open mobile menu when clicking the hamburger button
+        openMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("hidden");
+        });
+
+        // Close mobile menu when clicking the close button
+        closeMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+
+        // Close mobile menu when clicking outside (on the backdrop)
+        mobileBackdrop.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const apiKey = "b84f959e6ea47b4faf97b74709d55105"; // Replace with your actual API key
+
+        async function fetchWeather(lat, lon) {
+            try {
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // Extract necessary data
+                const temperature = Math.round(data.main.temp);
+                const weatherCondition = data.weather[0].main.toLowerCase(); // Example: "clear", "clouds", "rain"
+
+                // Mapping Weather Conditions to Custom Icons
+                const weatherIcons = {
+                    "clear": "../static/weather-icons/clear.svg",
+                    "clouds": "../static/weather-icons/cloud.svg",
+                    "rain": "../static/weather-icons/rain.svg",
+                    "snow": "../static/weather-icons/snow.svg",
+                    "thunderstorm": "../static/weather-icons/thunderstorm.svg",
+                    "mist": "../static/weather-icons/mist.svg",
+                    "fog": "../static/weather-icons/mist.svg",
+                    "haze": "../static/weather-icons/mist.svg",
+                    "drizzle": "../static/weather-icons/drizzle.svg",
+                };
+
+                // Use mapped icon, or default to "clear.png" if not found
+                const weatherIconSrc = weatherIcons[weatherCondition] || "../static/weather-icons/weather-error.svg";
+
+                // Update UI
+                document.getElementById("weather-temp").innerText = `${temperature} °F`;
+                document.getElementById("weather-icon").src = weatherIconSrc;
+
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                document.getElementById("weather-temp").innerText = "Error";
+                document.getElementById("weather-icon").src = "../static/weather-icons/weather-error.svg";
+            }
+        }
+
+        // Get user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    fetchWeather(lat, lon);
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                    document.getElementById("weather-temp").innerText = "Error";
+                    document.getElementById("weather-icon").src = "../static/weather-icons/weather-error.svg";
+                }
+            );
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const apiKey = "b84f959e6ea47b4faf97b74709d55105"; // Replace with your actual API key
+
+        async function fetchCityName(lat, lon) {
+            try {
+                const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
+                const response = await fetch(geoApiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    const cityName = data[0].name;  // Get city name
+                    document.getElementById("city-name").innerText = cityName;
+                    document.getElementById("location-search").value = cityName;
+                    document.getElementById("location-search-mobile").value = cityName;
+                } else {
+                    console.error("No city data found");
+                }
+            } catch (error) {
+                console.error("Error fetching city name:", error);
+                document.getElementById("city-name").innerText = "Enter location";
+            }
+        }
+
+        // Get user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    fetchCityName(lat, lon);
+                },
+                (error) => {
+                    console.error("Geolocation error:", error);
+                    document.getElementById("city-name").innerText = "Geolocation Error";
+                }
+            );
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+    });
+
+
+</script>
 </body>
 </html>
