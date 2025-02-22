@@ -24,6 +24,7 @@ urlpatterns = [
     path('SphereAi', views.SphereAi, name='SphereAi'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('planConfirmation', views.planConfirmation, name='planConfirmation'),
 ]
 
 

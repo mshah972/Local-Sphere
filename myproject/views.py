@@ -11,3 +11,6 @@ def signup(request):
 
 def login(request):
     return render(request, 'login.html')
+
+def planConfirmation(request):
+    return render(request, 'planConfirmation.html')

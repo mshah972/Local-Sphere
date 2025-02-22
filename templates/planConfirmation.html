@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Sphere - Your Local Guide</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="bg-custom-white">
+<main role="main" class="flex flex-col mb-10 min-h-fit">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true" data-slot="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="#"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Log
+                    in</a>
+                <div>
+                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="#"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex w-full mx-auto rounded-lg shadow-lg overflow-hidden font-poppins">
+        <!-- Sidebar with Map -->
+        <div class="w-6/10 pl-20">
+            <div id="map" class="w-full h-[65vh] rounded-2xl"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="@container w-screen p-6 bg-white rounded-2xl shadow-lg overflow-hidden mr-15 ml-5 flex flex-col">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                <div>
+                    <h1 class="text-3xl font-bold" id="location">Loading...</h1>
+                    <p class="font-mulish font-light text-gray-500 text-md pt-2" id="plan-details">Fetching plan details...</p>
+                </div>
+                <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
+                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
+                        <path fill="#004aad" d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z" class="color134563 svgShape"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Restaurant Recommendations -->
+            <h2 class="mt-4 text-lg font-medium">Recommended Restaurants</h2>
+            <div class="overflow-visible">
+                <div id="restaurant-list" class="px-2 py-2 flex flex-row gap-6 cursor-pointer">
+                    <!-- Content dynamically loads here -->
+                </div>
+            </div>
+
+
+            <!-- Event Recommendations -->
+            <h2 class="mt-6 text-lg font-medium">Recommended Events</h2>
+            <div class="overflow-visible">
+                <div id="event-list" class="px-2 py-2 flex flex-row gap-6 cursor-pointer">
+                    <!-- Content dynamically loads here -->
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="relative mt-auto h-full overflow-visible flex flex-col gap-3">
+                <button id="recreate-btn" class="absolute bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium">🔄 Recreate Plan</button>
+                <button id="save-btn" class="absolute bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium">💾 Save Plan</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("companyButton");
+        const dropdownMenu = document.getElementById("companyDropdownMenu");
+        const dropdownIcon = document.getElementById("dropdownIcon");
+        const arrowPath = document.getElementById("arrowPath");
+
+        toggleButton.addEventListener("click", function () {
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+        const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+        const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+        const mobileArrowPath = document.getElementById("mobileArrowPath");
+
+        mobileDropdownButton.addEventListener("click", function () {
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMobileMenu = document.getElementById("openMobileMenu");
+        const closeMobileMenu = document.getElementById("closeMobileMenu");
+        const mobileBackdrop = document.getElementById("mobileBackdrop");
+
+        // Open mobile menu when clicking the hamburger button
+        openMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("hidden");
+        });
+
+        // Close mobile menu when clicking the close button
+        closeMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+
+        // Close mobile menu when clicking outside (on the backdrop)
+        mobileBackdrop.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+    });
+
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibXNoYWg3NiIsImEiOiJjbTdmZ2dvenAwb2JpMm1weDdtZmR5ZDB6In0.JMxS2qZo-c8JqWcOYfME3A';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-87.6298, 41.8781], // Default Chicago, IL
+        zoom: 10,
+        interactive: false,
+    });
+
+    function addMarker(map, lng, lat, title, bounds) {
+        const popup = new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`<div class='p-2'><strong>${title}</strong></div>`);
+
+        new mapboxgl.Marker()
+            .setLngLat([lng, lat])
+            .setPopup(popup)
+            .addTo(map);
+
+        bounds.extend([lng, lat]);
+    }
+
+    function loadPlan(planData) {
+        document.getElementById('location').textContent = planData.location;
+        document.getElementById('plan-details').textContent = `${planData.people} People • ${planData.occasion} • ${planData.date}`;
+
+        const bounds = new mapboxgl.LngLatBounds();
+
+        const restaurantList = document.getElementById('restaurant-list');
+        restaurantList.innerHTML = '';
+        planData.restaurants.forEach(restaurant => {
+            restaurantList.innerHTML += `<div class="font-poppins p-4 bg-gray-100 rounded-3xl w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white">
+                    <div class="flex flex-col items-start justify-between">
+                        <span class="font-semibold text-[18px]">${restaurant.name}</span>
+                        <p class="font-mulish font-medium text-gray-500 text-[16px]">${restaurant.cuisine}</p>
+                        <p class="font-mulish font-light text-gray-400 text-[14px] pt-1">${restaurant.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[16px] mt-2 cursor-pointer">View</button>
+                    </div>
+                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             alt="Food"
+                             class="w-40 h-full object-cover rounded-xl">
+                </div>`;
+            addMarker(map, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
+        });
+
+        const eventList = document.getElementById('event-list');
+        eventList.innerHTML = '';
+        planData.events.forEach(event => {
+            eventList.innerHTML += `<div class="font-poppins p-4 px-4 py-4 bg-gray-100 rounded-3xl w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white">
+                    <div class="flex flex-col items-start justify-between">
+                        <p class="font-semibold text-[18px]">${event.name}</p>
+                        <p class="font-mulish font-medium text-gray-500 text-[16px]">${event.type}</p>
+                        <p class="font-mulish font-light text-gray-400 text-[14px] pt-1">${event.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[16px] mt-2 cursor-pointer">View</button>
+                    </div>
+                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             alt="Food"
+                             class="w-40 h-full object-cover rounded-xl">
+                </div>`;
+            addMarker(map, event.longitude, event.latitude, event.name, bounds);
+        });
+
+        if (!bounds.isEmpty()) {
+            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+        }
+    }
+
+    const samplePlan = {
+        location: 'Chicago, IL',
+        people: 6,
+        occasion: 'Birthday Party',
+        date: 'Wed 12th, 2024',
+        restaurants: [
+            { name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', longitude: -87.6312, latitude: 41.8839 },
+            { name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', longitude: -87.6272, latitude: 41.8811 },
+            { name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', longitude: -87.6205, latitude: 41.8795 }
+        ],
+        events: [
+            { name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', longitude: -87.6298, latitude: 41.8803 },
+            { name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', longitude: -87.6268, latitude: 41.8785 },
+            { name: 'London House Night', type: 'Party', address: '85 E Wacker Dr', longitude: -87.6270, latitude: 41.8765 }
+        ]
+    };
+
+    loadPlan(samplePlan);
+</script>
+
+</script>
+</body>
+</html>
