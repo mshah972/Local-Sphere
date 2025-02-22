@@ -29,7 +29,7 @@
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
-            <a href="#" class="-m-1.5 p-1.5">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
                 <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
@@ -47,7 +47,7 @@
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
                 <a href="#"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
-                <a href="#"
+                <a href="{% url 'SphereAi' %}"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
                 <div class="relative">
                     <button id="companyButton" type="button"
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#"
+                <a href="{% url 'login' %}"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Log
                     in</a>
                 <div>
