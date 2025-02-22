@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Sphere - Your Local Guide</title>
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet"/>
     <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
     <style>
         input[type="date"]::-webkit-calendar-picker-indicator {
@@ -25,7 +26,7 @@
     </style>
 </head>
 <body class="bg-custom-white">
-<main role="main" class="flex flex-col mb-10 min-h-fit">
+<main role="main" class="flex flex-col mb-10">
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
@@ -152,47 +153,109 @@
         </div>
     </header>
 
-    <div class="flex w-full mx-auto rounded-lg shadow-lg overflow-hidden font-poppins">
+    <div class="@container flex w-full mx-auto flex-row shadow-lg font-poppins hidden 2xl:inline-flex">
         <!-- Sidebar with Map -->
-        <div class="w-6/10 pl-20">
-            <div id="map" class="w-full h-[65vh] rounded-2xl"></div>
+        <div class="relative w-3/4 pl-20">
+            <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
         </div>
 
         <!-- Main Content -->
-        <div class="@container w-screen p-6 bg-white rounded-2xl shadow-lg overflow-hidden mr-15 ml-5 flex flex-col">
+        <div class="relative w-screen p-6 bg-white rounded-3xl mr-15 ml-5 flex flex-col">
             <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                 <div>
                     <h1 class="text-3xl font-bold" id="location">Loading...</h1>
-                    <p class="font-mulish font-light text-gray-500 text-md pt-2" id="plan-details">Fetching plan details...</p>
+                    <p class="font-mulish font-light text-gray-500 text-md pt-2" id="plan-details">Fetching plan
+                        details...</p>
                 </div>
                 <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
                     <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
-                        <path fill="#004aad" d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z" class="color134563 svgShape"></path>
+                        <path fill="#004aad"
+                              d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
+                              class="color134563 svgShape"></path>
                     </svg>
                 </button>
             </div>
 
             <!-- Restaurant Recommendations -->
-            <h2 class="mt-4 text-lg font-medium">Recommended Restaurants</h2>
+            <h2 class="mt-4 mb-2 text-xl font-medium">Recommended Restaurants</h2>
             <div class="overflow-visible">
-                <div id="restaurant-list" class="px-2 py-2 flex flex-row gap-6 cursor-pointer">
+                <div id="restaurant-list" class="flex flex-row justify-start w-full gap-6 p-2">
                     <!-- Content dynamically loads here -->
                 </div>
             </div>
 
 
             <!-- Event Recommendations -->
-            <h2 class="mt-6 text-lg font-medium">Recommended Events</h2>
+            <h2 class="mt-6 mb-2 text-xl font-medium">Recommended Events</h2>
             <div class="overflow-visible">
-                <div id="event-list" class="px-2 py-2 flex flex-row gap-6 cursor-pointer">
+                <div id="event-list" class="flex flex-row justify-start w-full gap-6 p-2">
                     <!-- Content dynamically loads here -->
                 </div>
             </div>
 
             <!-- Buttons -->
-            <div class="relative mt-auto h-full overflow-visible flex flex-col gap-3">
-                <button id="recreate-btn" class="absolute bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium">🔄 Recreate Plan</button>
-                <button id="save-btn" class="absolute bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium">💾 Save Plan</button>
+            <div class="mt-auto flex flex-col gap-4 pb-2 pt-4">
+                <button id="recreate-btn"
+                        class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                    🔄 Recreate Plan
+                </button>
+                <button id="save-btn"
+                        class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                    💾 Save Plan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex mx-auto flex-col mr-5 ml-5 shadow-lg font-poppins 2xl:hidden">
+        <!-- Main Content -->
+        <div class="@container relative bg-white rounded-3xl flex flex-col mb-10">
+            <div class="relative w-full p-2">
+                <div id="map-mobile" class="w-full h-[30vh] rounded-3xl mx-auto"></div>
+            </div>
+
+            <div class="flex justify-between items-center mt-6 p-4 pb-4 border-b border-gray-200">
+                <div>
+                    <h1 class="text-2xl font-bold" id="location-mobile">Loading...</h1>
+                    <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details-mobile">Fetching
+                        plan details...</p>
+                </div>
+                <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
+                        <path fill="#004aad"
+                              d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
+                              class="color134563 svgShape"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Restaurant Recommendations -->
+            <h2 class="mt-4 mb-2 p-4 text-lg font-medium">Recommended Restaurants</h2>
+            <div class="@container w-full overflow-x-auto snap-x snap-mandatory">
+                <div id="restaurant-list-mobile" class="flex flex-nowrap gap-6 p-4">
+                    <!-- Content dynamically loads here -->
+                </div>
+            </div>
+
+
+            <!-- Event Recommendations -->
+            <h2 class="mt-6 mb-2 p-4 text-lg font-medium">Recommended Events</h2>
+            <div class="@container w-full overflow-x-auto snap-x snap-mandatory">
+                <div id="event-list-mobile" class="flex flex-nowrap gap-6 p-4">
+                    <!-- Content dynamically loads here -->
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-col gap-4 p-4 mt-4 mb-4 pb-2 pt-4">
+                <button id="recreate-btn-mobile"
+                        class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                    🔄 Recreate Plan
+                </button>
+                <button id="save-btn-mobile"
+                        class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                    💾 Save Plan
+                </button>
             </div>
         </div>
     </div>
@@ -322,11 +385,18 @@
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [-87.6298, 41.8781], // Default Chicago, IL
         zoom: 10,
+    });
+
+    const mapMobile = new mapboxgl.Map({
+        container: 'map-mobile',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-87.6298, 41.8781], // Default Chicago, IL
+        zoom: 10,
         interactive: false,
     });
 
     function addMarker(map, lng, lat, title, bounds) {
-        const popup = new mapboxgl.Popup({ offset: 25 })
+        const popup = new mapboxgl.Popup({offset: 25})
             .setHTML(`<div class='p-2'><strong>${title}</strong></div>`);
 
         new mapboxgl.Marker()
@@ -340,46 +410,113 @@
     function loadPlan(planData) {
         document.getElementById('location').textContent = planData.location;
         document.getElementById('plan-details').textContent = `${planData.people} People • ${planData.occasion} • ${planData.date}`;
+        document.getElementById('location-mobile').textContent = planData.location;
+        document.getElementById('plan-details-mobile').textContent = `${planData.people} People • ${planData.occasion} • ${planData.date}`;
 
         const bounds = new mapboxgl.LngLatBounds();
 
         const restaurantList = document.getElementById('restaurant-list');
+        const restaurantListMobile = document.getElementById('restaurant-list-mobile');
+
         restaurantList.innerHTML = '';
+        restaurantListMobile.innerHTML = '';
         planData.restaurants.forEach(restaurant => {
-            restaurantList.innerHTML += `<div class="font-poppins p-4 bg-gray-100 rounded-3xl w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white">
-                    <div class="flex flex-col items-start justify-between">
-                        <span class="font-semibold text-[18px]">${restaurant.name}</span>
-                        <p class="font-mulish font-medium text-gray-500 text-[16px]">${restaurant.cuisine}</p>
-                        <p class="font-mulish font-light text-gray-400 text-[14px] pt-1">${restaurant.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[16px] mt-2 cursor-pointer">View</button>
+            restaurantList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden">
+                    <div class="w-full h-36">
+                        <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             alt="Restaurant Image"
+                             class="w-full h-full object-cover rounded-t-3xl">
                     </div>
-                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Food"
-                             class="w-40 h-full object-cover rounded-xl">
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+
+                    <div class="flex flex-col items-start justify-between p-4">
+                        <span class="font-semibold text-[20px]">${restaurant.name}</span>
+                        <p class="font-semibold text-custom-blue text-[15px] pt-1">${restaurant.cuisine}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                    </div>
+
                 </div>`;
             addMarker(map, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
+
+            restaurantListMobile.innerHTML += `
+            <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+
+                <div class="flex flex-row w-full items-center justify-between p-5">
+                    <div class="flex flex-col items-start justify-start">
+                        <span class="font-semibold text-[18px]">${restaurant.name}</span>
+                        <p class="font-semibold text-custom-blue text-[14px] pt-1">${restaurant.cuisine}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                    </div>
+                </div>
+            </div>`;
+
+            addMarker(mapMobile, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
         });
 
         const eventList = document.getElementById('event-list');
+        const eventListMobile = document.getElementById('event-list-mobile');
+
+        eventList.innerHTML = '';
         eventList.innerHTML = '';
         planData.events.forEach(event => {
-            eventList.innerHTML += `<div class="font-poppins p-4 px-4 py-4 bg-gray-100 rounded-3xl w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white">
-                    <div class="flex flex-col items-start justify-between">
-                        <p class="font-semibold text-[18px]">${event.name}</p>
-                        <p class="font-mulish font-medium text-gray-500 text-[16px]">${event.type}</p>
-                        <p class="font-mulish font-light text-gray-400 text-[14px] pt-1">${event.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[16px] mt-2 cursor-pointer">View</button>
+            eventList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+                    <div class="w-full h-36">
+                        <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                             alt="Restaurant Image"
+                             class="w-full h-full object-cover rounded-t-3xl">
                     </div>
-                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Food"
-                             class="w-40 h-full object-cover rounded-xl">
+
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+
+                    <div class="flex flex-col items-start justify-between p-4">
+                        <p class="font-semibold text-[20px]">${event.name}</p>
+                        <p class="font-semibold right-0 text-custom-blue text-[15px] pt-1">${event.type}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                    </div>
                 </div>`;
             addMarker(map, event.longitude, event.latitude, event.name, bounds);
+
+            eventListMobile.innerHTML += `
+           <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
+
+                <div class="flex flex-row w-full items-center justify-between p-5">
+                    <div class="flex flex-col items-start justify-start">
+                        <span class="font-semibold text-[18px]">${event.name}</span>
+                        <p class="font-semibold text-custom-blue text-[14px] pt-1">${event.type}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
+                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                    </div>
+                </div>
+            </div>`;
+            addMarker(mapMobile, event.longitude, event.latitude, event.name, bounds);
         });
 
         if (!bounds.isEmpty()) {
-            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+            map.fitBounds(bounds, {padding: 50, maxZoom: 15});
+            mapMobile.fitBounds(bounds, {padding: 50, maxZoom: 15});
         }
+
     }
 
     const samplePlan = {
@@ -388,14 +525,20 @@
         occasion: 'Birthday Party',
         date: 'Wed 12th, 2024',
         restaurants: [
-            { name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', longitude: -87.6312, latitude: 41.8839 },
-            { name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', longitude: -87.6272, latitude: 41.8811 },
-            { name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', longitude: -87.6205, latitude: 41.8795 }
+            {name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', longitude: -87.6312, latitude: 41.8839},
+            {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', longitude: -87.6272, latitude: 41.8811},
+            {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', longitude: -87.6205, latitude: 41.8795}
         ],
         events: [
-            { name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', longitude: -87.6298, latitude: 41.8803 },
-            { name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', longitude: -87.6268, latitude: 41.8785 },
-            { name: 'London House Night', type: 'Party', address: '85 E Wacker Dr', longitude: -87.6270, latitude: 41.8765 }
+            {name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', longitude: -87.6298, latitude: 41.8803},
+            {name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', longitude: -87.6268, latitude: 41.8785},
+            {
+                name: 'London House Night',
+                type: 'Party',
+                address: '85 E Wacker Dr',
+                longitude: -87.6270,
+                latitude: 41.8765
+            }
         ]
     };
 
