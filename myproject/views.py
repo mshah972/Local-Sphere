@@ -14,3 +14,6 @@ def login(request):
 
 def planConfirmation(request):
     return render(request, 'planConfirmation.html')
+
+def forgot(request):
+    return render(request, 'forgot.html')
