@@ -23,7 +23,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('SphereAi', views.SphereAi, name='SphereAi'),
     path('login/', views.login, name='login'),
-    path('signup/', views.sighup, name='signup'),
+    path('signup/', views.signup, name='signup'),
 ]
 
 
