@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Sphere - Your Local Guide</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="bg-custom-white">
+<main role="main" class="flex flex-col mb-10 min-h-screen">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true" data-slot="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <a href="#" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
+                <a href="#" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
+                <a href="#" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Log in</a>
+                <div>
+                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+     <!-- Hero Section -->
+     <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[75vh] lg:rounded-4xl rounded-2xl">
+        <!-- Background Image -->
+        <img src="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chicago Skyline"
+             class="absolute inset-0 w-full h-full object-cover"/>
+        <div class="absolute inset-0 bg-black/30"></div>
+
+        <div class="absolute inset-0 flex items-start justify-center mt-32">
+            <div class="relative z-10 bg-white rounded-2xl shadow-lg p-10 w-full max-w-md mx-auto text-center h-[550px] flex flex-col justify-between">
+                <img src="../static/logo1.svg" alt="Local Sphere Logo" class="w-20 mx-auto">
+                <h1 class="text-2xl font-semibold text-blue-600 mt-2">Welcome Back, Explorer</h1>
+                <p class="text-gray-500 text-md">Back to Building Better Days</p>
+
+                <!-- Login Form -->
+                <form class="mt-6 space-y-4">
+                    <div class="text-left">
+                        <label class="text-gray-700 font-medium">Email Address or Username</label>
+                        <input type="text" placeholder="john.doe@example.com" class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-400">
+                    </div>
+
+                    <div class="text-left">
+                        <label class="text-gray-700 font-medium">Password</label>
+                        <input type="password" placeholder="********" class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-400">
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">
+                        Sign In
+                    </button>
+
+                    <div class="flex items-center justify-center gap-4 mt-4">
+                        <button class="bg-black text-white py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-gray-800">
+                            <span>G</span>
+                        </button>
+                        <span>or</span>
+                        <button class="bg-black text-white py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-gray-800">
+                            <span></span>
+                        </button>
+                    </div>
+                    <p class="text-gray-500 text-sm mt-4">Don’t have an account? <a href="#" class="text-blue-600 font-semibold">Sign Up</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
