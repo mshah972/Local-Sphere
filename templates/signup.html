@@ -44,9 +44,41 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
-                <a href="#" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
-                <a href="{% url 'SphereAi' %}" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
-                <a href="{% url 'login' %}" class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Log in</a>
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
+                <a href="SphereAi"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="#"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'planConfirmation' %}" class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Plan Confirmation (Testing)</a>
+                <a href="{% url 'login' %}" class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Log in</a>
                 <div>
                     <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
                         <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
@@ -56,7 +88,69 @@
                 </div>
             </div>
         </nav>
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="{% url 'SphereAi' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="{% url 'login' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="#"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
+
+    <!-- NEW PAGE COPY THIS UP  -->
 
      <!-- Hero Section -->
      <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[80vh] lg:rounded-4xl rounded-2xl">
@@ -125,6 +219,124 @@
             </form>
         </div>
     </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButton = document.getElementById("companyButton");
+            const dropdownMenu = document.getElementById("companyDropdownMenu");
+            const dropdownIcon = document.getElementById("dropdownIcon");
+            const arrowPath = document.getElementById("arrowPath");
+    
+            toggleButton.addEventListener("click", function () {
+                if (dropdownMenu.classList.contains("hidden")) {
+                    // Show dropdown with animation
+                    dropdownMenu.classList.remove("hidden");
+                    setTimeout(() => {
+                        dropdownMenu.classList.remove("opacity-0", "scale-95");
+                        dropdownMenu.classList.add("opacity-100", "scale-100");
+                    }, 10);
+    
+                    // Rotate the arrow up
+                    dropdownIcon.classList.add("rotate-180");
+                } else {
+                    // Hide dropdown with animation
+                    dropdownMenu.classList.remove("opacity-100", "scale-100");
+                    dropdownMenu.classList.add("opacity-0", "scale-95");
+    
+                    setTimeout(() => {
+                        dropdownMenu.classList.add("hidden");
+                    }, 300); // Wait for animation to complete before hiding
+    
+                    // Rotate the arrow back down
+                    dropdownIcon.classList.remove("rotate-180");
+                }
+            });
+    
+            // Hide dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove("opacity-100", "scale-100");
+                    dropdownMenu.classList.add("opacity-0", "scale-95");
+    
+                    setTimeout(() => {
+                        dropdownMenu.classList.add("hidden");
+                    }, 300);
+    
+                    // Reset arrow to down position
+                    dropdownIcon.classList.remove("rotate-180");
+                }
+            });
+        });
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+            const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+            const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+            const mobileArrowPath = document.getElementById("mobileArrowPath");
+    
+            mobileDropdownButton.addEventListener("click", function () {
+                if (mobileDropdown.classList.contains("hidden")) {
+                    // Show dropdown with animation
+                    mobileDropdown.classList.remove("hidden");
+                    setTimeout(() => {
+                        mobileDropdown.classList.remove("opacity-0", "scale-95");
+                        mobileDropdown.classList.add("opacity-100", "scale-100");
+                    }, 10);
+    
+                    // Rotate the arrow up
+                    mobileDropdownIcon.classList.add("rotate-180");
+                } else {
+                    // Hide dropdown with animation
+                    mobileDropdown.classList.remove("opacity-100", "scale-100");
+                    mobileDropdown.classList.add("opacity-0", "scale-95");
+    
+                    setTimeout(() => {
+                        mobileDropdown.classList.add("hidden");
+                    }, 300); // Wait for animation to complete before hiding
+    
+                    // Rotate the arrow back down
+                    mobileDropdownIcon.classList.remove("rotate-180");
+                }
+            });
+    
+            // Hide dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                    mobileDropdown.classList.remove("opacity-100", "scale-100");
+                    mobileDropdown.classList.add("opacity-0", "scale-95");
+    
+                    setTimeout(() => {
+                        mobileDropdown.classList.add("hidden");
+                    }, 300);
+    
+                    // Reset arrow to down position
+                    mobileDropdownIcon.classList.remove("rotate-180");
+                }
+            });
+        });
+    
+    
+        document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMobileMenu = document.getElementById("openMobileMenu");
+        const closeMobileMenu = document.getElementById("closeMobileMenu");
+        const mobileBackdrop = document.getElementById("mobileBackdrop");
+    
+            // Open mobile menu when clicking the hamburger button
+        openMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("hidden");
+        });
+    
+            // Close mobile menu when clicking the close button
+        closeMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+    
+            // Close mobile menu when clicking outside (on the backdrop)
+        mobileBackdrop.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+            });
+        </script>
 </main>
 </body>
 </html>
