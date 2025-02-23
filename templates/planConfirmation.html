@@ -164,7 +164,7 @@
             <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                 <div>
                     <h1 class="text-3xl font-bold" id="location">Loading...</h1>
-                    <p class="font-mulish font-light text-gray-500 text-md pt-2" id="plan-details">Fetching plan
+                    <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details">Fetching plan
                         details...</p>
                 </div>
                 <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
@@ -209,12 +209,12 @@
 
     <div class="flex mx-auto flex-col mr-5 ml-5 shadow-lg font-poppins 2xl:hidden">
         <!-- Main Content -->
-        <div class="@container relative bg-white rounded-3xl flex flex-col mb-10">
-            <div class="relative w-full p-2">
+        <div class="@container relative bg-white rounded-3xl flex flex-col p-4">
+            <div class="relative w-full">
                 <div id="map-mobile" class="w-full h-[30vh] rounded-3xl mx-auto"></div>
             </div>
 
-            <div class="flex justify-between items-center mt-6 p-4 pb-4 border-b border-gray-200">
+            <div class="flex justify-between items-center mt-6 p-2 pb-4 border-b border-gray-200">
                 <div>
                     <h1 class="text-2xl font-bold" id="location-mobile">Loading...</h1>
                     <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details-mobile">Fetching
@@ -230,24 +230,24 @@
             </div>
 
             <!-- Restaurant Recommendations -->
-            <h2 class="mt-4 mb-2 p-4 text-lg font-medium">Recommended Restaurants</h2>
-            <div class="@container w-full overflow-x-auto snap-x snap-mandatory">
-                <div id="restaurant-list-mobile" class="flex flex-nowrap gap-6 p-4">
+            <h2 class="mt-4 mb-2 p-2 text-lg font-medium">Recommended Restaurants</h2>
+            <div class="@container w-full overflow-x-auto snap-x snap-mandatory snap-center">
+                <div id="restaurant-list-mobile" class="flex flex-nowrap gap-6">
                     <!-- Content dynamically loads here -->
                 </div>
             </div>
 
 
             <!-- Event Recommendations -->
-            <h2 class="mt-6 mb-2 p-4 text-lg font-medium">Recommended Events</h2>
+            <h2 class="mt-6 mb-2 p-2 text-lg font-medium">Recommended Events</h2>
             <div class="@container w-full overflow-x-auto snap-x snap-mandatory">
-                <div id="event-list-mobile" class="flex flex-nowrap gap-6 p-4">
+                <div id="event-list-mobile" class="flex flex-nowrap gap-6">
                     <!-- Content dynamically loads here -->
                 </div>
             </div>
 
             <!-- Buttons -->
-            <div class="flex flex-col gap-4 p-4 mt-4 mb-4 pb-2 pt-4">
+            <div class="flex flex-col gap-4 p-2 mt-4 mb-4 pb-2 pt-4">
                 <button id="recreate-btn-mobile"
                         class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
                     🔄 Recreate Plan
@@ -422,7 +422,7 @@
         restaurantListMobile.innerHTML = '';
         planData.restaurants.forEach(restaurant => {
             restaurantList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden">
-                    <div class="w-full h-36">
+                    <div class="w-full h-20">
                         <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="Restaurant Image"
                              class="w-full h-full object-cover rounded-t-3xl">
@@ -434,10 +434,9 @@
                     </button>
 
                     <div class="flex flex-col items-start justify-between p-4">
-                        <span class="font-semibold text-[20px]">${restaurant.name}</span>
-                        <p class="font-semibold text-custom-blue text-[15px] pt-1">${restaurant.cuisine}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                        <span class="font-semibold text-[16px]">${restaurant.name}</span>
+                        <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
                     </div>
 
                 </div>`;
@@ -471,7 +470,7 @@
         eventList.innerHTML = '';
         planData.events.forEach(event => {
             eventList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
-                    <div class="w-full h-36">
+                    <div class="w-full h-20">
                         <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="Restaurant Image"
                              class="w-full h-full object-cover rounded-t-3xl">
@@ -484,10 +483,9 @@
                     </button>
 
                     <div class="flex flex-col items-start justify-between p-4">
-                        <p class="font-semibold text-[20px]">${event.name}</p>
-                        <p class="font-semibold right-0 text-custom-blue text-[15px] pt-1">${event.type}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                        <p class="font-semibold text-[16px]">${event.name}</p>
+                        <p class="font-semibold right-0 text-custom-blue text-[12px] pt-1">${event.type}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
                     </div>
                 </div>`;
             addMarker(map, event.longitude, event.latitude, event.name, bounds);
