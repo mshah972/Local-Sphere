@@ -28,7 +28,7 @@
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
-            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
                 <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
@@ -155,300 +155,149 @@
 
     <!-- NEW PAGE COPY THIS UP  -->
 
-
-    <!--    <section class="flex flex-col lg:flex-row items-center justify-between px-6 py-16 bg-custom-white">-->
-
-    <!--        &lt;!&ndash; Left Side (Visual Representation) &ndash;&gt;-->
-    <!--        <div class="w-1/2 flex justify-center items-center relative">-->
-    <!--            <img src="../static/sky.jpg" alt="Process Diagram" class="max-w-lg w-full rounded-2xl">-->
-
-    <!--            &lt;!&ndash; Floating Boxes Container &ndash;&gt;-->
-    <!--            <div class="absolute top-10 flex flex-col items-center w-full space-y-12"> -->
-
-    <!--                            &lt;!&ndash; Box 1 - Occasion, Location, Date, Time, Attendees &ndash;&gt;-->
-    <!--            <div class="backdrop-blur-lg bg-white/60 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">-->
-    <!--                <h2 id="boxOccasion" class="text-gray-800 font-bold text-lg">Just Becuase</h2>-->
-
-    <!--                <h3 class="text-gray-700 font-semibold mt-2">Location:</h3>-->
-    <!--                <p id="boxLocation" class="text-gray-600">&#45;&#45;</p>-->
-
-    <!--                <h3 class="text-gray-700 font-semibold mt-2">Date:</h3>-->
-    <!--                <p id="boxDate" class="text-gray-600">&#45;&#45;</p>-->
-
-    <!--                <h3 class="text-gray-700 font-semibold mt-2">Preferred Time:</h3>-->
-    <!--                <p id="boxTime" class="text-gray-600">&#45;&#45;</p>-->
-
-    <!--                <h3 class="text-gray-700 font-semibold mt-2">Attendees:</h3>-->
-    <!--                <p id="boxAttendees" class="text-gray-600">&#45;&#45;</p>-->
-    <!--            </div>-->
-
-    <!--                &lt;!&ndash; Arrow &ndash;&gt;-->
-    <!--                <div class="w-8 h-8">-->
-    <!--                    <svg class="w-full h-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
-    <!--                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>-->
-    <!--                    </svg>-->
-    <!--                </div>-->
-
-    <!--                &lt;!&ndash; Container for Swappable Boxes &ndash;&gt;-->
-    <!--                <div id="orderContainer" class="flex flex-col items-center space-y-12 w-full">-->
-    <!--                    &lt;!&ndash; Box 2 - Activities &ndash;&gt;-->
-    <!--                    <div id="box2" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">-->
-    <!--                        <h3 class="text-gray-800 font-semibold text-lg">Activities</h3>-->
-    <!--                        <div id="boxActivities" class="text-gray-700 text-base mt-2">No activities added</div>-->
-    <!--                    </div>-->
-
-    <!--                    &lt;!&ndash; Box 3 - Cuisines &ndash;&gt;-->
-    <!--                    <div id="box3" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">-->
-    <!--                        <h3 class="text-gray-100 font-semibold text-lg">Cuisines</h3>-->
-    <!--                        <div id="boxCuisines" class="text-gray-200 text-base mt-2">No cuisines added</div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-
-    <!--            </div>-->
-    <!--        </div>-->
-
-    <!--        &lt;!&ndash; Right  &ndash;&gt;-->
-    <!--         -->
-    <!--        <div class="w-1/2 p-8 border border-[#B0B3B8] rounded-2xl shadow-lg bg-[#F8F9FC]">-->
-    <!--            <form class="space-y-4">-->
-    <!--                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">-->
-    <!--                    &lt;!&ndash; Location Input &ndash;&gt;-->
-    <!--                    <div class="text-left">-->
-    <!--                        <label class="text-gray-600 font-medium text-xs sm:text-sm">Preferred Location</label>-->
-    <!--                        <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-3 bg-white">-->
-    <!--                            <span class="material-icons text-gray-500 mr-2">location_on</span>-->
-    <!--                            <input type="text" id="locationInput" value="Chicago, IL" class="w-full focus:outline-none text-gray-700 bg-transparent">-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-
-    <!--                &lt;!&ndash; Date Input &ndash;&gt;-->
-    <!--                    <div class="text-left">-->
-    <!--                        <label class="text-gray-600 font-medium text-xs sm:text-sm">Preferred Date</label>-->
-    <!--                        <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-3 bg-white">-->
-    <!--                            <span class="material-icons text-gray-500 mr-2">calendar_today</span>-->
-    <!--                            <input type="date" id="dateInput" value="2024-01-12" class="w-full focus:outline-none text-gray-700 bg-transparent">-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--                -->
-    <!--                &lt;!&ndash; Interests Input &ndash;&gt;-->
-    <!--                <div>-->
-    <!--                    <label class="text-gray-600 font-medium text-sm sm:text-sm">Interests (Activities)</label>-->
-    <!--                    <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-2 bg-white">-->
-    <!--                        <input id="interestInput" type="text" placeholder="Add activity" class="w-full">-->
-    <!--                        <button type="button" onclick="addInterest()" class="px-4 py-2 bg-custom-blue text-white rounded-md">Add</button>-->
-    <!--                    </div>-->
-    <!--                    <div id="interestsContainer" class="flex flex-wrap gap-2 mt-2"></div>-->
-    <!--                </div>-->
-    <!--                &lt;!&ndash; Food Inputs  &ndash;&gt;-->
-    <!--                <div>-->
-    <!--                    <label class="block text-gray-700">Favorite Cuisines & Foods </label>-->
-    <!--                    <div class="flex items-center gap-2">-->
-    <!--                        <input id="foodInput" type="text" placeholder="Add Cuisines" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none">-->
-    <!--                        <button type="button" onclick="addfood()" class="px-4 py-2 bg-custom-blue text-white rounded-md">Add</button>-->
-    <!--                    </div>-->
-    <!--                    <div id="foodContainer" class="flex flex-wrap gap-2 mt-2"></div>-->
-    <!--                </div>-->
-    <!--                -->
-    <!--                &lt;!&ndash; Preferred Time Inputs &ndash;&gt;-->
-    <!--                <div>-->
-    <!--                    <label class="block text-gray-700" for="preferredTime">Preferred Time</label>-->
-    <!--                    <div class="relative">-->
-    <!--                        <select id="preferredTime" name="preferredTime" -->
-    <!--                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">-->
-    <!--                            <option value="Morning">Morning</option>-->
-    <!--                            <option value="Afternoon">Afternoon</option>-->
-    <!--                            <option value="Evening">Evening</option>-->
-    <!--                            <option value="Night" selected>Night</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-
-    <!--                &lt;!&ndash; Attendee Inputs &ndash;&gt;-->
-    <!--                <div>-->
-    <!--                    <label class="block text-gray-700" for="attendees">Total Attendees</label>-->
-    <!--                    <div class="relative">-->
-    <!--                        <select id="attendees" name="attendees" -->
-    <!--                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">-->
-    <!--                            <option value="1">1</option>-->
-    <!--                            <option value="2-3">2-3</option>-->
-    <!--                            <option value="3-6">3-6</option>-->
-    <!--                            <option value="6-10">6-10</option>-->
-    <!--                            <option value="10+">10+</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-
-    <!--                &lt;!&ndash; Order Selection &ndash;&gt;-->
-    <!--                <div>-->
-    <!--                    <label class="block text-gray-700">Preferred Order (Optional)</label>-->
-    <!--                    <div class="relative">-->
-    <!--                        <select id="preferredOrder" name="preferredOrder"-->
-    <!--                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">-->
-    <!--                            <option value="Empty">Select Order</option>-->
-    <!--                            <option value="FoodEvent">Food before Event</option>-->
-    <!--                            <option value="EventFood">Event before Food</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-
-    <!--                &lt;!&ndash; Ocasion &ndash;&gt;-->
-    <!--                -->
-    <!--                <div>-->
-    <!--                    <label class="block text-gray-700">Occasions (Optional)</label>-->
-    <!--                    <div class="flex items-center gap-2">-->
-    <!--                        <select id="occasionSelect" class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none" onchange="addOccasion()">-->
-    <!--                            <option value="" disabled selected>Select an Occasion</option>-->
-    <!--                            <option value="Birthday">Birthday</option>-->
-    <!--                            <option value="Anniversary">Anniversary</option>-->
-    <!--                            <option value="Graduation">Graduation</option>-->
-    <!--                            <option value="Promotion">Promotion</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                    <div id="occasionsContainer" class="flex flex-wrap gap-2 mt-2"></div>-->
-    <!--                </div>-->
-    <!--                -->
-    <!--                -->
-    <!--                <button class="w-full bg-custom-blue text-white py-3 rounded-lg hover:bg-blue-700 transition">Craft Your Plan</button>-->
-    <!--            </form>-->
-    <!--        </div>-->
-    <!--    </section>-->
+    <!-- LEFT  -->
 
     <div class="@container flex w-full mx-auto flex-row shadow-lg font-poppins hidden 2xl:inline-flex">
-        <div class="relative w-2/5 p-6 h-auto flex flex-col items-center overflow-hidden rounded-2xl bg-gradient-to-b from-teal-700 to-teal-500">
+        <div class="relative w-2/5 p-6 h-auto flex flex-col items-center overflow-hidden rounded-2xl ">
             <!-- Background Image -->
-            <img src="../static/sky.jpg" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-20">
+            <img src="../static/userCreationBack.png" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl ">
 
             <div class="relative flex flex-col items-center w-full space-y-12">
 
-                <!-- 📌 Card 1: User's Event Selection -->
-                <div class="bg-white p-6 rounded-2xl shadow-lg w-3/4 flex flex-col items-center border border-white/20 text-center">
-                    <h2 id="boxOccasion" class="text-gray-800 font-bold text-lg">Just Because</h2>
+                <!-- 📌 Account Card -->
+                <div class="bg-transparent p-6 rounded-2xl shadow-lg w-3/4 flex flex-col items-center text-center">
+                    <!-- Profile Image -->
+                    <img src="../static/logo1.svg"  alt="Profile Image" class="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-16">
 
-                    <h3 class="text-gray-700 font-semibold mt-2">📍 Location:</h3>
-                    <p id="boxLocation" class="text-gray-600">--</p>
+                    <!-- Title -->
+                    <h1 id="boxOccasion" class="text-white font-bold text-2xl mt-4">Jose Nunez</h1>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">📅 Date:</h3>
-                    <p id="boxDate" class="text-gray-600">--</p>
+                    <!-- Email-->
+                    <h3 class="text-white font-semibold mt-2 text-gray-100"> Jose@gmail.com</h3>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">⏰ Preferred Time:</h3>
-                    <p id="boxTime" class="text-gray-600">--</p>
+                    <!-- Desc -->
+                    <p id="boxDate" class="text-white">Lorem ipsum odor amet, consectetuer adipiscing elit. Penatibus sociosqu ornare metus eleifend accumsan. Justo interdum sollicitudin ex augue ullamcorper leo ut erat. Per amet nullam facilisi dolor senr lorem convallis.</p>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">👥 Attendees:</h3>
-                    <p id="boxAttendees" class="text-gray-600">--</p>
                 </div>
 
-                <!-- 🔽 Arrow -->
-                <div class="w-8 h-8">
-                    <svg class="w-full h-full text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
+            <!-- 📌 Card 2 Side by Side - Interests & Cuisines -->
+
+            <Section class="flex justify-center gap-6">
+                
+                <!-- Interests Section -->
+                <div class="bg-custom-white p-6 rounded-2xl shadow-lg w-64 flex flex-col items-center border border-black text-center">
+                    <h2 class="text-black font-bold text-lg w-full border-b border-black pb-2">Interests</h2>
+                    
+                    <!-- Interests List -->
+                    <div class="flex flex-col w-full mt-4 space-y-4 items-center">
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Soccer</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Chicago Cubs</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Chicago Bulls</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Music Concerts</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Cricket</span>
+                    </div>
                 </div>
 
-                <!-- 📌 Card 2: User’s Personal Data from Signup -->
-                <div class="bg-white p-6 rounded-2xl shadow-lg w-3/4 flex flex-col items-center border border-white/20 text-center">
-                    <h2 class="text-gray-800 font-bold text-lg">User Profile</h2>
-
-                    <h3 class="text-gray-700 font-semibold mt-2">👤 Name:</h3>
-                    <p id="userName" class="text-gray-600">--</p>
-
-                    <h3 class="text-gray-700 font-semibold mt-2">📧 Email:</h3>
-                    <p id="userEmail" class="text-gray-600">--</p>
-
-                    <h3 class="text-gray-700 font-semibold mt-2">📍 Location:</h3>
-                    <p id="userLocation" class="text-gray-600">--</p>
-
-                    <h3 class="text-gray-700 font-semibold mt-2">🎉 Interests:</h3>
-                    <p id="userInterests" class="text-gray-600">--</p>
+                <!-- Cuisines & Foods Section -->
+                <div class="bg-custom-white p-6 rounded-2xl shadow-lg w-64 flex flex-col items-center border border-black text-center">
+                    <h2 class="text-black font-bold text-lg w-full border-b border-black pb-2">Cuisines & Foods</h2>
+                    
+                    <!-- Cuisines List -->
+                    <div class="flex flex-col w-full mt-4 space-y-4 items-center">
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Mexican</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Italian</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Pizza</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Salads</span>
+                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Japanese</span>
+                    </div>
                 </div>
+
+            </Section>
+                
 
             </div>
         </div>
 
+        <!-- RIGHT -->
 
-        <div class="relative w-full p-8 bg-white rounded-3xl mr-15 ml-5 flex flex-col">
-            <div class="flex flex-row justify-between items-center w-full mr-5">
-                <div class="flex flex-col items-start justify-between w-full">
-                    <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
+
+        <!-- 📌 Profile Section -->
+            <div class="relative w-full p-8 bg-white rounded-3xl shadow-lg flex flex-col items-center border border-gray-300">
+                
+                <!-- Profile Image -->
+                <div class="flex flex-col items-center">
+                    <img src="../static/logo1.svg" alt="Profile Image" class="w-24 h-24 rounded-full border-4 border-white shadow-md">
+                    <p class="text-gray-500 text-sm mt-2">Upload Your Profile Picture</p>
+                </div>
+
+                <!-- Form Fields -->
+                <div class="w-full mt-6">
+                    
+                    <!-- Preferred Location & Occupation -->
+                    <div class="flex flex-row justify-between w-full gap-4">
+                        <div class="flex flex-col w-1/2">
+                            <label class="text-gray-400 text-[12px] font-normal">Preferred Location</label>
+                            <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal">
+                                <img class="h-5 w-auto mr-2" src="../static/location.svg">
+                                <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-1/2">
+                            <label class="text-gray-400 text-[12px] font-normal">Occupation</label>
+                            <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal">
+                                <input id="occupation" type="text" value="Student" class="w-full focus:outline-none">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="flex flex-col items-start justify-between w-full ml-4">
-                    <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Date</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/calendar.svg">
-                        </span>
-                        <input id="preferred-date" type="date" class="w-full focus:outline-none">
+
+                    <!-- Short Description -->
+                    <div class="flex flex-col w-full mt-4">
+                        <label class="text-gray-400 text-[12px] font-normal">Short Description</label>
+                        <textarea class="border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal focus:outline-none" placeholder="Write a short description about yourself"></textarea>
                     </div>
+
+                    <!-- Interests -->
+                    <div class="flex flex-col w-full mt-4">
+                        <label class="text-gray-400 text-[12px] font-normal">Interests</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
+                            <input id="interests" type="text" class="w-full focus:outline-none" placeholder="Search interests...">
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Music Concerts ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Chicago Cubs ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Basketball ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Cricket ✖</span>
+                        </div>
+                    </div>
+
+                    <!-- Dietary Restrictions -->
+                    <div class="flex flex-col w-full mt-4">
+                        <label class="text-gray-400 text-[12px] font-normal">Dietary Restrictions</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
+                            <input id="Restrictions" type="text" class="w-full focus:outline-none" placeholder="Dietary Restrictions...">
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Vegetarian ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Nut Free ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Dairy Free ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Halal ✖</span>
+                        </div>
+                    </div>
+
+                    <!-- Favorite Cuisines & Food -->
+                    <div class="flex flex-col w-full mt-4">
+                        <label class="text-gray-400 text-[12px] font-normal">Favorite Cuisines & Food</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
+                            <input id="favFood" type="text" class="w-full focus:outline-none" placeholder="Favorite Cuisines & Food...">
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Italian ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Pizza ✖</span>
+                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Mexican ✖</span>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Time</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                        <img class="h-5 w-auto" src="../static/dayORnight.png">
-                    </span>
-                    <select id="preferred-time"
-                            class="text-[16px] font-normal rounded-md">
-                        <option>Morning</option>
-                        <option>Afternoon</option>
-                        <option>Evening</option>
-                        <option>Night</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Total Attendee(s)</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                        <img class="h-5 w-auto" src="../static/people.png" alt="Peoples Icon">
-                    </span>
-                    <select id="guests"
-                            class="text-[16px] font-normal rounded-md">
-                        <option>1 Guest</option>
-                        <option>2 Guests</option>
-                        <option>3 Guests</option>
-                        <option>4 Guests</option>
-                        <option>5 Guests</option>
-                        <option>6 Guests</option>
-                        <option>7 Guests</option>
-                        <option>8 Guests</option>
-                        <option>9 Guests</option>
-                        <option>10+ Guests</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Favorite Food & Cuisines</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                       <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
-                    </span>
-                    <select id="food"
-                            class="text-[16px] font-normal rounded-md">
-                        <option>Italian</option>
-                        <option>Mexican</option>
-                        <option>American</option>
-                        <option>Chinese</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <!-- Buttons -->
-            <div class="mt-auto flex flex-col gap-4 pb-2">
-                <button id="recreate-btn"
-                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    Craft Your Plan
-                </button>
             </div>
         </div>
     </div>

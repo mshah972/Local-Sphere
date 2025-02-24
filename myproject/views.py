@@ -60,3 +60,6 @@ def planConfirmation(request):
 
 def forgot(request):
     return render(request, 'forgot.html')
+
+def creation(request):
+    return render(request, 'UserCreation.html')
