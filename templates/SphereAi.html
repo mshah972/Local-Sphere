@@ -155,7 +155,7 @@
 
     <!-- NEW PAGE COPY THIS UP  -->
 
-    <div class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row shadow-lg font-poppins p-4 lg:p-0">
+    <div class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0">
         <div class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl">
             <!-- Background Image -->
             <img src="../static/sphereAiBack.png" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl">
@@ -163,7 +163,7 @@
             <div class="relative flex flex-col items-center w-full space-y-12">
 
                 <!-- 📌 Card 1: User's Event Selection -->
-                <div class="bg-white p-6 rounded-4xl shadow-lg w-full flex flex-col items-center border border-white/20 text-center">
+                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
 
                     <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
                         <span class="mr-2">
@@ -186,11 +186,18 @@
                         <span id="box-time" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/people.png">
                         </span>
                         <span id="box-guests" class="text-md">Waiting For User Selection...</span>
+                    </h3>
+
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
+                        <span class="mr-2">
+                            <img class="h-5 w-auto" src="../static/foodIcon.svg">
+                        </span>
+                        <span id="box-food" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
                 </div>
@@ -203,7 +210,7 @@
                 </div>
 
                 <!-- 📌 Card 2: User’s Personal Data from Signup -->
-                <div class="bg-white p-6 rounded-4xl shadow-lg w-full flex flex-col items-center border border-white/20 text-center">
+                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
                     <h2 class="text-gray-800 font-semibold text-lg">Fetched User Data</h2>
 
                     <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
@@ -255,7 +262,7 @@
                     </span>
                     <select id="preferred-time"
                             class="text-[16px] font-normal rounded-md">
-                        <option>Morning</option>
+                        <option selected>Morning</option>
                         <option>Afternoon</option>
                         <option>Evening</option>
                         <option>Night</option>
@@ -271,7 +278,7 @@
                     </span>
                     <select id="guests"
                             class="text-[16px] font-normal rounded-md">
-                        <option>1 Guest</option>
+                        <option selected>1 Guest</option>
                         <option>2 Guests</option>
                         <option>3 Guests</option>
                         <option>4 Guests</option>
@@ -318,7 +325,7 @@
             <div class="relative flex flex-col items-center w-full space-y-12">
 
                 <!-- 📌 Card 1: User's Event Selection -->
-                <div class="bg-white p-6 rounded-4xl shadow-lg w-full flex flex-col items-center border border-white/20 text-center">
+                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
 
                     <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
                         <span class="mr-2">
@@ -331,21 +338,28 @@
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/calendar.svg">
                         </span>
-                        <span class="text-md">Waiting For User Selection...</span>
+                        <span id="box-date-mobile" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
                     <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/dayORnight.png">
                         </span>
-                        <span class="text-md">Waiting For User Selection...</span>
+                        <span id="box-time-mobile" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
                     <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/people.png">
                         </span>
-                        <span class="text-md">Waiting For User Selection...</span>
+                        <span id="box-guests-mobile" class="text-md">Waiting For User Selection...</span>
+                    </h3>
+
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
+                        <span class="mr-2">
+                            <img class="h-5 w-auto" src="../static/foodIcon.svg">
+                        </span>
+                        <span id="box-food-mobile" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
                 </div>
@@ -358,21 +372,21 @@
                 </div>
 
                 <!-- 📌 Card 2: User’s Personal Data from Signup -->
-                <div class="bg-white p-6 rounded-4xl shadow-lg w-full flex flex-col items-center border border-white/20 text-center">
+                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
                     <h2 class="text-gray-800 font-semibold text-lg">Fetched User Data</h2>
 
                     <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
                         <span class="mr-2">
                             <img class="h-6 w-auto" src="../static/foodIcon.svg">
                         </span>
-                        <span id="user-food" class="text-md">Mexican</span>
+                        <span id="user-food-mobile" class="text-md">Mexican</span>
                     </h3>
 
                     <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/location.svg">
                         </span>
-                        <span id="user-preferred" class="text-md">Chicago, IL</span>
+                        <span id="user-preferred-location-mobile" class="text-md">Chicago, IL</span>
                     </h3>
 
                 </div>
@@ -589,32 +603,56 @@
             food: document.getElementById("food"),
         };
 
-        // Get all display elements
+        // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
             boxLocation: document.getElementById("box-location"),
             boxDate: document.getElementById("box-date"),
             boxTime: document.getElementById("box-time"),
             boxAttendees: document.getElementById("box-guests"),
             boxFood: document.getElementById("box-food"),
+
+            // Mobile version elements
+            boxLocationMobile: document.getElementById("box-location-mobile"),
+            boxDateMobile: document.getElementById("box-date-mobile"),
+            boxTimeMobile: document.getElementById("box-time-mobile"),
+            boxAttendeesMobile: document.getElementById("box-guests-mobile"),
+            boxFoodMobile: document.getElementById("box-food-mobile"),
         };
 
-        // Update the first card dynamically
+        // Function to update values dynamically for both desktop & mobile versions
+        function updateDisplay(field, value) {
+            if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`]) {
+                displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`].textContent = value || "--";
+            }
+            if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`]) {
+                displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`].textContent = value || "--";
+            }
+        }
+
+        // Attach event listeners to form inputs
         Object.keys(formInputs).forEach(key => {
             formInputs[key].addEventListener("input", function () {
-                displayElements[`box${key.charAt(0).toUpperCase() + key.slice(1)}`].textContent = this.value || "--";
+                updateDisplay(key, this.value);
             });
         });
 
         // Simulate fetching user profile from database (Replace this with API call)
         const userProfile = {
             location: "Chicago, IL",
-            food: "Mexican",
+            food: "Italian",
         };
 
-        // Update second card with user's profile
-        document.getElementById("user-fav-foods").textContent = userProfile.food;
-        document.getElementById("user-preferred-location").textContent = userProfile.location;
+        // Update user profile card dynamically for both desktop & mobile
+        function updateUserProfile() {
+            document.getElementById("user-fav-foods").textContent = userProfile.food;
+            document.getElementById("user-food-mobile").textContent = userProfile.food;
+            document.getElementById("user-preferred-location").textContent = userProfile.location;
+            document.getElementById("user-preferred-location-mobile").textContent = userProfile.location;
+        }
+
+        updateUserProfile(); // Initialize user profile details
     });
+
 
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
