@@ -153,51 +153,120 @@
     <!-- NEW PAGE COPY THIS UP  -->
 
      <!-- Hero Section -->
-<section class="relative mx-5 sm:mx-6 md:mx-10 lg:mx-15 max-w-9xl sm:px-4 md:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[85vh] sm:min-h-[60vh] rounded-2xl">
-    <!-- Background Image -->
-    <img src="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-         alt="Chicago Skyline"
-         class="absolute inset-0 w-full h-full object-cover"/>
-    <div class="absolute inset-0 bg-black/30"></div>
+<!--<section class="relative mx-5 sm:mx-6 md:mx-10 lg:mx-15 max-w-9xl sm:px-4 md:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[85vh] sm:min-h-[60vh] rounded-2xl">-->
+<!--    &lt;!&ndash; Background Image &ndash;&gt;-->
+<!--    <img src="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" -->
+<!--         alt="Chicago Skyline"-->
+<!--         class="absolute inset-0 w-full h-full object-cover"/>-->
+<!--    <div class="absolute inset-0 bg-black/30"></div>-->
 
-    <div class="absolute inset-0 flex items-center justify-center px-4">
-        <div class="relative z-10 bg-white rounded-3xl shadow-lg p-8 w-[90%] sm:max-w-sm md:max-w-md lg:max-w-lg text-center flex flex-col justify-between h-auto min-h-[50vh] sm:min-h-[60vh] lg:min-h-[70vh]">
-            <img src="{% static 'logo1.svg' %}" alt="Local Sphere Logo" class="w-24 mx-auto">
-            <h1 class="font-mulish text-xl sm:text-2xl lg:text-3xl font-extrabold text-custom-blue mt-4">
-                Get Back to Creating Exciting Days!
-            </h1>
-            <p class="font-normal text-gray-500 text-xs sm:text-sm mt-1">
-                Enter your Email Then Enter New Password
-            </p>
+<!--    <div class="absolute inset-0 flex items-center justify-center px-4">-->
+<!--        <div class="relative z-10 bg-white rounded-3xl shadow-lg p-8 w-[90%] sm:max-w-sm md:max-w-md lg:max-w-lg text-center flex flex-col justify-between h-auto min-h-[50vh] sm:min-h-[60vh] lg:min-h-[70vh]">-->
+<!--            <img src="{% static 'logo1.svg' %}" alt="Local Sphere Logo" class="w-24 mx-auto">-->
+<!--            <h1 class="font-mulish text-xl sm:text-2xl lg:text-3xl font-extrabold text-custom-blue mt-4">-->
+<!--                Get Back to Creating Exciting Days!-->
+<!--            </h1>-->
+<!--            <p class="font-normal text-gray-500 text-xs sm:text-sm mt-1">-->
+<!--                Enter your Email Then Enter New Password-->
+<!--            </p>-->
 
-            <!-- New Password Form -->
-            <form class="mt-6 space-y-4 w-full">
-                <!-- Email Address -->
-                <div class="text-left">
-                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">Email Address</label>
-                    <input type="email" placeholder="johndoe@gmail.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
-                </div>
+<!--            &lt;!&ndash; New Password Form &ndash;&gt;-->
+<!--            <form class="mt-6 space-y-4 w-full">-->
+<!--                &lt;!&ndash; Email Address &ndash;&gt;-->
+<!--                <div class="text-left">-->
+<!--                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">Email Address</label>-->
+<!--                    <input type="email" placeholder="johndoe@gmail.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">-->
+<!--                </div>-->
 
-                <!-- New Password -->
-                <div class="text-left">
-                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">New Password</label>
-                    <input type="password" placeholder="********" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
-                </div>
+<!--                &lt;!&ndash; New Password &ndash;&gt;-->
+<!--                <div class="text-left">-->
+<!--                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">New Password</label>-->
+<!--                    <input type="password" placeholder="********" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">-->
+<!--                </div>-->
 
-                <!-- Confirm New Password -->
-                <div class="text-left">
-                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">Confirm New Password</label>
-                    <input type="password" placeholder="********" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue mb-4">
-                </div>
+<!--                &lt;!&ndash; Confirm New Password &ndash;&gt;-->
+<!--                <div class="text-left">-->
+<!--                    <label class="text-[#A1A1A1] font-light text-xs sm:text-sm">Confirm New Password</label>-->
+<!--                    <input type="password" placeholder="********" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue mb-4">-->
+<!--                </div>-->
 
-                <button type="submit" class="w-full bg-custom-blue text-white font-light py-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
-                    Change Password
-                </button>
-            </form>
+<!--                <button type="submit" class="w-full bg-custom-blue text-white font-light py-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">-->
+<!--                    Change Password-->
+<!--                </button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+    <section class="relative flex flex-col justify-center mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl h-[80vh] sm:px-6 lg:px-8 mx-auto overflow-y-auto lg:max-h-[80vh] lg:rounded-4xl rounded-4xl">
+        <!-- Background Image -->
+        <img src="https://images.unsplash.com/photo-1636753260398-c0ce9f1268fa?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chicago Skyline At Night"
+             class="absolute inset-0 w-full h-full object-cover"/>
+        <div class="absolute inset-0 bg-black/30"></div>
+
+        <div class="relative inset-0 flex flex-col justify-center items-center font-poppins hidden lg:inline-flex 2xl:inline-flex p-10">
+            <div class="relative bg-white rounded-4xl shadow-lg p-8 w-full max-w-md mx-auto text-center flex flex-col">
+                <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
+                <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Get Back to Creating Exciting Days!</h1>
+
+                <!-- Login Form -->
+                <form class="mt-6 space-y-4 w-full">
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">Email</label>
+                        <input type="email" placeholder="Enter Your Email" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                    </div>
+
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">New Password</label>
+                        <input type="password" placeholder="Enter New Password" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                    </div>
+
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">Confirm Password</label>
+                        <div class="relative">
+                            <input type="password" placeholder="Re-Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
+                        Reset Password
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
 
+        <div class="relative flex flex-col h-fit justify-center lg:hidden 2xl:hidden p-6">
+            <div class="relative z-10 bg-white rounded-4xl shadow-lg p-8 w-full max-w-md mx-auto justify-center text-center flex flex-col">
+                <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
+                <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Welcome Back, Explorer</h1>
+
+                <!-- Login Form -->
+                <form class="mt-6 space-y-4 w-full">
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">Email</label>
+                        <input type="email" placeholder="Enter Your Email" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                    </div>
+
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">New Password</label>
+                        <input type="password" placeholder="Enter New Password" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                    </div>
+
+                    <div class="text-left">
+                        <label class="text-[#A1A1A1] font-light text-sm">Confirm Password</label>
+                        <div class="relative">
+                            <input type="password" placeholder="Re-Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
+                        Reset Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -317,6 +386,5 @@
         });
             });
         </script>
-</main>
 </body>
 </html>
