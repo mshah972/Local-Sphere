@@ -315,52 +315,56 @@
     <!--    </section>-->
 
     <div class="@container flex w-full mx-auto flex-row shadow-lg font-poppins hidden 2xl:inline-flex">
-        <div class="relative w-5/10 pl-20 h-auto flex flex-col items-center overflow-hidden rounded-2xl">
-            <img src="../static/sky.jpg" alt="Process Diagram" class="max-w-lg w-full rounded-2xl">
+        <div class="relative w-2/5 p-6 h-auto flex flex-col items-center overflow-hidden rounded-2xl bg-gradient-to-b from-teal-700 to-teal-500">
+            <!-- Background Image -->
+            <img src="../static/sky.jpg" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-20">
 
-            <div class="absolute top-10 flex flex-col items-center w-full space-y-12">
+            <div class="relative flex flex-col items-center w-full space-y-12">
 
-                <!-- Box 1 - Occasion, Location, Date, Time, Attendees -->
-                <div class="bg-white p-6 rounded-2xl shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
-                    <h2 id="boxOccasion" class="text-gray-800 font-bold text-lg">Just Becuase</h2>
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg w-3/4 flex flex-col items-center border border-white/20 text-center">
+                    <h2 id="boxOccasion" class="text-gray-800 font-bold text-lg">Just Because</h2>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">Location:</h3>
+                    <h3 class="text-gray-700 font-semibold mt-2">📍 Location:</h3>
                     <p id="boxLocation" class="text-gray-600">--</p>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">Date:</h3>
+                    <h3 class="text-gray-700 font-semibold mt-2">📅 Date:</h3>
                     <p id="boxDate" class="text-gray-600">--</p>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">Preferred Time:</h3>
+                    <h3 class="text-gray-700 font-semibold mt-2">⏰ Preferred Time:</h3>
                     <p id="boxTime" class="text-gray-600">--</p>
 
-                    <h3 class="text-gray-700 font-semibold mt-2">Attendees:</h3>
+                    <h3 class="text-gray-700 font-semibold mt-2">👥 Attendees:</h3>
                     <p id="boxAttendees" class="text-gray-600">--</p>
                 </div>
 
-                <!-- Arrow -->
+                <!-- 🔽 Arrow -->
                 <div class="w-8 h-8">
-                    <svg class="w-full h-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-full h-full text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                 </div>
 
-                <!-- Container for Swappable Boxes -->
-                <div id="orderContainer" class="flex flex-col items-center space-y-12 w-full">
-                    <!-- Box 2 - Activities -->
-                    <div id="box2" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
-                        <h3 class="text-gray-800 font-semibold text-lg">Activities</h3>
-                        <div id="boxActivities" class="text-gray-700 text-base mt-2">No activities added</div>
-                    </div>
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg w-3/4 flex flex-col items-center border border-white/20 text-center">
+                    <h2 class="text-gray-800 font-bold text-lg">User Profile</h2>
 
-                    <!-- Box 3 - Cuisines -->
-                    <div id="box3" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
-                        <h3 class="text-gray-100 font-semibold text-lg">Cuisines</h3>
-                        <div id="boxCuisines" class="text-gray-200 text-base mt-2">No cuisines added</div>
-                    </div>
+                    <h3 class="text-gray-700 font-semibold mt-2">👤 Name:</h3>
+                    <p id="userName" class="text-gray-600">--</p>
+
+                    <h3 class="text-gray-700 font-semibold mt-2">📧 Email:</h3>
+                    <p id="userEmail" class="text-gray-600">--</p>
+
+                    <h3 class="text-gray-700 font-semibold mt-2">📍 Location:</h3>
+                    <p id="userLocation" class="text-gray-600">--</p>
+
+                    <h3 class="text-gray-700 font-semibold mt-2">🎉 Interests:</h3>
+                    <p id="userInterests" class="text-gray-600">--</p>
                 </div>
 
             </div>
         </div>
+
 
         <div class="relative w-full p-8 bg-white rounded-3xl mr-15 ml-5 flex flex-col">
             <div class="flex flex-row justify-between items-center w-full mr-5">
