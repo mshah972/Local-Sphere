@@ -206,33 +206,33 @@
 
         <!-- Right  -->
          
-        <div class="w-1/2 p-8 border border-blue-500 rounded-2xl shadow-lg bg-white">
+        <div class="w-1/2 p-8 border border-[#B0B3B8] rounded-2xl shadow-lg bg-[#F8F9FC]">
             <form class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Location Input -->
-                    <div>
-                        <label class="block text-gray-700">Preferred Location</label>
-                        <div class="flex items-center border border-gray-300 rounded-md p-2">
+                    <div class="text-left">
+                        <label class="text-gray-600 font-medium text-xs sm:text-sm">Preferred Location</label>
+                        <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-3 bg-white">
                             <span class="material-icons text-gray-500 mr-2">location_on</span>
-                            <input type="text" id="locationInput" value="Chicago, IL" class="w-full focus:outline-none">
+                            <input type="text" id="locationInput" value="Chicago, IL" class="w-full focus:outline-none text-gray-700 bg-transparent">
                         </div>
                     </div>
 
                 <!-- Date Input -->
-                    <div>
-                        <label class="block text-gray-700">Preferred Date</label>
-                        <div class="flex items-center border border-gray-300 rounded-md p-2">
+                    <div class="text-left">
+                        <label class="text-gray-600 font-medium text-xs sm:text-sm">Preferred Date</label>
+                        <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-3 bg-white">
                             <span class="material-icons text-gray-500 mr-2">calendar_today</span>
-                            <input type="date" id="dateInput" value="2024-01-12" class="w-full focus:outline-none">
+                            <input type="date" id="dateInput" value="2024-01-12" class="w-full focus:outline-none text-gray-700 bg-transparent">
                         </div>
                     </div>
                 </div>
                 
                 <!-- Interests Input -->
                 <div>
-                    <label class="block text-gray-700">Interests (Activities)</label>
-                    <div class="flex items-center gap-2">
-                        <input id="interestInput" type="text" placeholder="Add activity" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none">
+                    <label class="text-gray-600 font-medium text-sm sm:text-sm">Interests (Activities)</label>
+                    <div class="flex items-center border border-[#B0B3B8] rounded-2xl p-2 bg-white">
+                        <input id="interestInput" type="text" placeholder="Add activity" class="w-full">
                         <button type="button" onclick="addInterest()" class="px-4 py-2 bg-custom-blue text-white rounded-md">Add</button>
                     </div>
                     <div id="interestsContainer" class="flex flex-wrap gap-2 mt-2"></div>
@@ -254,10 +254,10 @@
                     <div class="relative">
                         <select id="preferredTime" name="preferredTime" 
                             class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
-                            <option value="morning">Morning</option>
-                            <option value="afternoon">Afternoon</option>
-                            <option value="evening">Evening</option>
-                            <option value="night" selected>Night</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Afternoon">Afternoon</option>
+                            <option value="Evening">Evening</option>
+                            <option value="Night" selected>Night</option>
                         </select>
                     </div>
                 </div>
