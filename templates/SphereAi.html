@@ -151,40 +151,94 @@
     </header>
 
     <!-- NEW PAGE COPY THIS UP  -->
-    <!-- Hero Section -->
+
 
     <section class="flex flex-col lg:flex-row items-center justify-between px-6 py-16 bg-custom-white">
-        <div class="w-1/2 flex justify-center items-center">
-            <img src="../static/flow-diagram.png" alt="Process Diagram" class="max-w-md w-full">
+
+        <!-- Left Side (Visual Representation) -->
+        <div class="w-1/2 flex justify-center items-center relative">
+            <img src="../static/sky.jpg" alt="Process Diagram" class="max-w-lg w-full rounded-2xl">
+
+            <!-- Floating Boxes Container -->
+            <div class="absolute top-10 flex flex-col items-center w-full space-y-12"> 
+
+                            <!-- Box 1 - Occasion, Location, Date, Time, Attendees -->
+            <div class="backdrop-blur-lg bg-white/60 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
+                <h2 id="boxOccasion" class="text-gray-800 font-bold text-lg">Just Becuase</h2>
+
+                <h3 class="text-gray-700 font-semibold mt-2">Location:</h3>
+                <p id="boxLocation" class="text-gray-600">--</p>
+
+                <h3 class="text-gray-700 font-semibold mt-2">Date:</h3>
+                <p id="boxDate" class="text-gray-600">--</p>
+
+                <h3 class="text-gray-700 font-semibold mt-2">Preferred Time:</h3>
+                <p id="boxTime" class="text-gray-600">--</p>
+
+                <h3 class="text-gray-700 font-semibold mt-2">Attendees:</h3>
+                <p id="boxAttendees" class="text-gray-600">--</p>
+            </div>
+
+                <!-- Arrow -->
+                <div class="w-8 h-8">
+                    <svg class="w-full h-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </div>
+
+                <!-- Container for Swappable Boxes -->
+                <div id="orderContainer" class="flex flex-col items-center space-y-12 w-full">
+                    <!-- Box 2 - Activities -->
+                    <div id="box2" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
+                        <h3 class="text-gray-800 font-semibold text-lg">Activities</h3>
+                        <div id="boxActivities" class="text-gray-700 text-base mt-2">No activities added</div>
+                    </div>
+
+                    <!-- Box 3 - Cuisines -->
+                    <div id="box3" class="backdrop-blur-md bg-white/30 p-6 rounded-lg shadow-lg w-1/2 flex flex-col items-center border border-white/20 text-center">
+                        <h3 class="text-gray-100 font-semibold text-lg">Cuisines</h3>
+                        <div id="boxCuisines" class="text-gray-200 text-base mt-2">No cuisines added</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="w-1/2 p-8 border border-blue-500 rounded-lg shadow-lg bg-white">
+
+        <!-- Right  -->
+         
+        <div class="w-1/2 p-8 border border-blue-500 rounded-2xl shadow-lg bg-white">
             <form class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Location Input -->
                     <div>
                         <label class="block text-gray-700">Preferred Location</label>
                         <div class="flex items-center border border-gray-300 rounded-md p-2">
                             <span class="material-icons text-gray-500 mr-2">location_on</span>
-                            <input type="text" value="Chicago, IL" class="w-full focus:outline-none">
+                            <input type="text" id="locationInput" value="Chicago, IL" class="w-full focus:outline-none">
                         </div>
                     </div>
+
+                <!-- Date Input -->
                     <div>
                         <label class="block text-gray-700">Preferred Date</label>
                         <div class="flex items-center border border-gray-300 rounded-md p-2">
                             <span class="material-icons text-gray-500 mr-2">calendar_today</span>
-                            <input type="date" value="2024-01-12" class="w-full focus:outline-none">
+                            <input type="date" id="dateInput" value="2024-01-12" class="w-full focus:outline-none">
                         </div>
                     </div>
                 </div>
                 
+                <!-- Interests Input -->
                 <div>
-                    <label class="block text-gray-700">Interests</label>
+                    <label class="block text-gray-700">Interests (Activities)</label>
                     <div class="flex items-center gap-2">
-                        <input id="interestInput" type="text" placeholder="Add interest" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none">
+                        <input id="interestInput" type="text" placeholder="Add activity" class="w-full border border-gray-300 rounded-md p-2 focus:outline-none">
                         <button type="button" onclick="addInterest()" class="px-4 py-2 bg-custom-blue text-white rounded-md">Add</button>
                     </div>
                     <div id="interestsContainer" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
-                
+    
+                <!-- Food Inputs  -->
                 <div>
                     <label class="block text-gray-700">Favorite Cuisines & Foods </label>
                     <div class="flex items-center gap-2">
@@ -194,10 +248,12 @@
                     <div id="foodContainer" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
                 
+                <!-- Preferred Time Inputs -->
                 <div>
-                    <label class="block text-gray-700">Preferred Time</label>
+                    <label class="block text-gray-700" for="preferredTime">Preferred Time</label>
                     <div class="relative">
-                        <select class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
+                        <select id="preferredTime" name="preferredTime" 
+                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
                             <option value="morning">Morning</option>
                             <option value="afternoon">Afternoon</option>
                             <option value="evening">Evening</option>
@@ -205,30 +261,36 @@
                         </select>
                     </div>
                 </div>
-                
+
+                <!-- Attendee Inputs -->
                 <div>
-                    <label class="block text-gray-700">Total Attendee's</label>
+                    <label class="block text-gray-700" for="attendees">Total Attendees</label>
                     <div class="relative">
-                        <select class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
-                            <option value="one">1</option>
+                        <select id="attendees" name="attendees" 
+                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
+                            <option value="1">1</option>
                             <option value="2-3">2-3</option>
                             <option value="3-6">3-6</option>
                             <option value="6-10">6-10</option>
-                            <option value="tenOrMore">10+</option>
+                            <option value="10+">10+</option>
                         </select>
-                        </div>
+                    </div>
                 </div>
-                
+
+                <!-- Order Selection -->
                 <div>
                     <label class="block text-gray-700">Preferred Order (Optional)</label>
                     <div class="relative">
-                        <select class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
-                            <option value="Empty"> </option>
+                        <select id="preferredOrder" name="preferredOrder"
+                            class="w-full border border-gray-300 rounded-md p-3 appearance-none bg-white focus:ring-2 focus:ring-custom-blue focus:outline-none">
+                            <option value="Empty">Select Order</option>
                             <option value="FoodEvent">Food before Event</option>
                             <option value="EventFood">Event before Food</option>
                         </select>
-                        </div>
+                    </div>
                 </div>
+
+                <!-- Ocasion -->
                 
                 <div>
                     <label class="block text-gray-700">Occasions (Optional)</label>
@@ -251,46 +313,202 @@
     </section>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get form input fields
+            const locationInput = document.getElementById("locationInput");
+            const dateInput = document.getElementById("dateInput");
+            const timeInput = document.getElementById("preferredTime");
+            const attendeesInput = document.getElementById("attendees");
+            const occasionSelect = document.getElementById("occasionSelect");
+
+            // Get Box 1 elements
+            const boxOccasion = document.getElementById("boxOccasion");
+            const boxLocation = document.getElementById("boxLocation");
+            const boxDate = document.getElementById("boxDate");
+            const boxTime = document.getElementById("boxTime");
+            const boxAttendees = document.getElementById("boxAttendees");
+
+            // Function to update Box 1 dynamically
+            function updateBox1() {
+                boxOccasion.textContent = occasionSelect.value || "Occasion";
+                boxLocation.textContent = locationInput.value || "--";
+                boxDate.textContent = dateInput.value || "--";
+                boxTime.textContent = timeInput.value || "--";
+                boxAttendees.textContent = attendeesInput.value || "--";
+            }
+
+            // Event listeners to update Box 1 when fields change
+            locationInput.addEventListener("input", updateBox1);
+            dateInput.addEventListener("input", updateBox1);
+            timeInput.addEventListener("change", updateBox1);
+            attendeesInput.addEventListener("change", updateBox1);
+            occasionSelect.addEventListener("change", updateBox1);
+
+            // Initialize Box 1 with default values
+            updateBox1();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const timeInput = document.getElementById("preferredTime");
+            const boxTime = document.getElementById("boxTime");
+
+            function updatePreferredTime() {
+                    boxTime.textContent = timeInput.value || "--";
+                }
+
+                timeInput.addEventListener("change", updatePreferredTime);
+
+                // Initialize Preferred Time in Box 1 with the default value
+                updatePreferredTime();
+            });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const attendeesInput = document.getElementById("attendees");
+            const boxAttendees = document.getElementById("boxAttendees");
+
+            function updateAttendees() {
+                boxAttendees.textContent = attendeesInput.value || "--";
+            }
+
+            attendeesInput.addEventListener("change", updateAttendees);
+
+            // Initialize attendees in Box 1 with default value
+            updateAttendees();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const orderSelect = document.getElementById("preferredOrder");
+            const orderContainer = document.getElementById("orderContainer");
+            const box2 = document.getElementById("box2"); // Activities
+            const box3 = document.getElementById("box3"); // Cuisines
+
+            function updateOrder() {
+                if (orderSelect.value === "FoodEvent") {
+                    // Move Box 3 (Food) before Box 2 (Activities)
+                    orderContainer.insertBefore(box3, box2);
+                } else {
+                    // Keep default order (Activities before Food)
+                    orderContainer.insertBefore(box2, box3);
+                }
+            }
+
+            // Listen for changes in the dropdown
+            orderSelect.addEventListener("change", updateOrder);
+
+            // Initialize order on page load
+            updateOrder();
+        });
+
         function addInterest() {
-            const input = document.getElementById('interestInput');
-            const container = document.getElementById('interestsContainer');
-            if (input.value.trim() !== "") {
-                const span = document.createElement('span');
+            if (interestInput.value.trim() !== "") {
+                const span = document.createElement("span");
                 span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
-                span.textContent = input.value + " ✖";
-                span.onclick = function() { container.removeChild(span); };
-                container.appendChild(span);
-                input.value = "";
+                span.textContent = interestInput.value + " ✖";
+                
+                // Remove on click
+                span.onclick = function () { 
+                    interestsContainer.removeChild(span); 
+                    updateBox2(); 
+                };
+
+                interestsContainer.appendChild(span);
+                updateBox2();
+                interestInput.value = "";
             }
         }
+
+        function updateBox2() {
+            const interests = interestsContainer.querySelectorAll("span");
+            if (interests.length === 0) {
+                boxActivities.textContent = "No activities added";
+            } else {
+                boxActivities.innerHTML = ""; // Clear previous text
+                interests.forEach((interest, index) => {
+                    if (index > 0) boxActivities.innerHTML += ", "; // Add comma separator
+                    boxActivities.innerHTML += interest.textContent.replace(" ✖", ""); // Remove X symbol
+                });
+            }
+        }
+
+        function addCuisine() {
+            if (cuisineInput.value.trim()) {
+                const span = document.createElement("span");
+                span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
+                span.textContent = cuisineInput.value + " ✖";
+                span.onclick = () => { cuisinesContainer.removeChild(span); updateBox3(); };
+                cuisinesContainer.appendChild(span);
+                cuisineInput.value = "";
+                updateBox3();
+            }
+        }
+
+        function updateBox3() {
+            const container = document.getElementById('foodContainer');
+            const boxCuisines = document.getElementById("boxCuisines");
+
+            const cuisines = [...container.children].map(el => el.textContent.replace(" ✖", ""));
+            boxCuisines.textContent = cuisines.length ? cuisines.join(", ") : "No cuisines added";
+        }
+
 
         function addfood() {
             const input = document.getElementById('foodInput');
             const container = document.getElementById('foodContainer');
+            const boxCuisines = document.getElementById("boxCuisines"); // Box 3 content
+
             if (input.value.trim() !== "") {
                 const span = document.createElement('span');
                 span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
                 span.textContent = input.value + " ✖";
-                span.onclick = function() { container.removeChild(span); };
+
+                // Remove item on click and update Box 3
+                span.onclick = function() { 
+                    container.removeChild(span); 
+                    updateBox3(); 
+                };
+
                 container.appendChild(span);
                 input.value = "";
+
+                updateBox3(); // Update Box 3 when a new item is added
             }
         }
 
         function addOccasion() {
-            const select = document.getElementById('occasionSelect');
-            const container = document.getElementById('occasionsContainer');
+            const select = document.getElementById("occasionSelect");
+            const container = document.getElementById("occasionsContainer");
             const selectedValue = select.value;
-            
-            if (selectedValue) {
-                const span = document.createElement('span');
+
+            if (selectedValue && ![...container.children].some(span => span.getAttribute("data-value") === selectedValue)) {
+                const span = document.createElement("span");
                 span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition";
+                span.setAttribute("data-value", selectedValue);
                 span.textContent = selectedValue + " ✖";
-                span.onclick = function() { container.removeChild(span); };
+
+                span.onclick = function () {
+                    container.removeChild(span);
+                    updateBox1(); // Update Box 1 when occasion is removed
+                };
+
                 container.appendChild(span);
+                updateBox1(); // Update Box 1 when occasion is added
+
                 select.value = "";
             }
         }
+
+        // Function to update Box 1 with selected occasions
+        function updateOccasion() {
+            const container = document.getElementById('occasionsContainer');
+            const boxOccasion = document.getElementById("boxOccasion");
+
+            // Collect all selected occasions
+            const occasions = [...container.children].map(el => el.getAttribute("data-value"));
+            boxOccasion.textContent = occasions.length ? occasions.join(", ") : "Occasion";
+        }
+
+
+        ////////////////////////////////////// Header Script /////////////////////////////////////
 
         document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
