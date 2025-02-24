@@ -153,7 +153,7 @@
     <!-- NEW PAGE COPY THIS UP  -->
 
      <!-- Hero Section -->
-     <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[85vh] lg:rounded-4xl rounded-2xl">
+     <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[80vh] lg:rounded-4xl rounded-4xl">
         <!-- Background Image -->
         <img src="https://images.unsplash.com/photo-1554216564-3b2db87a49d1?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chicago Theatre"
              class="absolute inset-0 w-full h-full object-cover"/>
@@ -169,13 +169,13 @@
                  <form class="mt-6 space-y-4 w-full">
                      <div class="text-left">
                          <label class="text-[#A1A1A1] font-light text-sm">Email Address or Username</label>
-                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
+                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                      </div>
 
                      <div class="text-left relative">
                          <label class="text-[#A1A1A1] font-light text-sm">Password</label>
                          <div class="relative">
-                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
+                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                          </div>
                      </div>
 
@@ -208,7 +208,7 @@
              </div>
          </div>
 
-         <div class="relative flex flex-col h-[80vh] justify-center lg:hidden 2xl:hidden px-4 mt-2 mb-8">
+         <div class="relative flex flex-col h-[80vh] justify-center lg:hidden 2xl:hidden p-6">
              <div class="relative z-10 bg-white rounded-4xl shadow-lg p-8 w-full max-w-md mx-auto justify-center text-center flex flex-col">
                  <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
                  <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Welcome Back, Explorer</h1>
@@ -218,13 +218,13 @@
                  <form class="mt-6 space-y-4 w-full">
                      <div class="text-left">
                          <label class="text-[#A1A1A1] font-light text-sm">Email Address or Username</label>
-                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
+                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                      </div>
 
                      <div class="text-left relative">
                          <label class="text-[#A1A1A1] font-light text-sm">Password</label>
                          <div class="relative">
-                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
+                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                          </div>
                      </div>
 
@@ -233,7 +233,7 @@
                      </button>
 
                      <div class="flex items-center justify-center gap-4 mt-4">
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
+                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="2443" height="2500" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google">
                                  <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
                                  <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
@@ -242,7 +242,7 @@
                              </svg>
                          </button>
                          <span class="text-gray-500">or</span>
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
+                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
                              <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="apple">
                                  <path d="M14.94,5.19A4.38,4.38,0,0,0,16,2,4.44,4.44,0,0,0,13,3.52,4.17,4.17,0,0,0,12,6.61,3.69,3.69,0,0,0,14.94,5.19Zm2.52,7.44a4.51,4.51,0,0,1,2.16-3.81,4.66,4.66,0,0,0-3.66-2c-1.56-.16-3,.91-3.83.91s-2-.89-3.3-.87A4.92,4.92,0,0,0,4.69,9.39C2.93,12.45,4.24,17,6,19.47,6.8,20.68,7.8,22.05,9.12,22s1.75-.82,3.28-.82,2,.82,3.3.79,2.22-1.24,3.06-2.45a11,11,0,0,0,1.38-2.85A4.41,4.41,0,0,1,17.46,12.63Z" fill="#ffffff" class="color000000 svgShape"></path>
                              </svg>
