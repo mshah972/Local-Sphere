@@ -1,447 +1,698 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Local Sphere - Your Local Guide</title>
-    <link href="{% static 'css/output.css' %}" rel="stylesheet">
-    <link href="../static/css/output.css" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <link href="{% static 'css/output.css' %}" rel="stylesheet" />
+    <link href="../static/css/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg" />
     <style>
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            background: transparent;
-            bottom: 0;
-            color: transparent;
-            cursor: pointer;
-            height: auto;
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: auto;
-        }
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+      }
     </style>
-</head>
-<body class="bg-custom-white">
-<main role="main" class="flex flex-col mb-10 min-h-screen">
-    <header class="relative z-50">
-        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
-             aria-label="header">
-            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
-                <span class="sr-only">Local Sphere</span>
-                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
-            </a>
-            <div id="openMobileMenu" class="flex lg:hidden">
-                <button type="button"
-                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                         aria-hidden="true" data-slot="icon">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="hidden lg:flex lg:gap-8 lg:items-center">
-                <a href="#"
-                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
-                <a href="SphereAi"
-                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
-                <div class="relative">
-                    <button id="companyButton" type="button"
-                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
-                            aria-label="false">
-                        Company
-                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
-                             fill="currentColor" aria-hidden="true" data-slot="icon">
-                            <path id="arrowPath" fill-rule="evenodd"
-                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                  clip-rule="evenodd"/>
-                        </svg>
-                    </button>
-                    <div id="companyDropdownMenu"
-                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
-                        <div class="p-4">
-                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
-                                <div class="flex-auto">
-                                    <a href="#"
-                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
-                                        About Us
-                                        <span class="absolute inset-0"></span>
-                                    </a>
-                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
-                                        Meet the Team Behind Local Sphere.</p>
-                                </div>
-                            </div>
-                        </div>
+  </head>
+  <body class="bg-custom-white">
+    <main role="main" class="flex flex-col mb-10 min-h-screen">
+      <header class="relative z-50">
+        <nav
+          class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+          aria-label="header"
+        >
+          <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
+            <span class="sr-only">Local Sphere</span>
+            <img class="h-15 w-auto" src="../static/logo1.svg" alt="" />
+          </a>
+          <div id="openMobileMenu" class="flex lg:hidden">
+            <button
+              type="button"
+              class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="size-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+                data-slot="icon"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden lg:flex lg:gap-8 lg:items-center">
+            <a
+              href="#"
+              class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer"
+              >Explore</a
+            >
+            <a
+              href="SphereAi"
+              class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer"
+              >SphereAi</a
+            >
+            <div class="relative">
+              <button
+                id="companyButton"
+                type="button"
+                class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                aria-label="false"
+              >
+                Company
+                <svg
+                  id="dropdownIcon"
+                  class="size-5 flex-none color-custom-blue"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  data-slot="icon"
+                >
+                  <path
+                    id="arrowPath"
+                    fill-rule="evenodd"
+                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <div
+                id="companyDropdownMenu"
+                class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out"
+              >
+                <div class="p-4">
+                  <div
+                    class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white"
+                  >
+                    <div class="flex-auto">
+                      <a
+                        href="#"
+                        class="font-poppins text-base block text-center font-semibold text-white hover:text-black"
+                      >
+                        About Us
+                        <span class="absolute inset-0"></span>
+                      </a>
+                      <p
+                        class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased"
+                      >
+                        Meet the Team Behind Local Sphere.
+                      </p>
                     </div>
+                  </div>
                 </div>
-                <a href="{% url 'planConfirmation' %}"
-                   class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Plan Confirmation
-                    (Testing)</a>
-                <a href="{% url 'login' %}"
-                   class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Log in</a>
-                <div>
-                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                        <span aria-hidden="true">&rarr;</span>
-                    </button>
-                </div>
+              </div>
             </div>
+            <a
+              href="{% url 'planConfirmation' %}"
+              class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold"
+              >Plan Confirmation (Testing)</a
+            >
+            <a
+              href="{% url 'login' %}"
+              class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold"
+              >Log in</a
+            >
+            <div>
+              <button
+                class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"
+              >
+                <span class="font-poppins text-base text-sm/6 font-medium pr-2"
+                  >Start Exploring</span
+                >
+                <span class="font-mulish text-base text-sm/6 font-medium pr-2"
+                  >It's Free</span
+                >
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+          </div>
         </nav>
         <!-- Mobile menu, show/hide based on menu open state. -->
-        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
-            <div class="fixed inset-0 z-10"></div>
-            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
-                <div class="flex items-center justify-between">
-                    <a href="#" class="-m-1.5 p-1.5">
-                        <span class="sr-only">Local Sphere</span>
-                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
-                    </a>
-                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                        <span class="sr-only">Close menu</span>
-                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                             aria-hidden="true" data-slot="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-                        </svg>
+        <div
+          id="mobileMenu"
+          class="lg:hidden hidden"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div class="fixed inset-0 z-10"></div>
+          <div
+            class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out"
+          >
+            <div class="flex items-center justify-between">
+              <a href="#" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="" />
+              </a>
+              <button
+                id="closeMobileMenu"
+                type="button"
+                class="-m-2.5 rounded-md p-2.5 text-gray-700"
+              >
+                <span class="sr-only">Close menu</span>
+                <svg
+                  class="size-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  data-slot="icon"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="mt-6 flow-root">
+              <div class="-my-6 divide-y divide-gray-500/10">
+                <div class="space-y-2 py-6">
+                  <a
+                    href="#"
+                    class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                    >Explore</a
+                  >
+                  <a
+                    href="{% url 'SphereAi' %}"
+                    class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                    >SphereAi</a
+                  >
+                  <a
+                    href="{% url 'login' %}"
+                    class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                    >Log in</a
+                  >
+                  <div class="-mx-3">
+                    <button
+                      id="mobileCompanyButton"
+                      type="button"
+                      class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                      aria-controls="disclosure-1"
+                      aria-expanded="false"
+                    >
+                      Company
+                      <svg
+                        id="mobileDropdownIcon"
+                        class="size-5 flex-none"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        data-slot="icon"
+                      >
+                        <path
+                          id="mobileArrowPath"
+                          fill-rule="evenodd"
+                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
                     </button>
-                </div>
-                <div class="mt-6 flow-root">
-                    <div class="-my-6 divide-y divide-gray-500/10">
-                        <div class="space-y-2 py-6">
-                            <a href="#"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
-                            <a href="{% url 'SphereAi' %}"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
-                            <a href="{% url 'login' %}"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
-                                in</a>
-                            <div class="-mx-3">
-                                <button id="mobileCompanyButton" type="button"
-                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                                        aria-controls="disclosure-1" aria-expanded="false">
-                                    Company
-                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
-                                         fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path id="mobileArrowPath" fill-rule="evenodd"
-                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                                <div id="mobileCompanyDropdown"
-                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                    <a href="#"
-                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
-                                        Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="py-6">
-                            <div>
-                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                                    <span aria-hidden="true">&rarr;</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div
+                      id="mobileCompanyDropdown"
+                      class="hidden mt-2 space-y-2 transition duration-300 ease-in-out"
+                    >
+                      <a
+                        href="#"
+                        class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50"
+                        >About Us</a
+                      >
                     </div>
+                  </div>
                 </div>
+                <div class="py-6">
+                  <div>
+                    <button
+                      class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"
+                    >
+                      <span
+                        class="font-poppins text-base text-sm/6 font-medium pr-2"
+                        >Start Exploring</span
+                      >
+                      <span
+                        class="font-mulish text-base text-sm/6 font-medium pr-2"
+                        >It's Free</span
+                      >
+                      <span aria-hidden="true">&rarr;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </header>
+      </header>
 
-    <!-- NEW PAGE COPY THIS UP  -->
+      <!-- NEW PAGE COPY THIS UP  -->
 
-    <div class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0">
-        <div class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl">
-            <!-- Background Image -->
-            <img src="../static/sphereAiBack.png" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl">
+      <div
+        class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
+      >
+        <div
+          class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
+        >
+          <!-- Background Image -->
+          <img
+            src="../static/sphereAiBack.png"
+            alt="Process Diagram"
+            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+          />
 
-            <div class="relative flex flex-col items-center w-full space-y-12">
+          <div class="relative flex flex-col items-center w-full space-y-12">
+            <!-- 📌 Card 1: User's Event Selection -->
+            <div
+              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+            >
+              <h3
+                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg" />
+                </span>
+                <span id="box-location" class="text-md">Chicago, IL</span>
+              </h3>
 
-                <!-- 📌 Card 1: User's Event Selection -->
-                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg" />
+                </span>
+                <span id="box-date" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
 
-                    <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <span id="box-location" class="text-md">Chicago, IL</span>
-                    </h3>
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                </span>
+                <span id="box-time" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
 
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/calendar.svg">
-                        </span>
-                        <span id="box-date" class="text-md">Waiting For User Selection...</span>
-                    </h3>
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png" />
+                </span>
+                <span id="box-guests" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
 
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/dayORnight.png">
-                        </span>
-                        <span id="box-time" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/people.png">
-                        </span>
-                        <span id="box-guests" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/foodIcon.svg">
-                        </span>
-                        <span id="box-food" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                </div>
-
-                <!-- 🔽 Arrow -->
-                <div class="w-6 h-6">
-                    <svg class="w-full h-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                </div>
-
-                <!-- 📌 Card 2: User’s Personal Data from Signup -->
-                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
-                    <h2 class="text-gray-800 font-semibold text-lg">Fetched User Data</h2>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
-                        <span class="mr-2">
-                            <img class="h-6 w-auto" src="../static/foodIcon.svg">
-                        </span>
-                        <span id="user-fav-foods" class="text-md">Mexican</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <span id="user-preferred-location" class="text-md">Chicago, IL</span>
-                    </h3>
-
-                </div>
-
-            </div>
-        </div>
-
-        <div class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col">
-            <div class="flex flex-row justify-between items-center w-full mr-5">
-                <div class="flex flex-col items-start justify-between w-full">
-                    <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
-                    </div>
-                </div>
-                <div class="flex flex-col items-start justify-between w-full ml-4">
-                    <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Date</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/calendar.svg">
-                        </span>
-                        <input id="preferred-date" type="date" class="w-full focus:outline-none">
-                    </div>
-                </div>
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
+                </span>
+                <span id="box-food" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
             </div>
 
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Time</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                        <img class="h-5 w-auto" src="../static/dayORnight.png">
-                    </span>
-                    <select id="preferred-time"
-                            class="text-[16px] font-normal rounded-md" required>
-                        <option disabled selected hidden>Choose Time</option>
-                        <option>Morning</option>
-                        <option>Afternoon</option>
-                        <option>Evening</option>
-                        <option>Night</option>
-                    </select>
-                </div>
+            <!-- 🔽 Arrow -->
+            <div class="w-6 h-6">
+              <svg
+                class="w-full h-full text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                ></path>
+              </svg>
             </div>
 
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Total Attendee(s)</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                        <img class="h-5 w-auto" src="../static/people.png" alt="Peoples Icon">
-                    </span>
-                    <select id="guests"
-                            class="text-[16px] font-normal rounded-md">
-                        <option disabled selected hidden>Choose Guests</option>
-                        <option>1 Guest</option>
-                        <option>2 Guests</option>
-                        <option>3 Guests</option>
-                        <option>4 Guests</option>
-                        <option>5 Guests</option>
-                        <option>6 Guests</option>
-                        <option>7 Guests</option>
-                        <option>8 Guests</option>
-                        <option>9 Guests</option>
-                        <option>10+ Guests</option>
-                    </select>
-                </div>
-            </div>
+            <!-- 📌 Card 2: User’s Personal Data from Signup -->
+            <div
+              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+            >
+              <h2 class="text-gray-800 font-semibold text-lg">
+                Fetched User Data
+              </h2>
 
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label class="font-mulish text-gray-400 text-[12px] font-normal">Favorite Food & Cuisines</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal">
-                    <span class="mr-2">
-                       <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
-                    </span>
-                    <select id="food"
-                            class="text-[16px] font-normal rounded-md">
-                        <option disabled selected hidden>Choose Food</option>
-                        <option>Italian</option>
-                        <option>Mexican</option>
-                        <option>American</option>
-                        <option>Chinese</option>
-                    </select>
-                </div>
-            </div>
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+              >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                </span>
+                <span id="user-fav-foods" class="text-md">Mexican</span>
+              </h3>
 
-            <!-- Buttons -->
-            <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
-                <button id="recreate-btn"
-                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    Craft Your Plan
-                </button>
+              <h3
+                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg" />
+                </span>
+                <span id="user-preferred-location" class="text-md"
+                  >Chicago, IL</span
+                >
+              </h3>
             </div>
+          </div>
         </div>
 
-        <div class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10">
-            <!-- Background Image -->
-            <img src="../static/sphereAiBack.png" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl">
-
-            <div class="relative flex flex-col items-center w-full space-y-12">
-
-                <!-- 📌 Card 1: User's Event Selection -->
-                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
-
-                    <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <span class="text-md">Chicago, IL</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/calendar.svg">
-                        </span>
-                        <span id="box-date-mobile" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/dayORnight.png">
-                        </span>
-                        <span id="box-time-mobile" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/people.png">
-                        </span>
-                        <span id="box-guests-mobile" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/foodIcon.svg">
-                        </span>
-                        <span id="box-food-mobile" class="text-md">Waiting For User Selection...</span>
-                    </h3>
-
-                </div>
-
-                <!-- 🔽 Arrow -->
-                <div class="w-6 h-6">
-                    <svg class="w-full h-full text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                </div>
-
-                <!-- 📌 Card 2: User’s Personal Data from Signup -->
-                <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
-                    <h2 class="text-gray-800 font-semibold text-lg">Fetched User Data</h2>
-
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
-                        <span class="mr-2">
-                            <img class="h-6 w-auto" src="../static/foodIcon.svg">
-                        </span>
-                        <span id="user-food-mobile" class="text-md">Mexican</span>
-                    </h3>
-
-                    <h3 class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full ">
-                        <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
-                        </span>
-                        <span id="user-preferred-location-mobile" class="text-md">Chicago, IL</span>
-                    </h3>
-                </div>
+        <div
+          class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col"
+        >
+          <div class="flex flex-row justify-between items-center w-full mr-5">
+            <div class="flex flex-col items-start justify-between w-full">
+              <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Preferred Location</label
+              >
+              <div
+                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg" />
+                </span>
+                <input
+                  id="location"
+                  type="text"
+                  value="Chicago, IL"
+                  class="w-full focus:outline-none"
+                  readonly
+                />
+              </div>
             </div>
+            <div class="flex flex-col items-start justify-between w-full ml-4">
+              <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Preferred Date</label
+              >
+              <div
+                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg" />
+                </span>
+                <input
+                  id="preferred-date"
+                  type="date"
+                  class="w-full focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-start justify-between w-full mt-6">
+            <label class="font-mulish text-gray-400 text-[12px] font-normal"
+              >Preferred Time</label
+            >
+            <div
+              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+            >
+              <span class="mr-2">
+                <img class="h-5 w-auto" src="../static/dayORnight.png" />
+              </span>
+              <select
+                id="preferred-time"
+                class="text-[16px] font-normal rounded-md"
+                required
+              >
+                <option disabled selected hidden>Choose Time</option>
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Evening</option>
+                <option>Night</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-start justify-between w-full mt-6">
+            <label class="font-mulish text-gray-400 text-[12px] font-normal"
+              >Total Attendee(s)</label
+            >
+            <div
+              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+            >
+              <span class="mr-2">
+                <img
+                  class="h-5 w-auto"
+                  src="../static/people.png"
+                  alt="Peoples Icon"
+                />
+              </span>
+              <select id="guests" class="text-[16px] font-normal rounded-md">
+                <option disabled selected hidden>Choose Guests</option>
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+                <option>3 Guests</option>
+                <option>4 Guests</option>
+                <option>5 Guests</option>
+                <option>6 Guests</option>
+                <option>7 Guests</option>
+                <option>8 Guests</option>
+                <option>9 Guests</option>
+                <option>10+ Guests</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-start justify-between w-full mt-6">
+            <label class="font-mulish text-gray-400 text-[12px] font-normal"
+              >Favorite Food & Cuisines</label
+            >
+            <div
+              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+            >
+              <span class="mr-2">
+                <img
+                  class="h-5 w-auto"
+                  src="../static/foodIcon.svg"
+                  alt="Peoples Icon"
+                />
+              </span>
+              <select id="food" class="text-[16px] font-normal rounded-md">
+                <option disabled selected hidden>Choose Food</option>
+                <option>Italian</option>
+                <option>Mexican</option>
+                <option>American</option>
+                <option>Chinese</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
+            <button
+              id="recreate-btn"
+              class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+            >
+              Craft Your Plan
+            </button>
+          </div>
+          <!--HERE-->
+          <div id="response-container" class="mt-4"></div>
+          <!--HERE-->
         </div>
-    </div>
-</main>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+
+        <div
+          class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
+        >
+          <!-- Background Image -->
+          <img
+            src="../static/sphereAiBack.png"
+            alt="Process Diagram"
+            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+          />
+
+          <div class="relative flex flex-col items-center w-full space-y-12">
+            <!-- 📌 Card 1: User's Event Selection -->
+            <div
+              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+            >
+              <h3
+                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg" />
+                </span>
+                <span class="text-md">Chicago, IL</span>
+              </h3>
+
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg" />
+                </span>
+                <span id="box-date-mobile" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
+
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                </span>
+                <span id="box-time-mobile" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
+
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png" />
+                </span>
+                <span id="box-guests-mobile" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
+
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
+                </span>
+                <span id="box-food-mobile" class="text-md"
+                  >Waiting For User Selection...</span
+                >
+              </h3>
+            </div>
+
+            <!-- 🔽 Arrow -->
+            <div class="w-6 h-6">
+              <svg
+                class="w-full h-full text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                ></path>
+              </svg>
+            </div>
+
+            <!-- 📌 Card 2: User’s Personal Data from Signup -->
+            <div
+              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+            >
+              <h2 class="text-gray-800 font-semibold text-lg">
+                Fetched User Data
+              </h2>
+
+              <h3
+                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+              >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                </span>
+                <span id="user-food-mobile" class="text-md">Mexican</span>
+              </h3>
+
+              <h3
+                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+              >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg" />
+                </span>
+                <span id="user-preferred-location-mobile" class="text-md"
+                  >Chicago, IL</span
+                >
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
         // Simulated fetched user profile data from the database (Replace with API call)
         const userProfile = {
-            location: "Chicago, IL",
-            food: "Italian",
+          location: "Chicago, IL",
+          food: "Italian",
         };
 
         // Get all form inputs
         const formInputs = {
-            location: document.getElementById("location"),
-            date: document.getElementById("preferred-date"),
-            time: document.getElementById("preferred-time"),
-            attendees: document.getElementById("guests"),
-            food: document.getElementById("food"),
+          location: document.getElementById("location"),
+          date: document.getElementById("preferred-date"),
+          time: document.getElementById("preferred-time"),
+          attendees: document.getElementById("guests"),
+          food: document.getElementById("food"),
         };
 
         // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
-            boxLocation: document.getElementById("box-location"),
-            boxDate: document.getElementById("box-date"),
-            boxTime: document.getElementById("box-time"),
-            boxAttendees: document.getElementById("box-guests"),
-            boxFood: document.getElementById("box-food"),
+          boxLocation: document.getElementById("box-location"),
+          boxDate: document.getElementById("box-date"),
+          boxTime: document.getElementById("box-time"),
+          boxAttendees: document.getElementById("box-guests"),
+          boxFood: document.getElementById("box-food"),
 
-            // Mobile version elements
-            boxLocationMobile: document.getElementById("box-location-mobile"),
-            boxDateMobile: document.getElementById("box-date-mobile"),
-            boxTimeMobile: document.getElementById("box-time-mobile"),
-            boxAttendeesMobile: document.getElementById("box-guests-mobile"),
-            boxFoodMobile: document.getElementById("box-food-mobile"),
+          // Mobile version elements
+          boxLocationMobile: document.getElementById("box-location-mobile"),
+          boxDateMobile: document.getElementById("box-date-mobile"),
+          boxTimeMobile: document.getElementById("box-time-mobile"),
+          boxAttendeesMobile: document.getElementById("box-guests-mobile"),
+          boxFoodMobile: document.getElementById("box-food-mobile"),
         };
 
         // Function to update values dynamically for both desktop & mobile versions
         function updateDisplay(field, value) {
-            if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`]) {
-                displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`].textContent = value || "--";
-            }
-            if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`]) {
-                displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`].textContent = value || "--";
-            }
+          if (
+            displayElements[
+              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+            ]
+          ) {
+            displayElements[
+              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+            ].textContent = value || "--";
+          }
+          if (
+            displayElements[
+              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+            ]
+          ) {
+            displayElements[
+              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+            ].textContent = value || "--";
+          }
         }
 
-        Object.keys(formInputs).forEach(key => {
-            formInputs[key].addEventListener("input", function () {
-                updateDisplay(key, this.value);
-            });
+        Object.keys(formInputs).forEach((key) => {
+          formInputs[key].addEventListener("input", function () {
+            updateDisplay(key, this.value);
+          });
         });
 
         // Ensure Datepicker Only Allows Today & Future Dates
@@ -450,156 +701,233 @@
         dateInput.setAttribute("min", today);
 
         dateInput.addEventListener("change", function () {
-            this.blur();
+          this.blur();
         });
 
         document.addEventListener("click", function (event) {
-            if (!dateInput.contains(event.target)) {
-                dateInput.blur();
-            }
+          if (!dateInput.contains(event.target)) {
+            dateInput.blur();
+          }
         });
 
         function updateUserProfile() {
-            document.getElementById("user-fav-foods").textContent = userProfile.food;
-            document.getElementById("user-food-mobile").textContent = userProfile.food;
-            document.getElementById("user-preferred-location").textContent = userProfile.location;
-            document.getElementById("user-preferred-location-mobile").textContent = userProfile.location;
+          document.getElementById("user-fav-foods").textContent =
+            userProfile.food;
+          document.getElementById("user-food-mobile").textContent =
+            userProfile.food;
+          document.getElementById("user-preferred-location").textContent =
+            userProfile.location;
+          document.getElementById(
+            "user-preferred-location-mobile"
+          ).textContent = userProfile.location;
 
-            formInputs.food.value = userProfile.food;
-            updateDisplay("food", userProfile.food);
+          formInputs.food.value = userProfile.food;
+          updateDisplay("food", userProfile.food);
         }
 
         updateUserProfile();
 
         formInputs.food.addEventListener("change", function () {
-            const selectedFood = this.value.trim();
-            const foodDisplay = document.getElementById("user-fav-foods");
-            const foodDisplayMobile = document.getElementById("user-food-mobile");
+          const selectedFood = this.value.trim();
+          const foodDisplay = document.getElementById("user-fav-foods");
+          const foodDisplayMobile = document.getElementById("user-food-mobile");
 
-            if (selectedFood && selectedFood !== userProfile.food) {
-                foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
-                foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+          if (selectedFood && selectedFood !== userProfile.food) {
+            foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+            foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
 
-                document.getElementById("reset-food").addEventListener("click", resetFood);
-                document.getElementById("reset-food-mobile").addEventListener("click", resetFood);
-            } else {
-                foodDisplay.innerHTML = `${userProfile.food}`;
-                foodDisplayMobile.innerHTML = `${userProfile.food}`;
-            }
+            document
+              .getElementById("reset-food")
+              .addEventListener("click", resetFood);
+            document
+              .getElementById("reset-food-mobile")
+              .addEventListener("click", resetFood);
+          } else {
+            foodDisplay.innerHTML = `${userProfile.food}`;
+            foodDisplayMobile.innerHTML = `${userProfile.food}`;
+          }
         });
 
         // Function to reset food to user's fetched data
         function resetFood() {
-            formInputs.food.value = userProfile.food;
-            updateDisplay("food", userProfile.food);
-            document.getElementById("user-fav-foods").innerHTML = `${userProfile.food}`;
-            document.getElementById("user-food-mobile").innerHTML = `${userProfile.food}`;
+          formInputs.food.value = userProfile.food;
+          updateDisplay("food", userProfile.food);
+          document.getElementById(
+            "user-fav-foods"
+          ).innerHTML = `${userProfile.food}`;
+          document.getElementById(
+            "user-food-mobile"
+          ).innerHTML = `${userProfile.food}`;
         }
-    });
 
+        // FRONTEND API
+        // Get all form inputs
+        // const formInputs contains all user inputs
 
+        // Event listener on the 'Craft Your Plan' button
+        document
+          .getElementById("recreate-btn")
+          .addEventListener("click", async function () {
+            const apiKey = "API KEY GOES HERE";
+            const apiUrl = "https://api.openai.com/v1/chat/completions";
 
+            const responseContainer =
+              document.getElementById("response-container");
+            responseContainer.textContent = "Loading...";
 
+            const location = formInputs.location.value;
+            const date = formInputs.date.value;
+            const time = formInputs.time.value;
+            const attendees = formInputs.attendees.value;
+            const food = formInputs.food.value;
 
+            const prompt = `Create a detailed plan for an event with the following details:
+            - Location: ${location}
+            - Date: ${date}
+            - Time: ${time}
+            - Number of Attendees: ${attendees}
+            - Favorite Food: ${food}
+            Please provide a comprehensive plan including venue suggestions, activities, and food recommendations.`;
 
-    ////////////////////////////////////// Header Script /////////////////////////////////////
+            try {
+              const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                  model: "gpt-3.5-turbo", // Use the model you want
+                  messages: [
+                    {
+                      role: "system",
+                      content: "You are a helpful event planner.",
+                    },
+                    { role: "user", content: prompt },
+                  ],
+                }),
+              });
 
-    document.addEventListener("DOMContentLoaded", function () {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              const data = await response.json();
+              const message = data.choices[0].message.content;
+              responseContainer.textContent = message;
+            } catch (error) {
+              console.error("Error:", error);
+              responseContainer.textContent = "Failed to fetch response.";
+            }
+          });
+        // FRONTEND API
+      });
+
+      ////////////////////////////////////// Header Script /////////////////////////////////////
+
+      document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
         const dropdownMenu = document.getElementById("companyDropdownMenu");
         const dropdownIcon = document.getElementById("dropdownIcon");
         const arrowPath = document.getElementById("arrowPath");
 
         toggleButton.addEventListener("click", function () {
-            if (dropdownMenu.classList.contains("hidden")) {
-                // Show dropdown with animation
-                dropdownMenu.classList.remove("hidden");
-                setTimeout(() => {
-                    dropdownMenu.classList.remove("opacity-0", "scale-95");
-                    dropdownMenu.classList.add("opacity-100", "scale-100");
-                }, 10);
+          if (dropdownMenu.classList.contains("hidden")) {
+            // Show dropdown with animation
+            dropdownMenu.classList.remove("hidden");
+            setTimeout(() => {
+              dropdownMenu.classList.remove("opacity-0", "scale-95");
+              dropdownMenu.classList.add("opacity-100", "scale-100");
+            }, 10);
 
-                // Rotate the arrow up
-                dropdownIcon.classList.add("rotate-180");
-            } else {
-                // Hide dropdown with animation
-                dropdownMenu.classList.remove("opacity-100", "scale-100");
-                dropdownMenu.classList.add("opacity-0", "scale-95");
+            // Rotate the arrow up
+            dropdownIcon.classList.add("rotate-180");
+          } else {
+            // Hide dropdown with animation
+            dropdownMenu.classList.remove("opacity-100", "scale-100");
+            dropdownMenu.classList.add("opacity-0", "scale-95");
 
-                setTimeout(() => {
-                    dropdownMenu.classList.add("hidden");
-                }, 300); // Wait for animation to complete before hiding
+            setTimeout(() => {
+              dropdownMenu.classList.add("hidden");
+            }, 300); // Wait for animation to complete before hiding
 
-                // Rotate the arrow back down
-                dropdownIcon.classList.remove("rotate-180");
-            }
+            // Rotate the arrow back down
+            dropdownIcon.classList.remove("rotate-180");
+          }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-            if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.remove("opacity-100", "scale-100");
-                dropdownMenu.classList.add("opacity-0", "scale-95");
+          if (
+            !toggleButton.contains(event.target) &&
+            !dropdownMenu.contains(event.target)
+          ) {
+            dropdownMenu.classList.remove("opacity-100", "scale-100");
+            dropdownMenu.classList.add("opacity-0", "scale-95");
 
-                setTimeout(() => {
-                    dropdownMenu.classList.add("hidden");
-                }, 300);
+            setTimeout(() => {
+              dropdownMenu.classList.add("hidden");
+            }, 300);
 
-                // Reset arrow to down position
-                dropdownIcon.classList.remove("rotate-180");
-            }
+            // Reset arrow to down position
+            dropdownIcon.classList.remove("rotate-180");
+          }
         });
-    });
+      });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileDropdownButton = document.getElementById(
+          "mobileCompanyButton"
+        );
         const mobileDropdown = document.getElementById("mobileCompanyDropdown");
-        const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+        const mobileDropdownIcon =
+          document.getElementById("mobileDropdownIcon");
         const mobileArrowPath = document.getElementById("mobileArrowPath");
 
         mobileDropdownButton.addEventListener("click", function () {
-            if (mobileDropdown.classList.contains("hidden")) {
-                // Show dropdown with animation
-                mobileDropdown.classList.remove("hidden");
-                setTimeout(() => {
-                    mobileDropdown.classList.remove("opacity-0", "scale-95");
-                    mobileDropdown.classList.add("opacity-100", "scale-100");
-                }, 10);
+          if (mobileDropdown.classList.contains("hidden")) {
+            // Show dropdown with animation
+            mobileDropdown.classList.remove("hidden");
+            setTimeout(() => {
+              mobileDropdown.classList.remove("opacity-0", "scale-95");
+              mobileDropdown.classList.add("opacity-100", "scale-100");
+            }, 10);
 
-                // Rotate the arrow up
-                mobileDropdownIcon.classList.add("rotate-180");
-            } else {
-                // Hide dropdown with animation
-                mobileDropdown.classList.remove("opacity-100", "scale-100");
-                mobileDropdown.classList.add("opacity-0", "scale-95");
+            // Rotate the arrow up
+            mobileDropdownIcon.classList.add("rotate-180");
+          } else {
+            // Hide dropdown with animation
+            mobileDropdown.classList.remove("opacity-100", "scale-100");
+            mobileDropdown.classList.add("opacity-0", "scale-95");
 
-                setTimeout(() => {
-                    mobileDropdown.classList.add("hidden");
-                }, 300); // Wait for animation to complete before hiding
+            setTimeout(() => {
+              mobileDropdown.classList.add("hidden");
+            }, 300); // Wait for animation to complete before hiding
 
-                // Rotate the arrow back down
-                mobileDropdownIcon.classList.remove("rotate-180");
-            }
+            // Rotate the arrow back down
+            mobileDropdownIcon.classList.remove("rotate-180");
+          }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-            if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
-                mobileDropdown.classList.remove("opacity-100", "scale-100");
-                mobileDropdown.classList.add("opacity-0", "scale-95");
+          if (
+            !mobileDropdownButton.contains(event.target) &&
+            !mobileDropdown.contains(event.target)
+          ) {
+            mobileDropdown.classList.remove("opacity-100", "scale-100");
+            mobileDropdown.classList.add("opacity-0", "scale-95");
 
-                setTimeout(() => {
-                    mobileDropdown.classList.add("hidden");
-                }, 300);
+            setTimeout(() => {
+              mobileDropdown.classList.add("hidden");
+            }, 300);
 
-                // Reset arrow to down position
-                mobileDropdownIcon.classList.remove("rotate-180");
-            }
+            // Reset arrow to down position
+            mobileDropdownIcon.classList.remove("rotate-180");
+          }
         });
-    });
+      });
 
-
-    document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function () {
         const mobileMenu = document.getElementById("mobileMenu");
         const openMobileMenu = document.getElementById("openMobileMenu");
         const closeMobileMenu = document.getElementById("closeMobileMenu");
@@ -607,20 +935,19 @@
 
         // Open mobile menu when clicking the hamburger button
         openMobileMenu.addEventListener("click", function () {
-            mobileMenu.classList.remove("hidden");
+          mobileMenu.classList.remove("hidden");
         });
 
         // Close mobile menu when clicking the close button
         closeMobileMenu.addEventListener("click", function () {
-            mobileMenu.classList.add("hidden");
+          mobileMenu.classList.add("hidden");
         });
 
         // Close mobile menu when clicking outside (on the backdrop)
         mobileBackdrop.addEventListener("click", function () {
-            mobileMenu.classList.add("hidden");
+          mobileMenu.classList.add("hidden");
         });
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
