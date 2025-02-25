@@ -12,41 +12,52 @@ def index(request):
 def SphereAi(request):
     return render(request, 'SphereAi.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 def signup(request):
     if request.method == 'POST':
-        # Get email, password, and confirm password from form
-        username = request.POST.get('username')
         email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
+        confirm_password = request.POST.get('confirm_password')
+        first_name = request.POST.get('fname')
+        last_name = request.POST.get('lname')
         phone = request.POST.get('phone')
 
-
-
-    # Check if email is provided
+        # Validation
         if not email:
             messages.error(request, "Email is required.")
-            return render(request, 'user_signup.html')
+            return redirect('signup')
 
-        # Check if user already exists
-        if User.objects.filter(username=email).exists():
-            messages.error(request, "User with this email already exists")
-            return render(request, 'user_signup.html')
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "User with this email already exists.")
+            return redirect('signup')
 
-        # Create user using django's built-in User model
-        user = User.objects.create_user(
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('signup')
+
+        # Create user using the correct field names
+        user = CustomUser.objects.create_user(
+            email=email,
             username=username,
             password=password,
-            Fname=fname,
-            Lname=lname,
-            Phone=phone
+            first_name=first_name,
+            last_name=last_name
         )
 
-        messages.success(request, "User created successfully!")
+        # Save phone number if provided
+        if phone:
+            user.phone = phone
+            user.save()
+
+        messages.success(request, "User registered successfully!")
         return redirect('login')
-    else:
-        return render(request, 'signup.html')
+
+    return render(request, 'signup.html')
+
 
 def login(request):
     User = get_user_model()  # Get the custom user model

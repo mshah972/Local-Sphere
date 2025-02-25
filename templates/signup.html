@@ -235,37 +235,42 @@
                 <p class="font-normal text-gray-500 text-sm mt-2">Your Smart City Companion Starts Here</p>
 
                 <!-- Login Form -->
-                <form class="mt-6 space-y-4 w-full">
+                <form method="POST" action="{% url 'signup' %}" class="mt-6 space-y-4 w-full">
+                    {% csrf_token %}
+
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">First Name</label>
-                        <input type="text" placeholder="John" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        <input type="text" name="fname" placeholder="John" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">Last Name</label>
-                        <input type="text" placeholder="Doe" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        <input type="text" name="lname" placeholder="Doe" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">Username</label>
-                        <input type="text" placeholder="johndoe" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        <input type="text" name="username" placeholder="johndoe" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">Email</label>
-                        <input type="email" placeholder="johndoe@gmail.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                        <input type="email" name="email" placeholder="johndoe@gmail.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">Phone Number (Optional)</label>
-                        <input type="number" placeholder="(999)-999-9999" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
+                        <input type="text" name="phone" placeholder="(999)-999-9999" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue">
                     </div>
 
                     <div class="text-left relative">
                         <label class="text-[#A1A1A1] font-light text-sm">Password</label>
-                        <div class="relative">
-                            <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                        </div>
+                        <input type="password" name="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                    </div>
+
+                    <div class="text-left relative">
+                        <label class="text-[#A1A1A1] font-light text-sm">Confirm Password</label>
+                        <input type="password" name="confirm_password" placeholder="Confirm Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
