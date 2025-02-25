@@ -4,19 +4,28 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from myproject.models import CustomUser  # Import your CustomUser model
+from django.contrib.auth import authenticate, login
+
 
 
 def index(request):
     return render(request, 'index.html')
 
 def SphereAi(request):
+    if request.user.is_authenticated:
+        print(f"Logged-in User: {request.user.username}")  # Print username to console
+    else:
+        print("No user is logged in.")  # If no user is logged in
+
     return render(request, 'SphereAi.html')
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib import messages
+
+def home(request):
+    return render(request, 'SphereAi.html')
 
 def signup(request):
+    print("Request method:", request.method)  # Debugging
+
     if request.method == 'POST':
         email = request.POST.get('email')
         username = request.POST.get('username')
@@ -59,12 +68,37 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-def login(request):
-    User = get_user_model()  # Get the custom user model
-    user_count = User.objects.count()  # Count all entries
+def user_login(request):  # Renamed function
+    print("Request method:", request.method)  # Debugging
 
-    print(f"Total users: {user_count}")
+    if request.method == 'POST':
+        username_or_email = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Check if the user is logging in with email or username
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+
+        try:
+            user = User.objects.get(email=username_or_email)
+            username = user.username  # Use username if email is entered
+        except User.DoesNotExist:
+            username = username_or_email  # Use entered username if not found by email
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('home')  # Redirect to homepage
+        else:
+            messages.error(request, "Invalid email/username or password.")
+            return redirect('login')
+
     return render(request, 'login.html')
+
+
 
 def planConfirmation(request):
     return render(request, 'planConfirmation.html')

@@ -29,7 +29,7 @@ class CustomUser(AbstractUser):
         regex=r"^\d{10}$",
         message="Phone number must be exactly 10 digits, with no spaces or special characters."
     )
-    phone = models.CharField(validators=[phone_validator], max_length=10, unique=True, blank=True, null=True)
+    phone = models.CharField(validators=[phone_validator], max_length=10, unique=False, blank=True, null=True)
     email = models.EmailField(unique=True, blank=False, null=False)  # Use EmailField for email validation
 
 

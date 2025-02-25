@@ -166,44 +166,38 @@
                  <p class="font-normal text-gray-500 text-sm mt-2">Back to Building Better Days</p>
 
                  <!-- Login Form -->
-                 <form class="mt-6 space-y-4 w-full">
+                 <form method="POST" action="{% url 'login' %}" class="mt-6 space-y-4 w-full">
+                     {% csrf_token %}
+
                      <div class="text-left">
                          <label class="text-[#A1A1A1] font-light text-sm">Email Address or Username</label>
-                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
+                         <input type="text" name="username" placeholder="john.doe@example.com"
+                                class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue"
+                                required>
                      </div>
 
                      <div class="text-left relative">
                          <label class="text-[#A1A1A1] font-light text-sm">Password</label>
-                         <div class="relative">
-                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                         </div>
+                         <input type="password" name="password" placeholder="Enter Your Password"
+                                class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue"
+                                required>
                      </div>
 
-                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
+                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 py-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
                          Sign In
                      </button>
-
-                     <div class="flex items-center justify-center gap-4 mt-4">
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
-                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="2443" height="2500" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google">
-                                 <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
-                                 <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
-                                 <path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path>
-                                 <path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
-                             </svg>
-                         </button>
-                         <span class="text-gray-500">or</span>
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
-                             <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="apple">
-                                 <path d="M14.94,5.19A4.38,4.38,0,0,0,16,2,4.44,4.44,0,0,0,13,3.52,4.17,4.17,0,0,0,12,6.61,3.69,3.69,0,0,0,14.94,5.19Zm2.52,7.44a4.51,4.51,0,0,1,2.16-3.81,4.66,4.66,0,0,0-3.66-2c-1.56-.16-3,.91-3.83.91s-2-.89-3.3-.87A4.92,4.92,0,0,0,4.69,9.39C2.93,12.45,4.24,17,6,19.47,6.8,20.68,7.8,22.05,9.12,22s1.75-.82,3.28-.82,2,.82,3.3.79,2.22-1.24,3.06-2.45a11,11,0,0,0,1.38-2.85A4.41,4.41,0,0,1,17.46,12.63Z" fill="#ffffff" class="color000000 svgShape"></path>
-                             </svg>
-                         </button>
-                     </div>
 
                      <p class="text-gray-500 text-sm mt-6">
                          Don’t have an account? <a href="{% url 'signup' %}" class="text-custom-blue font-semibold">Sign Up</a>
                      </p>
-                     <a href="{% url 'forgot' %}" class="text-custom-blue text-sm mt-4 font-semibold">Forgot Password?</a></p>
+                     <a href="{% url 'forgot' %}" class="text-custom-blue text-sm mt-4 font-semibold">Forgot Password?</a>
+                 </form>
+
+
+                 <p class="text-gray-500 text-sm mt-6">
+                     Don’t have an account? <a href="{% url 'signup' %}" class="text-custom-blue font-semibold">Sign Up</a>
+                 </p>
+                 <a href="{% url 'forgot' %}" class="text-custom-blue text-sm mt-4 font-semibold">Forgot Password?</a></p>
                  </form>
              </div>
          </div>
@@ -213,47 +207,15 @@
                  <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
                  <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Welcome Back, Explorer</h1>
                  <p class="font-normal text-gray-500 text-sm mt-2">Back to Building Better Days</p>
-
+                 {% if messages %}
+                 <ul class="messages">
+                     {% for message in messages %}
+                     <li class="{{ message.tags }}">{{ message }}</li>
+                     {% endfor %}
+                 </ul>
+                 {% endif %}
                  <!-- Login Form -->
-                 <form class="mt-6 space-y-4 w-full">
-                     <div class="text-left">
-                         <label class="text-[#A1A1A1] font-light text-sm">Email Address or Username</label>
-                         <input type="text" placeholder="john.doe@example.com" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                     </div>
 
-                     <div class="text-left relative">
-                         <label class="text-[#A1A1A1] font-light text-sm">Password</label>
-                         <div class="relative">
-                             <input type="password" placeholder="Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                         </div>
-                     </div>
-
-                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 py-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
-                         Sign In
-                     </button>
-
-                     <div class="flex items-center justify-center gap-4 mt-4">
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
-                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="2443" height="2500" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google">
-                                 <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
-                                 <path fill="#34A853" d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
-                                 <path fill="#FBBC05" d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path>
-                                 <path fill="#EB4335" d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
-                             </svg>
-                         </button>
-                         <span class="text-gray-500">or</span>
-                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
-                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="apple">
-                                 <path d="M14.94,5.19A4.38,4.38,0,0,0,16,2,4.44,4.44,0,0,0,13,3.52,4.17,4.17,0,0,0,12,6.61,3.69,3.69,0,0,0,14.94,5.19Zm2.52,7.44a4.51,4.51,0,0,1,2.16-3.81,4.66,4.66,0,0,0-3.66-2c-1.56-.16-3,.91-3.83.91s-2-.89-3.3-.87A4.92,4.92,0,0,0,4.69,9.39C2.93,12.45,4.24,17,6,19.47,6.8,20.68,7.8,22.05,9.12,22s1.75-.82,3.28-.82,2,.82,3.3.79,2.22-1.24,3.06-2.45a11,11,0,0,0,1.38-2.85A4.41,4.41,0,0,1,17.46,12.63Z" fill="#ffffff" class="color000000 svgShape"></path>
-                             </svg>
-                         </button>
-                     </div>
-
-                     <p class="text-gray-500 text-sm mt-6">
-                         Don’t have an account? <a href="{% url 'signup' %}" class="text-custom-blue font-semibold">Sign Up</a>
-                     </p>
-                     <a href="{% url 'forgot' %}" class="text-custom-blue text-sm mt-4 font-semibold">Forgot Password?</a></p>
-                 </form>
              </div>
          </div>
      </section>

@@ -22,11 +22,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('SphereAi', views.SphereAi, name='SphereAi'),
-    path('login/', views.login, name='login'),
+    path('login/', views.user_login, name='login'),  # Update here
     path('signup/', views.signup, name='signup'),
     path('planConfirmation', views.planConfirmation, name='planConfirmation'),
     path('forgot', views.forgot, name='forgot'),
     path('creation', views.creation, name='creation'),
+    path('', views.home, name='home'),
+
+
 ]
 
 
