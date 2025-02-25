@@ -261,8 +261,9 @@
                         <img class="h-5 w-auto" src="../static/dayORnight.png">
                     </span>
                     <select id="preferred-time"
-                            class="text-[16px] font-normal rounded-md">
-                        <option selected>Morning</option>
+                            class="text-[16px] font-normal rounded-md" required>
+                        <option disabled selected hidden>Choose Time</option>
+                        <option>Morning</option>
                         <option>Afternoon</option>
                         <option>Evening</option>
                         <option>Night</option>
@@ -278,7 +279,8 @@
                     </span>
                     <select id="guests"
                             class="text-[16px] font-normal rounded-md">
-                        <option selected>1 Guest</option>
+                        <option disabled selected hidden>Choose Guests</option>
+                        <option>1 Guest</option>
                         <option>2 Guests</option>
                         <option>3 Guests</option>
                         <option>4 Guests</option>
@@ -300,14 +302,14 @@
                     </span>
                     <select id="food"
                             class="text-[16px] font-normal rounded-md">
+                        <option disabled selected hidden>Choose Food</option>
                         <option>Italian</option>
-                        <option selected>Mexican</option>
+                        <option>Mexican</option>
                         <option>American</option>
                         <option>Chinese</option>
                     </select>
                 </div>
             </div>
-
 
             <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
@@ -348,7 +350,7 @@
                         <span id="box-time-mobile" class="text-md">Waiting For User Selection...</span>
                     </h3>
 
-                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2">
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
                         <span class="mr-2">
                             <img class="h-5 w-auto" src="../static/people.png">
                         </span>
@@ -388,212 +390,19 @@
                         </span>
                         <span id="user-preferred-location-mobile" class="text-md">Chicago, IL</span>
                     </h3>
-
                 </div>
-
             </div>
         </div>
     </div>
 </main>
 <script>
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     // Get form input fields
-    //     const locationInput = document.getElementById("locationInput");
-    //     const dateInput = document.getElementById("dateInput");
-    //     const timeInput = document.getElementById("preferredTime");
-    //     const attendeesInput = document.getElementById("attendees");
-    //     const occasionSelect = document.getElementById("occasionSelect");
-    //
-    //     // Get Box 1 elements
-    //     const boxOccasion = document.getElementById("boxOccasion");
-    //     const boxLocation = document.getElementById("boxLocation");
-    //     const boxDate = document.getElementById("boxDate");
-    //     const boxTime = document.getElementById("boxTime");
-    //     const boxAttendees = document.getElementById("boxAttendees");
-    //
-    //     // Function to update Box 1 dynamically
-    //     function updateBox1() {
-    //         boxOccasion.textContent = occasionSelect.value || "Occasion";
-    //         boxLocation.textContent = locationInput.value || "--";
-    //         boxDate.textContent = dateInput.value || "--";
-    //         boxTime.textContent = timeInput.value || "--";
-    //         boxAttendees.textContent = attendeesInput.value || "--";
-    //     }
-    //
-    //     // Event listeners to update Box 1 when fields change
-    //     locationInput.addEventListener("input", updateBox1);
-    //     dateInput.addEventListener("input", updateBox1);
-    //     timeInput.addEventListener("change", updateBox1);
-    //     attendeesInput.addEventListener("change", updateBox1);
-    //     occasionSelect.addEventListener("change", updateBox1);
-    //
-    //     // Initialize Box 1 with default values
-    //     updateBox1();
-    // });
-    //
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const timeInput = document.getElementById("preferredTime");
-    //     const boxTime = document.getElementById("boxTime");
-    //
-    //     function updatePreferredTime() {
-    //         boxTime.textContent = timeInput.value || "--";
-    //     }
-    //
-    //     timeInput.addEventListener("change", updatePreferredTime);
-    //
-    //     // Initialize Preferred Time in Box 1 with the default value
-    //     updatePreferredTime();
-    // });
-    //
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const attendeesInput = document.getElementById("attendees");
-    //     const boxAttendees = document.getElementById("boxAttendees");
-    //
-    //     function updateAttendees() {
-    //         boxAttendees.textContent = attendeesInput.value || "--";
-    //     }
-    //
-    //     attendeesInput.addEventListener("change", updateAttendees);
-    //
-    //     // Initialize attendees in Box 1 with default value
-    //     updateAttendees();
-    // });
-    //
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const orderSelect = document.getElementById("preferredOrder");
-    //     const orderContainer = document.getElementById("orderContainer");
-    //     const box2 = document.getElementById("box2"); // Activities
-    //     const box3 = document.getElementById("box3"); // Cuisines
-    //
-    //     function updateOrder() {
-    //         if (orderSelect.value === "FoodEvent") {
-    //             // Move Box 3 (Food) before Box 2 (Activities)
-    //             orderContainer.insertBefore(box3, box2);
-    //         } else {
-    //             // Keep default order (Activities before Food)
-    //             orderContainer.insertBefore(box2, box3);
-    //         }
-    //     }
-    //
-    //     // Listen for changes in the dropdown
-    //     orderSelect.addEventListener("change", updateOrder);
-    //
-    //     // Initialize order on page load
-    //     updateOrder();
-    // });
-    //
-    // function addInterest() {
-    //     if (interestInput.value.trim() !== "") {
-    //         const span = document.createElement("span");
-    //         span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
-    //         span.textContent = interestInput.value + " ✖";
-    //
-    //         // Remove on click
-    //         span.onclick = function () {
-    //             interestsContainer.removeChild(span);
-    //             updateBox2();
-    //         };
-    //
-    //         interestsContainer.appendChild(span);
-    //         updateBox2();
-    //         interestInput.value = "";
-    //     }
-    // }
-    //
-    // function updateBox2() {
-    //     const interests = interestsContainer.querySelectorAll("span");
-    //     if (interests.length === 0) {
-    //         boxActivities.textContent = "No activities added";
-    //     } else {
-    //         boxActivities.innerHTML = ""; // Clear previous text
-    //         interests.forEach((interest, index) => {
-    //             if (index > 0) boxActivities.innerHTML += ", "; // Add comma separator
-    //             boxActivities.innerHTML += interest.textContent.replace(" ✖", ""); // Remove X symbol
-    //         });
-    //     }
-    // }
-    //
-    // function addCuisine() {
-    //     if (cuisineInput.value.trim()) {
-    //         const span = document.createElement("span");
-    //         span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
-    //         span.textContent = cuisineInput.value + " ✖";
-    //         span.onclick = () => {
-    //             cuisinesContainer.removeChild(span);
-    //             updateBox3();
-    //         };
-    //         cuisinesContainer.appendChild(span);
-    //         cuisineInput.value = "";
-    //         updateBox3();
-    //     }
-    // }
-    //
-    // function updateBox3() {
-    //     const container = document.getElementById('foodContainer');
-    //     const boxCuisines = document.getElementById("boxCuisines");
-    //
-    //     const cuisines = [...container.children].map(el => el.textContent.replace(" ✖", ""));
-    //     boxCuisines.textContent = cuisines.length ? cuisines.join(", ") : "No cuisines added";
-    // }
-    //
-    //
-    // function addfood() {
-    //     const input = document.getElementById('foodInput');
-    //     const container = document.getElementById('foodContainer');
-    //     const boxCuisines = document.getElementById("boxCuisines"); // Box 3 content
-    //
-    //     if (input.value.trim() !== "") {
-    //         const span = document.createElement('span');
-    //         span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer";
-    //         span.textContent = input.value + " ✖";
-    //
-    //         // Remove item on click and update Box 3
-    //         span.onclick = function () {
-    //             container.removeChild(span);
-    //             updateBox3();
-    //         };
-    //
-    //         container.appendChild(span);
-    //         input.value = "";
-    //
-    //         updateBox3(); // Update Box 3 when a new item is added
-    //     }
-    // }
-    //
-    // function addOccasion() {
-    //     const select = document.getElementById("occasionSelect");
-    //     const container = document.getElementById("occasionsContainer");
-    //     const selectedValue = select.value;
-    //
-    //     if (selectedValue && ![...container.children].some(span => span.getAttribute("data-value") === selectedValue)) {
-    //         const span = document.createElement("span");
-    //         span.className = "px-3 py-1 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition";
-    //         span.setAttribute("data-value", selectedValue);
-    //         span.textContent = selectedValue + " ✖";
-    //
-    //         span.onclick = function () {
-    //             container.removeChild(span);
-    //             updateBox1(); // Update Box 1 when occasion is removed
-    //         };
-    //
-    //         container.appendChild(span);
-    //         updateBox1(); // Update Box 1 when occasion is added
-    //
-    //         select.value = "";
-    //     }
-    // }
-    //
-    // // Function to update Box 1 with selected occasions
-    // function updateOccasion() {
-    //     const container = document.getElementById('occasionsContainer');
-    //     const boxOccasion = document.getElementById("boxOccasion");
-    //
-    //     // Collect all selected occasions
-    //     const occasions = [...container.children].map(el => el.getAttribute("data-value"));
-    //     boxOccasion.textContent = occasions.length ? occasions.join(", ") : "Occasion";
-    // }
-
     document.addEventListener("DOMContentLoaded", function () {
+        // Simulated fetched user profile data from the database (Replace with API call)
+        const userProfile = {
+            location: "Chicago, IL",
+            food: "Italian",
+        };
+
         // Get all form inputs
         const formInputs = {
             location: document.getElementById("location"),
@@ -629,29 +438,67 @@
             }
         }
 
-        // Attach event listeners to form inputs
         Object.keys(formInputs).forEach(key => {
             formInputs[key].addEventListener("input", function () {
                 updateDisplay(key, this.value);
             });
         });
 
-        // Simulate fetching user profile from database (Replace this with API call)
-        const userProfile = {
-            location: "Chicago, IL",
-            food: "Italian",
-        };
+        // Ensure Datepicker Only Allows Today & Future Dates
+        const dateInput = formInputs.date;
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.setAttribute("min", today);
 
-        // Update user profile card dynamically for both desktop & mobile
+        dateInput.addEventListener("change", function () {
+            this.blur();
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!dateInput.contains(event.target)) {
+                dateInput.blur();
+            }
+        });
+
         function updateUserProfile() {
             document.getElementById("user-fav-foods").textContent = userProfile.food;
             document.getElementById("user-food-mobile").textContent = userProfile.food;
             document.getElementById("user-preferred-location").textContent = userProfile.location;
             document.getElementById("user-preferred-location-mobile").textContent = userProfile.location;
+
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
         }
 
-        updateUserProfile(); // Initialize user profile details
+        updateUserProfile();
+
+        formInputs.food.addEventListener("change", function () {
+            const selectedFood = this.value.trim();
+            const foodDisplay = document.getElementById("user-fav-foods");
+            const foodDisplayMobile = document.getElementById("user-food-mobile");
+
+            if (selectedFood && selectedFood !== userProfile.food) {
+                foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+                foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+
+                document.getElementById("reset-food").addEventListener("click", resetFood);
+                document.getElementById("reset-food-mobile").addEventListener("click", resetFood);
+            } else {
+                foodDisplay.innerHTML = `${userProfile.food}`;
+                foodDisplayMobile.innerHTML = `${userProfile.food}`;
+            }
+        });
+
+        // Function to reset food to user's fetched data
+        function resetFood() {
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
+            document.getElementById("user-fav-foods").innerHTML = `${userProfile.food}`;
+            document.getElementById("user-food-mobile").innerHTML = `${userProfile.food}`;
+        }
     });
+
+
+
 
 
 

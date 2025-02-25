@@ -153,7 +153,7 @@
         </div>
     </header>
 
-    <div class="@container flex w-full mx-auto flex-row shadow-lg font-poppins hidden 2xl:inline-flex">
+    <div class="@container flex w-full mx-auto flex-row font-poppins hidden 2xl:inline-flex">
         <!-- Sidebar with Map -->
         <div class="relative w-3/4 pl-20">
             <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
@@ -207,7 +207,7 @@
         </div>
     </div>
 
-    <div class="flex mx-auto flex-col mr-5 ml-5 shadow-lg font-poppins 2xl:hidden">
+    <div class="flex mx-auto flex-col mr-5 ml-5 font-poppins 2xl:hidden">
         <!-- Main Content -->
         <div class="@container relative bg-white rounded-3xl flex flex-col p-4">
             <div class="relative w-full">
@@ -421,7 +421,7 @@
         restaurantList.innerHTML = '';
         restaurantListMobile.innerHTML = '';
         planData.restaurants.forEach(restaurant => {
-            restaurantList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden">
+            restaurantList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                     <div class="w-full h-20">
                         <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="Restaurant Image"
@@ -443,7 +443,7 @@
             addMarker(map, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
 
             restaurantListMobile.innerHTML += `
-            <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+            <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
                 <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -469,7 +469,7 @@
         eventList.innerHTML = '';
         eventList.innerHTML = '';
         planData.events.forEach(event => {
-            eventList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+            eventList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
                     <div class="w-full h-20">
                         <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                              alt="Restaurant Image"
@@ -491,7 +491,7 @@
             addMarker(map, event.longitude, event.latitude, event.name, bounds);
 
             eventListMobile.innerHTML += `
-           <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between shadow-xl border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+           <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
                 <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

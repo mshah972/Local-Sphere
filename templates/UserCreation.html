@@ -154,156 +154,258 @@
     </header>
 
     <!-- NEW PAGE COPY THIS UP  -->
-
-    <!-- LEFT  -->
-
     <div class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0">
         <div class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl">
             <!-- Background Image -->
-            <img src="../static/userCreationBack.png" alt="Process Diagram" class="absolute inset-0 w-full h-full object-cover rounded-2xl ">
+            <img src="../static/userCreationBack.png" alt="User Background" class="absolute inset-0 w-full h-full object-cover rounded-2xl">
 
-            <div class="relative flex flex-col items-center w-full space-y-12">
-
-                <!-- 📌 Account Card -->
-                <div class="bg-transparent p-6 rounded-4xl shadow-lg w-full flex flex-col items-center text-center">
-                    <!-- Profile Image -->
-                    <img src="../static/logo1.svg"  alt="Profile Image" class="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-16">
-
-                    <!-- Title -->
-                    <h1 id="boxOccasion" class="text-white font-bold text-2xl mt-4">Jose Nunez</h1>
-
-                    <!-- Email-->
-                    <h3 class="text-white font-semibold mt-2 text-gray-100"> Jose@gmail.com</h3>
-
-                    <!-- Desc -->
-                    <p id="boxDate" class="text-white">Lorem ipsum odor amet, consectetuer adipiscing elit. Penatibus sociosqu ornare metus eleifend accumsan. Justo interdum sollicitudin ex augue ullamcorper leo ut erat. Per amet nullam facilisi dolor senr lorem convallis.</p>
-
+            <div class="relative flex flex-col items-center w-full">
+                <!-- Profile Image -->
+                <div class="relative w-28 h-28 border-4 border-white rounded-full overflow-hidden">
+                    <img id="userProfileImage"
+                         class="w-full h-full object-cover"
+                         src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Profile Picture">
                 </div>
 
-            <!-- 📌 Card 2 Side by Side - Interests & Cuisines -->
+                <!-- User Name -->
+                <h3 class="text-white font-extrabold text-3xl mt-4">John Doe</h3>
+                <p class="font-mulish text-white font-light text-[12px] mt-1">johndoe@gmail.com</p>
 
-            <Section class="flex justify-center gap-4">
-                
-                <!-- Interests Section -->
-                <div class="bg-custom-white p-3 rounded-3xl shadow-lg w-full flex flex-col items-center text-center">
-                    <h2 class="text-black font-bold text-lg w-full border-b border-black pb-2">Interests</h2>
-                    
-                    <!-- Interests List -->
-                    <div class="flex flex-col w-full mt-3 space-y-4 items-center">
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Soccer</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Chicago Cubs</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Chicago Bulls</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Music Concerts</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Cricket</span>
+                <!-- Dietary Icons -->
+
+                <!-- User Bio -->
+                <p id="userDescriptionDisplay" class="text-white text-center text-sm px-6 leading-relaxed mt-4">
+                    Enter your description and it will appear here...
+                </p>
+
+                <!-- Interests & Cuisines -->
+                <div class="flex flex-row w-full justify-center gap-6 mt-8 mb-4 ml:2 mr:2">
+                    <!-- Interests -->
+
+                    <!-- Cuisines -->
+                    <div id="cuisinesContainer" class="bg-custom-white w-full p-4 rounded-3xl shadow-lg hidden">
+                        <h2 class="text-center text-lg font-bold mb-2">Cuisines & Foods</h2>
+                        <div class="border-t border-black mt-2 mb-4"></div>
+                        <div id="userCuisines" class="space-y-2 text-center">
+                        </div>
                     </div>
                 </div>
-
-                <!-- Cuisines & Foods Section -->
-                <div class="bg-custom-white p-3 rounded-3xl shadow-lg w-full flex flex-col items-center text-center">
-                    <h2 class="text-black font-bold text-lg w-full border-b border-black pb-2">Cuisines & Foods</h2>
-                    
-                    <!-- Cuisines List -->
-                    <div class="flex flex-col w-full mt-3 space-y-4 items-center">
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Mexican</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Italian</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Pizza</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Salads</span>
-                        <span class="bg-black text-white px-6 py-2 rounded-full text-sm w-3/4 text-center">Japanese</span>
-                    </div>
-                </div>
-
-            </Section>
-                
-
             </div>
         </div>
 
-        <!-- RIGHT -->
 
-
-        <!-- 📌 Profile Section -->
-        <div class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col">
-                
-                <!-- Profile Image -->
-                <div class="flex flex-col items-center">
-                    <img src="../static/logo1.svg" alt="Profile Image" class="w-24 h-24 rounded-full border-4 border-white shadow-md">
-                    <p class="text-gray-500 text-sm mt-2">Upload Your Profile Picture</p>
+        <div class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col h-auto">
+            <div class="flex flex-col items-center justify-center w-full">
+                <!-- Profile Picture Container -->
+                <div class="relative w-32 h-32">
+                    <!-- Profile Image -->
+                    <img id="profileImage"
+                         class="w-full h-full rounded-full border-4 border-black object-cover"
+                         src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Profile Picture">
+                    <!-- Hidden File Input -->
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
                 </div>
 
-                <!-- Form Fields -->
-                <div class="w-full mt-6">
-                    
-                    <!-- Preferred Location & Occupation -->
-                    <div class="flex flex-row justify-between w-full gap-4">
-                        <div class="flex flex-col w-1/2">
-                            <label class="text-gray-400 text-[12px] font-normal">Preferred Location</label>
-                            <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal">
-                                <img class="h-5 w-auto mr-2" src="../static/location.svg">
-                                <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
-                            </div>
-                        </div>
-                        <div class="flex flex-col w-1/2">
-                            <label class="text-gray-400 text-[12px] font-normal">Occupation</label>
-                            <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal">
-                                <input id="occupation" type="text" value="Student" class="w-full focus:outline-none">
-                            </div>
-                        </div>
-                    </div>
+                <!-- Upload Label -->
+                <label for="fileInput"
+                       class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
+                    Upload Your Profile Picture
+                </label>
+            </div>
 
-                    <!-- Short Description -->
-                    <div class="flex flex-col w-full mt-4">
-                        <label class="text-gray-400 text-[12px] font-normal">Short Description</label>
-                        <textarea class="border border-gray-300 rounded-2xl px-3 py-2 w-full text-[16px] font-normal focus:outline-none" placeholder="Write a short description about yourself"></textarea>
-                    </div>
 
-                    <!-- Interests -->
-                    <div class="flex flex-col w-full mt-4">
-                        <label class="text-gray-400 text-[12px] font-normal">Interests</label>
-                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
-                            <input id="interests" type="text" class="w-full focus:outline-none" placeholder="Search interests...">
-                        </div>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Music Concerts ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Chicago Cubs ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Basketball ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Cricket ✖</span>
-                        </div>
+            <div class="flex flex-row justify-between items-center w-full mr-5 pt-5">
+                <div class="flex flex-col items-start justify-between w-full">
+                    <label for="location" class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                            <img class="h-5 w-auto" src="../static/location.svg">
+                        </span>
+                        <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
                     </div>
-
-                    <!-- Dietary Restrictions -->
-                    <div class="flex flex-col w-full mt-4">
-                        <label class="text-gray-400 text-[12px] font-normal">Dietary Restrictions</label>
-                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
-                            <input id="Restrictions" type="text" class="w-full focus:outline-none" placeholder="Dietary Restrictions...">
-                        </div>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Vegetarian ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Nut Free ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Dairy Free ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Halal ✖</span>
-                        </div>
-                    </div>
-
-                    <!-- Favorite Cuisines & Food -->
-                    <div class="flex flex-col w-full mt-4">
-                        <label class="text-gray-400 text-[12px] font-normal">Favorite Cuisines & Food</label>
-                        <div class="flex items-center border border-gray-300 rounded-2xl px-3 py-2 w-full">
-                            <input id="favFood" type="text" class="w-full focus:outline-none" placeholder="Favorite Cuisines & Food...">
-                        </div>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Italian ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Pizza ✖</span>
-                            <span class="px-3 py-1 bg-gray-200 rounded-full text-gray-700 text-sm">Mexican ✖</span>
-                        </div>
-                    </div>
-
                 </div>
+                <div class="flex flex-col items-start justify-between w-full ml-4">
+                    <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (Optional)</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <select id="occupation" class="w-full focus:outline-none">
+                            <option value="" disabled selected hidden>Select an Occupation</option>
+                            <option value="Student">Student</option>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Engineer">Engineer</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label for="userDescription" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (Optional)</label>
+                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                    <textarea id="userDescription" type="text" placeholder="Write about yourself..." class="w-full focus:outline-none"></textarea>
+                </div>
+            </div>
+
+
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label for="cuisineDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">Favorite Food & Cuisines</label>
+                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                    <span class="mr-2">
+                       <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
+                    </span>
+                    <select id="cuisineDropdown"
+                            class="w-full font-normal rounded-md">
+                        <option disabled selected hidden>Choose Food</option>
+                        <option>Italian</option>
+                        <option>Mexican</option>
+                        <option>American</option>
+                        <option>Chinese</option>
+                        <option>Pizza</option>
+                        <option>Salads</option>
+                    </select>
+                </div>
+            </div>
+            <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
+
+            <!-- Buttons -->
+            <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
+                <button id="recreate-btn"
+                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                    Craft Your Plan
+                </button>
             </div>
         </div>
     </div>
 </main>
 <script>
-    
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("fileInput");
+        const profileImage = document.getElementById("profileImage");
+        const userProfileImage = document.getElementById("userProfileImage");
+
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profileImage.src = e.target.result;
+                    userProfileImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get user input elements
+        const userDescriptionInput = document.getElementById("userDescription");
+        const cuisineDropdown = document.getElementById("cuisineDropdown");
+
+        // Get display elements
+        const userDescriptionDisplay = document.getElementById("userDescriptionDisplay");
+        const userCuisinesDisplay = document.getElementById("selectedCuisines"); // Cuisines displayed as tags
+        const userCuisinesTable = document.getElementById("userCuisines"); // Cuisines in table
+        const cuisinesContainer = document.getElementById("cuisinesContainer"); // Cuisines table wrapper
+
+        // Function to toggle cuisines table visibility
+        function toggleCuisinesVisibility() {
+            cuisinesContainer.style.display = userCuisinesTable.children.length > 0 ? "block" : "none";
+        }
+
+        // Update description dynamically
+        userDescriptionInput.addEventListener("input", function () {
+            userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
+        });
+
+        // Function to hide selected options in dropdown
+        function updateDropdownOptions() {
+            const selectedCuisines = [...userCuisinesDisplay.children].map(item => item.dataset.cuisine);
+
+            [...cuisineDropdown.options].forEach(option => {
+                if (selectedCuisines.includes(option.value)) {
+                    option.style.display = "none"; // Hide selected options
+                } else {
+                    option.style.display = ""; // Show unselected options
+                }
+            });
+        }
+
+        // Function to add cuisines to both the tag section and table
+        function addCuisine(selectedValue) {
+            if (!selectedValue) return;
+
+            // Check if already selected
+            if ([...userCuisinesDisplay.children].some(item => item.dataset.cuisine === selectedValue)) return;
+
+            // Create a new tag below the input
+            const cuisineTag = document.createElement("div");
+            cuisineTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[14px] lg:text-[16px]";
+            cuisineTag.dataset.cuisine = selectedValue; // Set data attribute for easy identification
+            cuisineTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeCuisine"><img class="w-5 h-auto" src="../static/removeIcon.svg"></span>
+        `;
+
+            // Append to the list
+            userCuisinesDisplay.appendChild(cuisineTag);
+
+            // Create a table entry
+            const tableRow = document.createElement("div");
+            tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
+            tableRow.dataset.cuisine = selectedValue; // Set data attribute for easy removal
+            tableRow.innerText = selectedValue;
+
+            // Append to the table
+            userCuisinesTable.appendChild(tableRow);
+
+            // Show the container if it was hidden
+            toggleCuisinesVisibility();
+
+            // Update dropdown to hide selected options
+            updateDropdownOptions();
+
+            // Remove cuisine when clicking "✖"
+            cuisineTag.querySelector(".removeCuisine").addEventListener("click", function () {
+                userCuisinesDisplay.removeChild(cuisineTag);
+
+                // Find and remove corresponding table entry
+                [...userCuisinesTable.children].forEach(row => {
+                    if (row.dataset.cuisine === selectedValue) {
+                        userCuisinesTable.removeChild(row);
+                    }
+                });
+
+                // Hide table if no cuisines remain
+                toggleCuisinesVisibility();
+
+                // Show the option again in the dropdown
+                updateDropdownOptions();
+            });
+
+            // Reset dropdown selection
+            cuisineDropdown.selectedIndex = 0;
+        }
+
+        // Add selected cuisine on dropdown change
+        cuisineDropdown.addEventListener("change", function () {
+            addCuisine(cuisineDropdown.value.trim());
+        });
+
+        // Hide cuisines table initially if no selections exist
+        toggleCuisinesVisibility();
+    });
+
+
+
+
+
+
+
+
+
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
