@@ -164,7 +164,7 @@
                 <div class="relative w-28 h-28 border-4 border-white rounded-full overflow-hidden">
                     <img id="userProfileImage"
                          class="w-full h-full object-cover"
-                         src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         src="../static/defaultProfile.png"
                          alt="Profile Picture">
                 </div>
 
@@ -202,7 +202,7 @@
                     <!-- Profile Image -->
                     <img id="profileImage"
                          class="w-full h-full rounded-full border-4 border-black object-cover"
-                         src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         src="../static/defaultProfile.png"
                          alt="Profile Picture">
                     <!-- Hidden File Input -->
                     <input type="file" id="fileInput" accept="image/*" class="hidden">
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-start justify-between w-full ml-4">
-                    <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (Optional)</label>
+                    <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
                     <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
                         <select id="occupation" class="w-full focus:outline-none">
                             <option value="" disabled selected hidden>Select an Occupation</option>
@@ -241,7 +241,7 @@
             </div>
 
             <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label for="userDescription" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (Optional)</label>
+                <label for="userDescription" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (optional)</label>
                 <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
                     <textarea id="userDescription" type="text" placeholder="Write about yourself..." class="w-full focus:outline-none"></textarea>
                 </div>
@@ -255,7 +255,7 @@
                        <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
                     </span>
                     <select id="cuisineDropdown"
-                            class="w-full font-normal rounded-md">
+                            class="w-full font-normal rounded-md" required>
                         <option disabled selected hidden>Choose Food</option>
                         <option>Italian</option>
                         <option>Mexican</option>
@@ -271,8 +271,8 @@
             <!-- Buttons -->
             <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
                 <button id="recreate-btn"
-                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    Craft Your Plan
+                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer" type="submit">
+                    Continue
                 </button>
             </div>
         </div>
