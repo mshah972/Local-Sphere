@@ -64,8 +64,13 @@ def signup(request):
             user.phone = phone
             user.save()
 
+        # Authenticate and log in the user
+        new_user = authenticate(username=username, password=password)
+        if new_user:
+            login(request, new_user) 
+
         messages.success(request, "User registered successfully!")
-        return redirect('creation')
+        return redirect('creation') 
 
     return render(request, 'signup.html')
 
