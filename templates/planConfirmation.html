@@ -248,7 +248,6 @@
                     💾 Save Plan
                 </button>
             </div>
-            <p class="font-mulish font-normal text-gray-500 text-sm pt-4">* Map is static for demo 1</p>
         </div>
     </div>
 
@@ -302,7 +301,6 @@
                     💾 Save Plan
                 </button>
             </div>
-            <p class="font-mulish font-normal text-gray-500 text-sm pt-4">* Map is static for demo 1</p>
         </div>
     </div>
 </main>
@@ -441,8 +439,8 @@
         });
     });
 
-
     mapboxgl.accessToken = 'pk.eyJ1IjoibXNoYWg3NiIsImEiOiJjbTdmZ2dvenAwb2JpMm1weDdtZmR5ZDB6In0.JMxS2qZo-c8JqWcOYfME3A';
+
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -459,53 +457,71 @@
         interactive: false,
     });
 
-    function addMarker(map, lng, lat, title, bounds) {
-        const popup = new mapboxgl.Popup({offset: 25})
-            .setHTML(`<div class='p-2'><strong>${title}</strong></div>`);
-
-        new mapboxgl.Marker()
-            .setLngLat([lng, lat])
-            .setPopup(popup)
-            .addTo(map);
-
-        bounds.extend([lng, lat]);
+    // 🔹 Convert address to coordinates
+    async function getCoordinates(address) {
+        try {
+            const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
+            const data = await response.json();
+            return data.features.length > 0 ? data.features[0].center : null;
+        } catch (error) {
+            console.error("Error fetching coordinates:", error);
+            return null;
+        }
     }
 
-    function loadPlan(planData) {
+    // 🔹 Add marker to map using address or lat/lon
+    async function addMarker(map, addressOrCoords, title, bounds) {
+        let coordinates;
+
+        if (Array.isArray(addressOrCoords) && addressOrCoords.length === 2) {
+            coordinates = addressOrCoords; // Use lat/lon
+        } else {
+            coordinates = await getCoordinates(addressOrCoords); // Get lat/lon from address
+        }
+
+        if (coordinates) {
+            new mapboxgl.Marker()
+                .setLngLat(coordinates)
+                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<div class='p-2'><strong>${title}</strong></div>`))
+                .addTo(map);
+
+            bounds.extend(coordinates);
+        }
+    }
+
+    // 🔹 Load and display the plan
+    async function loadPlan(planData) {
         document.getElementById('location').textContent = planData.location;
-        document.getElementById('plan-details').textContent = `${planData.people} People • ${planData.occasion} • ${planData.date}`;
+        document.getElementById('plan-details').textContent = `${planData.people} • ${planData.date}`;
         document.getElementById('location-mobile').textContent = planData.location;
-        document.getElementById('plan-details-mobile').textContent = `${planData.people} People • ${planData.occasion} • ${planData.date}`;
+        document.getElementById('plan-details-mobile').textContent = `${planData.people} • ${planData.date}`;
 
         const bounds = new mapboxgl.LngLatBounds();
-
         const restaurantList = document.getElementById('restaurant-list');
         const restaurantListMobile = document.getElementById('restaurant-list-mobile');
+        const eventList = document.getElementById('event-list');
+        const eventListMobile = document.getElementById('event-list-mobile');
 
         restaurantList.innerHTML = '';
         restaurantListMobile.innerHTML = '';
-        planData.restaurants.forEach(restaurant => {
-            restaurantList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                    <div class="w-full h-20">
-                        <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Restaurant Image"
-                             class="w-full h-full object-cover rounded-t-3xl">
-                    </div>
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </button>
+        eventList.innerHTML = '';
+        eventListMobile.innerHTML = '';
 
-                    <div class="flex flex-col items-start justify-between p-4">
-                        <span class="font-semibold text-[16px]">${restaurant.name}</span>
-                        <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
-                    </div>
-
-                </div>`;
-            addMarker(map, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
+        for (const restaurant of planData.restaurants) {
+            restaurantList.innerHTML += `
+            <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                <div class="w-full h-20">
+                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Restaurant Image"
+                         class="w-full h-full object-cover rounded-t-3xl">
+                </div>
+                <div class="flex flex-col items-start justify-between p-4">
+                    <span class="font-semibold text-[16px]">${restaurant.name}</span>
+                    <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
+                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
+                </div>
+            </div>`;
 
             restaurantListMobile.innerHTML += `
             <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
@@ -525,36 +541,25 @@
                 </div>
             </div>`;
 
-            addMarker(mapMobile, restaurant.longitude, restaurant.latitude, restaurant.name, bounds);
-        });
+            await addMarker(map, restaurant.address, restaurant.name, bounds);
+            await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
+        }
 
-        const eventList = document.getElementById('event-list');
-        const eventListMobile = document.getElementById('event-list-mobile');
-
-        eventList.innerHTML = '';
-        eventList.innerHTML = '';
-        planData.events.forEach(event => {
-            eventList.innerHTML += `<div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
-                    <div class="w-full h-20">
-                        <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Restaurant Image"
-                             class="w-full h-full object-cover rounded-t-3xl">
-                    </div>
-
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </button>
-
-                    <div class="flex flex-col items-start justify-between p-4">
-                        <p class="font-semibold text-[16px]">${event.name}</p>
-                        <p class="font-semibold right-0 text-custom-blue text-[12px] pt-1">${event.type}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
-                    </div>
-                </div>`;
-            addMarker(map, event.longitude, event.latitude, event.name, bounds);
+        for (const event of planData.events) {
+            eventList.innerHTML += `
+            <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                <div class="w-full h-20">
+                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                         alt="Event Image"
+                         class="w-full h-full object-cover rounded-t-3xl">
+                </div>
+                <div class="flex flex-col items-start justify-between p-4">
+                    <span class="font-semibold text-[16px]">${event.name}</span>
+                    <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
+                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
+                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
+                </div>
+            </div>`;
 
             eventListMobile.innerHTML += `
            <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
@@ -573,52 +578,43 @@
                     </div>
                 </div>
             </div>`;
-            addMarker(mapMobile, event.longitude, event.latitude, event.name, bounds);
-        });
 
-        if (!bounds.isEmpty()) {
-            map.fitBounds(bounds, {padding: 50, maxZoom: 15});
-            mapMobile.fitBounds(bounds, {padding: 50, maxZoom: 15});
+            await addMarker(map, event.address, event.name, bounds);
+            await addMarker(mapMobile, event.address, event.name, bounds);
         }
 
+        if (!bounds.isEmpty()) {
+            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+            mapMobile.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+        }
     }
 
-    
+    // 🔹 Get saved data from localStorage (with fallbacks)
+    const restaurantName = localStorage.getItem("restaurantName") || "Unknown Restaurant";
+    const restaurantAddress = localStorage.getItem("restaurantAddress") || "Unknown Address";
+    const planCuisine = localStorage.getItem("planCuisine") || "Unknown Cuisine";
+    const planDate = localStorage.getItem("planDate") || new Date().toISOString().split("T")[0];
+    const planAttendees = localStorage.getItem("planAttendees") || "Unknown Guests";
 
-        const restaurantName = localStorage.getItem("restaurantName");
-        const restaurantAddress = localStorage.getItem("restaurantAddress");
-        const restaurantTime = localStorage.getItem("restaurantTime");
-        const restaurantPhone = localStorage.getItem("restaurantPhone");
-        const planCuisine = localStorage.getItem("planCuisine");
-        const planDate = localStorage.getItem("planDate");
-        const planAttendees = localStorage.getItem("planAttendees");
-
+    // 🔹 Sample plan data
     const samplePlan = {
         location: 'Chicago, IL',
         people: planAttendees,
-        occasion: 'Birthday Party',
         date: planDate,
         restaurants: [
-            {name: restaurantName, cuisine: planCuisine, address: restaurantAddress, isStatic: '', longitude: -87.6312, latitude: 41.8839},
-            {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', isStatic: '* Static for Demo 1', longitude: -87.6272, latitude: 41.8811},
-            {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', isStatic: '* Static for Demo 1', longitude: -87.6205, latitude: 41.8795}
+            { name: restaurantName, cuisine: planCuisine, address: restaurantAddress, isStatic:''},
+            { name: 'Restaurant B', cuisine: 'Mexican', address: '', isStatic:'*Static for demo 1'},
+            { name: 'Restaurant C', cuisine: 'Japanese', address: '', isStatic:'*Static for demo 1'}
         ],
         events: [
-            {name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', isStatic: '* Static for Demo 1', longitude: -87.6298, latitude: 41.8803},
-            {name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', isStatic: '* Static for Demo 1', longitude: -87.6268, latitude: 41.8785},
-            {
-                name: 'London House Night',
-                type: 'Party',
-                address: '85 E Wacker Dr',
-                isStatic: '* Static for Demo 1',
-                longitude: -87.6270,
-                latitude: 41.8765
-            }
+            { name: 'DJ Daddy Concert', type: 'Music', address: '', isStatic:'*Static for demo 1' },
+            { name: 'Art Exhibition', type: 'Art', address: '', isStatic:'*Static for demo 1' },
+            { name: 'London House Night', type: 'Party', address: '', isStatic:'*Static for demo 1' }
         ]
     };
 
+    // 🔹 Load plan on page load
     loadPlan(samplePlan);
-</script>
 
 </script>
 </body>
