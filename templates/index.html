@@ -302,6 +302,7 @@
                                 <option>🎭 Event</option>
                             </select>
                         </div>
+                        <span class="font-mulish font-light text-[8px]">*Not Included For Demo 1</span>
                     </div>
                 </div>
 
@@ -318,12 +319,13 @@
                                 <option selected>🎭 Event</option>
                             </select>
                         </div>
+                        <span class="font-mulish font-light text-[8px]">*Not Included For Demo 1</span>
                     </div>
                 </div>
 
                 <!-- 7) Final Button (e.g., "Plan") -->
                 <div class="flex items-center px-6 py-2">
-                    <button class="p-4 bg-custom-blue hover:bg-gray-700 text-white rounded-2xl">
+                    <button id="plan-button" class="p-4 bg-custom-blue hover:bg-gray-700 text-white rounded-2xl">
                         <!-- Planner Icon (Bag) -->
                         <img class="h-6 w-auto" src="../static/search.svg"/>
                     </button>
@@ -337,7 +339,7 @@
                 <div class="flex flex-col items-center space-x-1 ml-1">
                     <!-- Location Search -->
                     <div class="flex flex-col w-full mt-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="location-search-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Place to Explore?
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -348,7 +350,7 @@
                     </div>
                     <!-- Date -->
                     <div class="flex flex-col w-full mt-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="adventure-date-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Pick Your Date
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -360,7 +362,7 @@
                     </div>
                     <!-- Preferred Time -->
                     <div class="flex flex-col w-full mt-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="preferred-time-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Preferred Time
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -376,7 +378,7 @@
                     </div>
                     <!-- Guests -->
                     <div class="flex flex-col w-full mt-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="planning-for-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Planning For
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -398,7 +400,7 @@
                     </div>
                     <!-- Activity 1 Picker -->
                     <div class="flex flex-col w-full mt-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="activity-1-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Activity 1
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -411,7 +413,7 @@
                     </div>
                     <!-- Activity 2 Picker -->
                     <div class="flex flex-col w-full mt-2 mb-2">
-                        <label for="location-search" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
+                        <label for="activity-2-mobile" class="font-mulish text-[12px] text-gray-500 md:text-[14px] md:font-semibold mb-1 mt-2">
                             Activity 2
                         </label>
                         <div class="flex items-center space-x-2 mt-1 border border-gray-300 rounded-lg p-2">
@@ -425,7 +427,7 @@
                 </div>
 
                 <!-- Search Button -->
-                <button class="font-poppins w-full bg-custom-white text-custom-blue font-semibold py-2 mt-6 mb-2 rounded-full hover:bg-custom-blue hover:text-white cursor-pointer">
+                <button id="plan-button-mobile" class="font-poppins w-full bg-custom-white text-custom-blue font-semibold py-2 mt-6 mb-2 rounded-full hover:bg-custom-blue hover:text-white cursor-pointer">
                     Plan It
                 </button>
             </div>
@@ -924,7 +926,72 @@
                 userDropdownMenu.classList.add("hidden");
             }
         });
-    
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get form elements
+        const locationInput = document.getElementById("location-search");
+        const dateInput = document.getElementById("adventure-date");
+        const timeInput = document.getElementById("preferred-time");
+        const guestsInput = document.getElementById("planning-for");
+        const locationInputMobile = document.getElementById("location-search");
+
+        // Set date restrictions
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + 14); // Allow up to 14 days ahead
+
+        const todayStr = today.toISOString().split("T")[0];
+        const futureDateStr = futureDate.toISOString().split("T")[0];
+
+        dateInput.setAttribute("min", todayStr);
+        dateInput.setAttribute("max", futureDateStr);
+        dateInput.value = todayStr; // Pre-populate today's date
+
+        // Prepopulate form if data exists in localStorage
+        function populateForm() {
+            if (localStorage.getItem("location")) {
+                locationInput.value = localStorage.getItem("location");
+            }
+            if (localStorage.getItem("date")) {
+                dateInput.value = localStorage.getItem("date");
+            }
+            if (localStorage.getItem("time")) {
+                timeInput.value = localStorage.getItem("time");
+            }
+            if (localStorage.getItem("guests")) {
+                guestsInput.value = localStorage.getItem("guests");
+            }
+        }
+        populateForm(); // Run function to prepopulate data
+
+        // Save data to localStorage when input is changed
+        function saveToLocalStorage() {
+            localStorage.setItem("location", locationInput.value);
+            localStorage.setItem("date", dateInput.value);
+            localStorage.setItem("time", timeInput.value);
+            localStorage.setItem("guests", guestsInput.value);
+        }
+
+        // Add event listeners to save data when inputs change
+        locationInput.addEventListener("input", saveToLocalStorage);
+        dateInput.addEventListener("input", saveToLocalStorage);
+        timeInput.addEventListener("change", saveToLocalStorage);
+        guestsInput.addEventListener("change", saveToLocalStorage);
+
+        // Handle form submission and redirect to SphereAI
+        document.getElementById("plan-button").addEventListener("click", function () {
+            saveToLocalStorage(); // Ensure data is saved before redirecting
+            window.location.href = "/SphereAi/"; // Redirect to SphereAI page
+        });
+
+        document.getElementById("plan-button-mobile").addEventListener("click", function () {
+            saveToLocalStorage(); // Ensure data is saved before redirecting
+            window.location.href = "/SphereAi/"; // Redirect to SphereAI page
+        });
+    });
+
+
 
 
 

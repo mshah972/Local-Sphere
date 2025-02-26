@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Sphere - Your Local Guide</title>
@@ -84,55 +84,57 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div>
                     <div>
                         {% if user.is_authenticated %}
-                            <!-- When Logged In: Show Profile with Dropdown -->
-                            <div class="relative">
-                                <button id="userDropdownButton" type="button"
+                        <!-- When Logged In: Show Profile with Dropdown -->
+                        <div class="relative">
+                            <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
-                                    <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path id="userArrowPath" fill-rule="evenodd"
-                                            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                            clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                    
-                                <!-- Dropdown Menu -->
-                                <div id="userDropdownMenu"
-                                    class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
-                                    <a href="{% url 'logout' %}"
-                                        class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
-                                        Logout
-                                    </a>
-                                </div>
-                            </div>
-                            {% else %}
-                            <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
-                            <div class="flex items-center gap-4">
-                                <!-- Log In Button -->
-                                <a href="{% url 'login' %}"
-                                    class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
-                                    Log in
-                                </a>
+                                <img src="../static/defaultProfile.png" alt="Profile Picture"
+                                     class="w-8 h-8 rounded-full mr-2">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                     fill="currentColor" aria-hidden="true">
+                                    <path id="userArrowPath" fill-rule="evenodd"
+                                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
 
-                                <!-- "Start Exploring" Button -->
-                                <a href="{% url 'signup' %}"
-                                    class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                                    <span aria-hidden="true">&rarr;</span>
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu"
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Logout
                                 </a>
                             </div>
+                        </div>
+                        {% else %}
+                        <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                        <div class="flex items-center gap-4">
+                            <!-- Log In Button -->
+                            <a href="{% url 'login' %}"
+                               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                Log in
+                            </a>
+
+                            <!-- "Start Exploring" Button -->
+                            <a href="{% url 'signup' %}"
+                               class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
-    
+
         <!-- Mobile menu, show/hide based on menu open state. -->
         <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
             <div class="fixed inset-0 z-10"></div>
@@ -195,462 +197,538 @@
         </div>
     </header>
 
-      <!-- NEW PAGE COPY THIS UP  -->
+    <!-- NEW PAGE COPY THIS UP  -->
 
-      <div
-        class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
-      >
+    <div
+            class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
+    >
         <div
-          class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
+                class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
         >
-          <!-- Background Image -->
-          <img
-            src="../static/sphereAiBack.png"
-            alt="Process Diagram"
-            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
-          />
+            <!-- Background Image -->
+            <img
+                    src="../static/sphereAiBack.png"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
 
-          <div class="relative flex flex-col items-center w-full space-y-12">
-            <!-- 📌 Card 1: User's Event Selection -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="box-location" class="text-md">Chicago, IL</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
-                </span>
-                <span id="box-date" class="text-md"
-                  >Waiting For User Selection...</span
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
                 </span>
-                <span id="box-time" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
+                        <span id="box-location" class="text-md">Chicago, IL</span>
+                    </h3>
 
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/people.png" />
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
                 </span>
-                <span id="box-guests" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
+                        <span id="box-date" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
 
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
                 </span>
-                <span id="box-food" class="text-md"
-                  >Waiting For User Selection...</span
+                        <span id="box-time" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
-              </h3>
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Fetched User Data
+                    </h2>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="user-fav-foods" class="text-md">Mexican</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="user-preferred-location" class="text-md"
+                        >Chicago, IL</span
+                        >
+                    </h3>
+                </div>
             </div>
-
-            <!-- 🔽 Arrow -->
-            <div class="w-6 h-6">
-              <svg
-                class="w-full h-full text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-            </div>
-
-            <!-- 📌 Card 2: User’s Personal Data from Signup -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-              <h2 class="text-gray-800 font-semibold text-lg">
-                Fetched User Data
-              </h2>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
-                <span class="mr-2">
-                  <img class="h-6 w-auto" src="../static/foodIcon.svg" />
-                </span>
-                <span id="user-fav-foods" class="text-md">Mexican</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="user-preferred-location" class="text-md"
-                  >Chicago, IL</span
-                >
-              </h3>
-            </div>
-          </div>
         </div>
 
         <div
-          class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col"
+                class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col"
         >
-          <div class="flex flex-row justify-between items-center w-full mr-5">
-            <div class="flex flex-col items-start justify-between w-full">
-              <label class="font-mulish text-gray-400 text-[12px] font-normal"
-                >Preferred Location</label
-              >
-              <div
-                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-              >
+            <div class="flex flex-row justify-between items-center w-full mr-5">
+                <div class="flex flex-col items-start justify-between w-full">
+                    <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                    >Preferred Location</label
+                    >
+                    <div
+                            class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
                 </span>
-                <input
-                  id="location"
-                  type="text"
-                  value="Chicago, IL"
-                  class="w-full focus:outline-none"
-                  readonly
-                />
-              </div>
-            </div>
-            <div class="flex flex-col items-start justify-between w-full ml-4">
-              <label class="font-mulish text-gray-400 text-[12px] font-normal"
-                >Preferred Date</label
-              >
-              <div
-                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-              >
+                        <input
+                                id="location"
+                                type="text"
+                                value="Chicago, IL"
+                                class="w-full focus:outline-none"
+                                readonly
+                        />
+                    </div>
+                </div>
+                <div class="flex flex-col items-start justify-between w-full ml-4">
+                    <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                    >Preferred Date</label
+                    >
+                    <div
+                            class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
                 </span>
-                <input
-                  id="preferred-date"
-                  type="date"
-                  class="w-full focus:outline-none"
-                  required
-                />
-              </div>
+                        <input
+                                id="preferred-date"
+                                type="date"
+                                class="w-full focus:outline-none"
+                                required
+                        />
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Preferred Time</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Preferred Time</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
-                <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                <img class="h-5 w-auto" src="../static/dayORnight.png"/>
               </span>
-              <select
-                id="preferred-time"
-                class="text-[16px] font-normal rounded-md w-full"
-                required
-              >
-                <option disabled selected hidden>Choose Time</option>
-                <option>Morning</option>
-                <option>Afternoon</option>
-                <option>Evening</option>
-                <option>Night</option>
-              </select>
+                    <select
+                            id="preferred-time"
+                            class="text-[16px] font-normal rounded-md w-full"
+                            required
+                    >
+                        <option disabled selected hidden>Choose Time</option>
+                        <option>Morning</option>
+                        <option>Afternoon</option>
+                        <option>Evening</option>
+                        <option>Night</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Total Attendee(s)</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
-              <span class="mr-2">
-                <img
-                  class="h-5 w-auto"
-                  src="../static/people.png"
-                  alt="Peoples Icon"
-                />
-              </span>
-              <select
-                id="guests"
-                class="text-[16px] font-normal rounded-md w-full"
-              >
-                <option disabled selected hidden>Choose Guests</option>
-                <option>1 Guest</option>
-                <option>2 Guests</option>
-                <option>3 Guests</option>
-                <option>4 Guests</option>
-                <option>5 Guests</option>
-                <option>6 Guests</option>
-                <option>7 Guests</option>
-                <option>8 Guests</option>
-                <option>9 Guests</option>
-                <option>10+ Guests</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Favorite Food & Cuisines</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Total Attendee(s)</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
                 <img
-                  class="h-5 w-auto"
-                  src="../static/foodIcon.svg"
-                  alt="Peoples Icon"
+                        class="h-5 w-auto"
+                        src="../static/people.png"
+                        alt="Peoples Icon"
                 />
               </span>
-              <select
-                id="food"
-                class="text-[16px] font-normal rounded-md w-full"
-              >
-                <option disabled selected hidden>Choose Food</option>
-                <option>Italian</option>
-                <option>Mexican</option>
-                <option>American</option>
-                <option>Chinese</option>
-              </select>
+                    <select
+                            id="guests"
+                            class="text-[16px] font-normal rounded-md w-full"
+                    >
+                        <option disabled selected hidden>Choose Guests</option>
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                        <option>5 Guests</option>
+                        <option>6 Guests</option>
+                        <option>7 Guests</option>
+                        <option>8 Guests</option>
+                        <option>9 Guests</option>
+                        <option>10+ Guests</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <!-- Buttons -->
-          <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
-            <button
-              id="recreate-btn"
-              class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
-            >
-              Craft Your Plan
-            </button>
-          </div>
-          <!--HERE-->
-          <div id="response-container" class="mt-4"></div>
-          <!--HERE-->
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Favorite Food & Cuisines</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
+              <span class="mr-2">
+                <img
+                        class="h-5 w-auto"
+                        src="../static/foodIcon.svg"
+                        alt="Peoples Icon"
+                />
+              </span>
+                    <select
+                            id="food"
+                            class="text-[16px] font-normal rounded-md w-full"
+                    >
+                        <option disabled selected hidden>Choose Food</option>
+                        <option>Italian</option>
+                        <option>Mexican</option>
+                        <option>American</option>
+                        <option>Chinese</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
+                <button
+                        id="recreate-btn"
+                        class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                >
+                    Craft Your Plan
+                </button>
+            </div>
+            <!--HERE-->
+            <div id="response-container" class="mt-4"></div>
+            <!--HERE-->
         </div>
 
         <div
-          class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
+                class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
         >
-          <!-- Background Image -->
-          <img
-            src="../static/sphereAiBack.png"
-            alt="Process Diagram"
-            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
-          />
+            <!-- Background Image -->
+            <img
+                    src="../static/sphereAiBack.png"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
 
-          <div class="relative flex flex-col items-center w-full space-y-12">
-            <!-- 📌 Card 1: User's Event Selection -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span class="text-md">Chicago, IL</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
-                </span>
-                <span id="box-date-mobile" class="text-md"
-                  >Waiting For User Selection...</span
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
                 </span>
-                <span id="box-time-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
+                        <span class="text-md">Chicago, IL</span>
+                    </h3>
 
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/people.png" />
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
                 </span>
-                <span id="box-guests-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
+                        <span id="box-date-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
 
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
                 </span>
-                <span id="box-food-mobile" class="text-md"
-                  >Waiting For User Selection...</span
+                        <span id="box-time-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
-              </h3>
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Fetched User Data
+                    </h2>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="user-food-mobile" class="text-md">Mexican</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="user-preferred-location-mobile" class="text-md"
+                        >Chicago, IL</span
+                        >
+                    </h3>
+                </div>
             </div>
-
-            <!-- 🔽 Arrow -->
-            <div class="w-6 h-6">
-              <svg
-                class="w-full h-full text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-            </div>
-
-            <!-- 📌 Card 2: User’s Personal Data from Signup -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-              <h2 class="text-gray-800 font-semibold text-lg">
-                Fetched User Data
-              </h2>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
-                <span class="mr-2">
-                  <img class="h-6 w-auto" src="../static/foodIcon.svg" />
-                </span>
-                <span id="user-food-mobile" class="text-md">Mexican</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="user-preferred-location-mobile" class="text-md"
-                  >Chicago, IL</span
-                >
-              </h3>
-            </div>
-          </div>
         </div>
-      </div>
-    </main>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
+    </div>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Loading SphereAI page data...");
+
+        // Check if data was stored in localStorage (which means page was accessed via redirect)
+        let redirected = localStorage.getItem("date") !== null;
+
+        // Set date based on redirect status
+        const today = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(today.getDate() + 14);
+
+        const todayStr = today.toISOString().split("T")[0];
+        const maxDateStr = maxDate.toISOString().split("T")[0];
+
+        // If redirected, use stored date; otherwise, use today's date
+        const date = redirected ? localStorage.getItem("date") : todayStr;
+
+        // Retrieve other stored values or set defaults
+        const location = localStorage.getItem("location") || "Chicago, IL";
+        const time = localStorage.getItem("time") || "Choose Time";
+        const guests = localStorage.getItem("guests") || "Choose Guests";
+        const food = localStorage.getItem("food") || "Choose Food";
+
+        // Populate form fields with stored values
+        document.getElementById("location").value = location;
+        document.getElementById("preferred-date").value = date; // FIX: Ensures correct date
+        document.getElementById("preferred-time").value = time;
+        document.getElementById("guests").value = guests;
+        document.getElementById("food").value = food;
+
+        // Populate left-side summary dynamically
+        document.getElementById("box-location").textContent = location;
+        document.getElementById("box-date").textContent = date; // FIX: Ensures correct date in left container
+        document.getElementById("box-time").textContent = time;
+        document.getElementById("box-guests").textContent = guests;
+        document.getElementById("box-food").textContent = food;
+
+        // Mobile view population
+        document.getElementById("box-date-mobile").textContent = date;
+        document.getElementById("box-time-mobile").textContent = time;
+        document.getElementById("box-guests-mobile").textContent = guests;
+        document.getElementById("box-food-mobile").textContent = food;
+
+        const dateInput = document.getElementById("preferred-date");
+        dateInput.setAttribute("min", todayStr);
+        dateInput.setAttribute("max", maxDateStr);
+
+        console.log("SphereAI data loaded successfully with date:", date);
+
+        // 🔹 Clear data only if redirected from index.html
+        if (redirected) {
+            setTimeout(() => {
+                localStorage.removeItem("location");
+                localStorage.removeItem("date");
+                localStorage.removeItem("time");
+                localStorage.removeItem("guests");
+                localStorage.removeItem("food");
+                console.log("LocalStorage data cleared after switch.");
+            }, 1000); // 1-second delay to ensure values are populated first
+        }
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
         // Simulated fetched user profile data from the database (Replace with API call)
         const userProfile = {
-          location: "Chicago, IL",
-          food: "Italian",
+            location: "Chicago, IL",
+            food: "Italian",
         };
 
         // Get all form inputs
         const formInputs = {
-          location: document.getElementById("location"),
-          date: document.getElementById("preferred-date"),
-          time: document.getElementById("preferred-time"),
-          attendees: document.getElementById("guests"),
-          food: document.getElementById("food"),
+            location: document.getElementById("location"),
+            date: document.getElementById("preferred-date"),
+            time: document.getElementById("preferred-time"),
+            attendees: document.getElementById("guests"),
+            food: document.getElementById("food"),
         };
 
         // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
-          boxLocation: document.getElementById("box-location"),
-          boxDate: document.getElementById("box-date"),
-          boxTime: document.getElementById("box-time"),
-          boxAttendees: document.getElementById("box-guests"),
-          boxFood: document.getElementById("box-food"),
+            boxLocation: document.getElementById("box-location"),
+            boxDate: document.getElementById("box-date"),
+            boxTime: document.getElementById("box-time"),
+            boxAttendees: document.getElementById("box-guests"),
+            boxFood: document.getElementById("box-food"),
 
-          // Mobile version elements
-          boxLocationMobile: document.getElementById("box-location-mobile"),
-          boxDateMobile: document.getElementById("box-date-mobile"),
-          boxTimeMobile: document.getElementById("box-time-mobile"),
-          boxAttendeesMobile: document.getElementById("box-guests-mobile"),
-          boxFoodMobile: document.getElementById("box-food-mobile"),
+            // Mobile version elements
+            boxLocationMobile: document.getElementById("box-location-mobile"),
+            boxDateMobile: document.getElementById("box-date-mobile"),
+            boxTimeMobile: document.getElementById("box-time-mobile"),
+            boxAttendeesMobile: document.getElementById("box-guests-mobile"),
+            boxFoodMobile: document.getElementById("box-food-mobile"),
         };
 
         // Function to update values dynamically for both desktop & mobile versions
         function updateDisplay(field, value) {
-          if (
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
-            ]
-          ) {
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
-            ].textContent = value || "--";
-          }
-          if (
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
-            ]
-          ) {
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
-            ].textContent = value || "--";
-          }
+            if (
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+                    ]
+            ) {
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+                    ].textContent = value || "--";
+            }
+            if (
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+                    ]
+            ) {
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+                    ].textContent = value || "--";
+            }
         }
 
         Object.keys(formInputs).forEach((key) => {
-          formInputs[key].addEventListener("input", function () {
-            updateDisplay(key, this.value);
-          });
+            formInputs[key].addEventListener("input", function () {
+                updateDisplay(key, this.value);
+            });
         });
 
         // Ensure Datepicker Only Allows Today & Future Dates
+        // Ensure Datepicker Only Allows Today & Up to 14 Days in the Future
+        // Ensure Datepicker Only Allows Today & Up to 14 Days in the Future
         const dateInput = formInputs.date;
-        const today = new Date().toISOString().split("T")[0];
-        dateInput.setAttribute("min", today);
+        const today = new Date();
+        const futureDate = new Date();
+        futureDate.setDate(today.getDate() + 14); // Set future max date to 14 days from today
+
+        const todayStr = today.toISOString().split("T")[0];
+        const futureDateStr = futureDate.toISOString().split("T")[0];
+
+        dateInput.setAttribute("min", todayStr);  // Set min date as today
+        dateInput.setAttribute("max", futureDateStr); // Set max date as 14 days from today
+        dateInput.value = todayStr; // Pre-populate today's date
 
         dateInput.addEventListener("change", function () {
-          this.blur();
+            this.blur();
         });
 
+        // Close date picker when clicking outside
         document.addEventListener("click", function (event) {
-          if (!dateInput.contains(event.target)) {
-            dateInput.blur();
-          }
+            if (!dateInput.contains(event.target)) {
+                dateInput.blur();
+            }
         });
+
 
         const userDropdownButton = document.getElementById("userDropdownButton");
         const userDropdownMenu = document.getElementById("userDropdownMenu");
@@ -667,53 +745,53 @@
         });
 
         function updateUserProfile() {
-          document.getElementById("user-fav-foods").textContent =
-            userProfile.food;
-          document.getElementById("user-food-mobile").textContent =
-            userProfile.food;
-          document.getElementById("user-preferred-location").textContent =
-            userProfile.location;
-          document.getElementById(
-            "user-preferred-location-mobile"
-          ).textContent = userProfile.location;
+            document.getElementById("user-fav-foods").textContent =
+                userProfile.food;
+            document.getElementById("user-food-mobile").textContent =
+                userProfile.food;
+            document.getElementById("user-preferred-location").textContent =
+                userProfile.location;
+            document.getElementById(
+                "user-preferred-location-mobile"
+            ).textContent = userProfile.location;
 
-          formInputs.food.value = userProfile.food;
-          updateDisplay("food", userProfile.food);
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
         }
 
         updateUserProfile();
 
         formInputs.food.addEventListener("change", function () {
-          const selectedFood = this.value.trim();
-          const foodDisplay = document.getElementById("user-fav-foods");
-          const foodDisplayMobile = document.getElementById("user-food-mobile");
+            const selectedFood = this.value.trim();
+            const foodDisplay = document.getElementById("user-fav-foods");
+            const foodDisplayMobile = document.getElementById("user-food-mobile");
 
-          if (selectedFood && selectedFood !== userProfile.food) {
-            foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
-            foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+            if (selectedFood && selectedFood !== userProfile.food) {
+                foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+                foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
 
-            document
-              .getElementById("reset-food")
-              .addEventListener("click", resetFood);
-            document
-              .getElementById("reset-food-mobile")
-              .addEventListener("click", resetFood);
-          } else {
-            foodDisplay.innerHTML = `${userProfile.food}`;
-            foodDisplayMobile.innerHTML = `${userProfile.food}`;
-          }
+                document
+                    .getElementById("reset-food")
+                    .addEventListener("click", resetFood);
+                document
+                    .getElementById("reset-food-mobile")
+                    .addEventListener("click", resetFood);
+            } else {
+                foodDisplay.innerHTML = `${userProfile.food}`;
+                foodDisplayMobile.innerHTML = `${userProfile.food}`;
+            }
         });
 
         // Function to reset food to user's fetched data
         function resetFood() {
-          formInputs.food.value = userProfile.food;
-          updateDisplay("food", userProfile.food);
-          document.getElementById(
-            "user-fav-foods"
-          ).innerHTML = `${userProfile.food}`;
-          document.getElementById(
-            "user-food-mobile"
-          ).innerHTML = `${userProfile.food}`;
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
+            document.getElementById(
+                "user-fav-foods"
+            ).innerHTML = `${userProfile.food}`;
+            document.getElementById(
+                "user-food-mobile"
+            ).innerHTML = `${userProfile.food}`;
         }
 
         // START OF
@@ -724,23 +802,23 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-          const apiKey = "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";
-          const apiUrl = "https://api.openai.com/v1/chat/completions";
-          const maxRetries = 3; // Maximum number of retries
-          let retryCount = 0;
+            const apiKey = "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";
+            const apiUrl = "https://api.openai.com/v1/chat/completions";
+            const maxRetries = 3; // Maximum number of retries
+            let retryCount = 0;
 
-          const responseContainer = document.getElementById("response-container");
-          responseContainer.textContent = "Loading...";
+            const responseContainer = document.getElementById("response-container");
+            responseContainer.textContent = "Loading...";
 
-          // Fetch input values
-          const location = formInputs.location.value;
-          const date = formInputs.date.value;
-          const time = formInputs.time.value;
-          const attendees = formInputs.attendees.value;
-          const food = formInputs.food.value;
+            // Fetch input values
+            const location = formInputs.location.value;
+            const date = formInputs.date.value;
+            const time = formInputs.time.value;
+            const attendees = formInputs.attendees.value;
+            const food = formInputs.food.value;
 
-          // Updated prompt to enforce valid JSON output
-          const prompt = `Please provide a date plan in ${location} on ${date} for ${attendees} people.
+            // Updated prompt to enforce valid JSON output
+            const prompt = `Please provide a date plan in ${location} on ${date} for ${attendees} people.
               The plan should include a restaurant that serves ${food} cuisine.
 
               Return ONLY valid JSON in the exact format below. Do NOT include any extra text, explanations, or markdown formatting:
@@ -753,84 +831,84 @@
                 }
               }`;
 
-          async function fetchData() {
-            try {
-              const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                  model: "gpt-4",
-                  messages: [
-                    {
-                      role: "system",
-                      content: "You are a helpful event planner that provides responses strictly in JSON format.",
-                    },
-                    { role: "user", content: prompt },
-                  ],
-                }),
-              });
+            async function fetchData() {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${apiKey}`,
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-4",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: "You are a helpful event planner that provides responses strictly in JSON format.",
+                                },
+                                {role: "user", content: prompt},
+                            ],
+                        }),
+                    });
 
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-              }
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
 
-              const data = await response.json();
-              let message = data.choices[0].message.content.trim(); // Trim any extra spaces
-              console.log("Raw AI Response:", message);
+                    const data = await response.json();
+                    let message = data.choices[0].message.content.trim(); // Trim any extra spaces
+                    console.log("Raw AI Response:", message);
 
-              // Extract JSON portion from response
-              let jsonStartIndex = message.indexOf("{"); // Find where JSON starts
-              let jsonString = message.substring(jsonStartIndex).trim(); // Extract only the JSON part
+                    // Extract JSON portion from response
+                    let jsonStartIndex = message.indexOf("{"); // Find where JSON starts
+                    let jsonString = message.substring(jsonStartIndex).trim(); // Extract only the JSON part
 
-              // Try to parse the extracted JSON
-              try {
-                const parsedMessage = JSON.parse(jsonString);
-                console.log("Parsed JSON:", parsedMessage);
+                    // Try to parse the extracted JSON
+                    try {
+                        const parsedMessage = JSON.parse(jsonString);
+                        console.log("Parsed JSON:", parsedMessage);
 
-                let restaurantData = parsedMessage.restaurant || parsedMessage.plan?.restaurant;
+                        let restaurantData = parsedMessage.restaurant || parsedMessage.plan?.restaurant;
 
-                if (!restaurantData) {
-                  throw new Error("Invalid JSON structure: No restaurant data found");
+                        if (!restaurantData) {
+                            throw new Error("Invalid JSON structure: No restaurant data found");
+                        }
+
+                        // Extract restaurant details
+                        const restaurantName = parsedMessage.restaurant?.name || "Unavailable";
+                        const restaurantAddress = parsedMessage.restaurant?.address || "Unavailable";
+                        const restaurantCuisine = parsedMessage.restaurant?.cuisine || "Unavailable";
+
+                        // Store in localStorage
+                        localStorage.setItem("restaurantName", restaurantName);
+                        localStorage.setItem("restaurantAddress", restaurantAddress);
+                        localStorage.setItem("planCuisine", restaurantCuisine);
+                        localStorage.setItem("planDate", date);
+                        localStorage.setItem("planAttendees", attendees);
+
+                        // Redirect to confirmation page
+                        window.location.href = "/planConfirmation/";
+
+                    } catch (parseError) {
+                        console.error("JSON parsing error:", parseError);
+
+                        if (retryCount < maxRetries) {
+                            retryCount++;
+                            console.log(`Retrying... Attempt ${retryCount}`);
+                            await fetchData(); // Retry API call
+                        } else {
+                            console.error("Max retries reached. Could not parse JSON.");
+                            responseContainer.textContent = "Failed to process the response.";
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    responseContainer.textContent = "Failed to fetch response.";
                 }
-
-                // Extract restaurant details
-                const restaurantName = parsedMessage.restaurant?.name || "Unavailable";
-                const restaurantAddress = parsedMessage.restaurant?.address || "Unavailable";
-                const restaurantCuisine = parsedMessage.restaurant?.cuisine || "Unavailable";
-
-                // Store in localStorage
-                localStorage.setItem("restaurantName", restaurantName);
-                localStorage.setItem("restaurantAddress", restaurantAddress);
-                localStorage.setItem("planCuisine", restaurantCuisine);
-                localStorage.setItem("planDate", date);
-                localStorage.setItem("planAttendees", attendees);
-
-                // Redirect to confirmation page
-                window.location.href = "/planConfirmation/";
-
-              } catch (parseError) {
-                console.error("JSON parsing error:", parseError);
-
-                if (retryCount < maxRetries) {
-                  retryCount++;
-                  console.log(`Retrying... Attempt ${retryCount}`);
-                  await fetchData(); // Retry API call
-                } else {
-                  console.error("Max retries reached. Could not parse JSON.");
-                  responseContainer.textContent = "Failed to process the response.";
-                }
-              }
-            } catch (error) {
-              console.error("Error:", error);
-              responseContainer.textContent = "Failed to fetch response.";
             }
-          }
 
-          // Initial call to fetchData
-          await fetchData();
+            // Initial call to fetchData
+            await fetchData();
         });
 
         // document
@@ -942,115 +1020,115 @@
         // DISCLAIMER: THE API KEY IS EXPOSED BE CAREFUL
         // END OF
         // FRONTEND API
-      });
-      // END OF DOM CONTENT LOADED EVENT LISTENER
+    });
+    // END OF DOM CONTENT LOADED EVENT LISTENER
 
-      ////////////////////////////////////// Header Script /////////////////////////////////////
+    ////////////////////////////////////// Header Script /////////////////////////////////////
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
         const dropdownMenu = document.getElementById("companyDropdownMenu");
         const dropdownIcon = document.getElementById("dropdownIcon");
         const arrowPath = document.getElementById("arrowPath");
 
         toggleButton.addEventListener("click", function () {
-          if (dropdownMenu.classList.contains("hidden")) {
-            // Show dropdown with animation
-            dropdownMenu.classList.remove("hidden");
-            setTimeout(() => {
-              dropdownMenu.classList.remove("opacity-0", "scale-95");
-              dropdownMenu.classList.add("opacity-100", "scale-100");
-            }, 10);
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
 
-            // Rotate the arrow up
-            dropdownIcon.classList.add("rotate-180");
-          } else {
-            // Hide dropdown with animation
-            dropdownMenu.classList.remove("opacity-100", "scale-100");
-            dropdownMenu.classList.add("opacity-0", "scale-95");
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              dropdownMenu.classList.add("hidden");
-            }, 300); // Wait for animation to complete before hiding
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
 
-            // Rotate the arrow back down
-            dropdownIcon.classList.remove("rotate-180");
-          }
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-          if (
-            !toggleButton.contains(event.target) &&
-            !dropdownMenu.contains(event.target)
-          ) {
-            dropdownMenu.classList.remove("opacity-100", "scale-100");
-            dropdownMenu.classList.add("opacity-0", "scale-95");
+            if (
+                !toggleButton.contains(event.target) &&
+                !dropdownMenu.contains(event.target)
+            ) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              dropdownMenu.classList.add("hidden");
-            }, 300);
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
 
-            // Reset arrow to down position
-            dropdownIcon.classList.remove("rotate-180");
-          }
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
         });
-      });
+    });
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const mobileDropdownButton = document.getElementById(
-          "mobileCompanyButton"
+            "mobileCompanyButton"
         );
         const mobileDropdown = document.getElementById("mobileCompanyDropdown");
         const mobileDropdownIcon =
-          document.getElementById("mobileDropdownIcon");
+            document.getElementById("mobileDropdownIcon");
         const mobileArrowPath = document.getElementById("mobileArrowPath");
 
         mobileDropdownButton.addEventListener("click", function () {
-          if (mobileDropdown.classList.contains("hidden")) {
-            // Show dropdown with animation
-            mobileDropdown.classList.remove("hidden");
-            setTimeout(() => {
-              mobileDropdown.classList.remove("opacity-0", "scale-95");
-              mobileDropdown.classList.add("opacity-100", "scale-100");
-            }, 10);
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
 
-            // Rotate the arrow up
-            mobileDropdownIcon.classList.add("rotate-180");
-          } else {
-            // Hide dropdown with animation
-            mobileDropdown.classList.remove("opacity-100", "scale-100");
-            mobileDropdown.classList.add("opacity-0", "scale-95");
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              mobileDropdown.classList.add("hidden");
-            }, 300); // Wait for animation to complete before hiding
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
 
-            // Rotate the arrow back down
-            mobileDropdownIcon.classList.remove("rotate-180");
-          }
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-          if (
-            !mobileDropdownButton.contains(event.target) &&
-            !mobileDropdown.contains(event.target)
-          ) {
-            mobileDropdown.classList.remove("opacity-100", "scale-100");
-            mobileDropdown.classList.add("opacity-0", "scale-95");
+            if (
+                !mobileDropdownButton.contains(event.target) &&
+                !mobileDropdown.contains(event.target)
+            ) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              mobileDropdown.classList.add("hidden");
-            }, 300);
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
 
-            // Reset arrow to down position
-            mobileDropdownIcon.classList.remove("rotate-180");
-          }
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
         });
-      });
+    });
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const mobileMenu = document.getElementById("mobileMenu");
         const openMobileMenu = document.getElementById("openMobileMenu");
         const closeMobileMenu = document.getElementById("closeMobileMenu");
@@ -1058,19 +1136,19 @@
 
         // Open mobile menu when clicking the hamburger button
         openMobileMenu.addEventListener("click", function () {
-          mobileMenu.classList.remove("hidden");
+            mobileMenu.classList.remove("hidden");
         });
 
         // Close mobile menu when clicking the close button
         closeMobileMenu.addEventListener("click", function () {
-          mobileMenu.classList.add("hidden");
+            mobileMenu.classList.add("hidden");
         });
 
         // Close mobile menu when clicking outside (on the backdrop)
         mobileBackdrop.addEventListener("click", function () {
-          mobileMenu.classList.add("hidden");
+            mobileMenu.classList.add("hidden");
         });
-      });
-    </script>
-  </body>
+    });
+</script>
+</body>
 </html>
