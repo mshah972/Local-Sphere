@@ -204,7 +204,7 @@
 
         <div class="relative z-10 flex flex-col items-center h-full px-4 pt-16 md:pt-15 text-white">
             <!-- Greeting -->
-            <p class="font-mulish mb-2 text-sm lg:text-xl md:text-base">Good Morning ☀️</p>
+            <p id="dynamicGreeting" class="font-mulish mb-2 text-sm lg:text-xl md:text-base"></p>
             <!-- Main Heading -->
             <h1 class="font-mulish text-2xl md:text-4xl lg:text-6xl font-bold text-center leading-tight mb-8">
                 Craft Your Perfect Day in
@@ -762,6 +762,104 @@
 </main>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const apiKey = "b84f959e6ea47b4faf97b74709d55105";
+
+        // Fetch weather data
+        async function fetchWeather(lat, lon) {
+            try {
+                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`Weather API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data.main || !data.weather) {
+                    throw new Error("Invalid weather data received.");
+                }
+
+                // Extract data
+                const temperature = Math.round(data.main.temp);
+                const weatherCondition = data.weather[0].main.toLowerCase();
+
+                // Weather icon mapping
+                const weatherIcons = {
+                    "clear": "./static/weather-icons/clear.svg",
+                    "clouds": "./static/weather-icons/cloud.svg",
+                    "rain": "./static/weather-icons/rain.svg",
+                    "snow": "./static/weather-icons/snow.svg",
+                    "thunderstorm": "./static/weather-icons/thunderstorm.svg",
+                    "mist": "./static/weather-icons/mist.svg",
+                    "fog": "./static/weather-icons/mist.svg",
+                    "haze": "./static/weather-icons/mist.svg",
+                    "drizzle": "./static/weather-icons/drizzle.svg",
+                };
+                const weatherIconSrc = weatherIcons[weatherCondition] || "./static/weather-icons/weather-error.svg";
+
+                // Update UI
+                document.getElementById("weather-temp").innerText = `${temperature} °F`;
+                document.getElementById("weather-icon").src = weatherIconSrc;
+
+            } catch (error) {
+                console.error("Weather fetch error:", error);
+                document.getElementById("weather-temp").innerText = "N/A";
+                document.getElementById("weather-icon").src = "./static/weather-icons/weather-error.svg";
+            }
+        }
+
+        // Fetch city name
+        async function fetchCityName(lat, lon) {
+            try {
+                const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
+                const response = await fetch(geoApiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`Geolocation API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data.length) {
+                    throw new Error("No city data found.");
+                }
+
+                const cityName = data[0].name;
+                document.getElementById("city-name").innerText = cityName;
+                document.getElementById("location-search").value = cityName;
+                document.getElementById("location-search-mobile").value = cityName;
+
+            } catch (error) {
+                console.error("City fetch error:", error);
+                document.getElementById("city-name").innerText = "Unknown Location";
+            }
+        }
+
+        // Get user location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        fetchWeather(latitude, longitude);
+                        fetchCityName(latitude, longitude);
+                    },
+                    (error) => {
+                        console.error("Geolocation error:", error);
+                        document.getElementById("city-name").innerText = "Location Unavailable";
+                        document.getElementById("weather-temp").innerText = "N/A";
+                        document.getElementById("weather-icon").src = "./static/weather-icons/weather-error.svg";
+                    }
+                );
+            } else {
+                console.error("Geolocation not supported.");
+                document.getElementById("city-name").innerText = "Geolocation Not Supported";
+            }
+        }
+
+        // Run location function on page load
+        getUserLocation();
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
         // Simulated user authentication - Replace with actual authentication check
@@ -788,6 +886,28 @@
             if (loginButton) loginButton.remove();
             if (mobileLoginButton) mobileLoginButton.remove();
         }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const greetingElement = document.getElementById("dynamicGreeting");
+
+        // Get the current hour
+        const currentHour = new Date().getHours();
+        let greetingMessage = "Hello 👋";
+
+        // Determine the appropriate greeting based on the time
+        if (currentHour >= 5 && currentHour < 12) {
+            greetingMessage = "Good Morning ☀️";
+        } else if (currentHour >= 12 && currentHour < 17) {
+            greetingMessage = "Good Afternoon 🌤️";
+        } else if (currentHour >= 17 && currentHour < 21) {
+            greetingMessage = "Good Evening 🌇";
+        } else {
+            greetingMessage = "Good Night 🌙";
+        }
+
+        // Update the greeting text dynamically
+        greetingElement.textContent = greetingMessage;
     });
 
 
@@ -924,117 +1044,6 @@
             mobileMenu.classList.add("hidden");
         });
     });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const apiKey = "b84f959e6ea47b4faf97b74709d55105"; // Replace with your actual API key
-
-        async function fetchWeather(lat, lon) {
-            try {
-                const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
-                const response = await fetch(apiUrl);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                // Extract necessary data
-                const temperature = Math.round(data.main.temp);
-                const weatherCondition = data.weather[0].main.toLowerCase(); // Example: "clear", "clouds", "rain"
-
-                // Mapping Weather Conditions to Custom Icons
-                const weatherIcons = {
-                    "clear": "./static/weather-icons/clear.svg",
-                    "clouds": "./static/weather-icons/cloud.svg",
-                    "rain": "./static/weather-icons/rain.svg",
-                    "snow": "./static/weather-icons/snow.svg",
-                    "thunderstorm": "./static/weather-icons/thunderstorm.svg",
-                    "mist": "./static/weather-icons/mist.svg",
-                    "fog": "./static/weather-icons/mist.svg",
-                    "haze": "./static/weather-icons/mist.svg",
-                    "drizzle": "./static/weather-icons/drizzle.svg",
-                };
-
-                // Use mapped icon, or default to "clear.png" if not found
-                const weatherIconSrc = weatherIcons[weatherCondition] || "./static/weather-icons/weather-error.svg";
-
-                // Update UI
-                document.getElementById("weather-temp").innerText = `${temperature} °F`;
-                document.getElementById("weather-icon").src = weatherIconSrc;
-
-            } catch (error) {
-                console.error("Error fetching weather data:", error);
-                document.getElementById("weather-temp").innerText = "Error";
-                document.getElementById("weather-icon").src = "./static/weather-icons/weather-error.svg";
-            }
-        }
-
-        // Get user's location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    fetchWeather(lat, lon);
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
-                    document.getElementById("weather-temp").innerText = "Error";
-                    document.getElementById("weather-icon").src = "./static/weather-icons/weather-error.svg";
-                }
-            );
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const apiKey = "b84f959e6ea47b4faf97b74709d55105";
-
-        async function fetchCityName(lat, lon) {
-            try {
-                const geoApiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
-                const response = await fetch(geoApiUrl);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                if (data.length > 0) {
-                    const cityName = data[0].name;  // Get city name
-                    document.getElementById("city-name").innerText = cityName;
-                    document.getElementById("location-search").value = cityName;
-                    document.getElementById("location-search-mobile").value = cityName;
-                } else {
-                    console.error("No city data found");
-                }
-            } catch (error) {
-                console.error("Error fetching city name:", error);
-                document.getElementById("city-name").innerText = "Enter location";
-            }
-        }
-
-        // Get user's location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    fetchCityName(lat, lon);
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
-                    document.getElementById("city-name").innerText = "Geolocation Error";
-                }
-            );
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    });
-
 
 </script>
 </body>
