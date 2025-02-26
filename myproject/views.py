@@ -46,10 +46,10 @@ def signup(request):
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
-
-        if len(phone) != 10 or not phone.isnumeric():
-            messages.error(request, "Telephone is invalid")
-            return redirect('signup')
+        if phone!= '':
+            if len(phone) != 10 or not phone.isnumeric():
+                messages.error(request, "Telephone is invalid")
+                return redirect('signup')
         # Create user
         user = CustomUser.objects.create_user(
             email=email,
