@@ -204,6 +204,7 @@
                     💾 Save Plan
                 </button>
             </div>
+            <p class="font-mulish font-normal text-gray-500 text-sm pt-4">* Map is static for demo 1</p>
         </div>
     </div>
 
@@ -257,6 +258,7 @@
                     💾 Save Plan
                 </button>
             </div>
+            <p class="font-mulish font-normal text-gray-500 text-sm pt-4">* Map is static for demo 1</p>
         </div>
     </div>
 </main>
@@ -385,6 +387,7 @@
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [-87.6298, 41.8781], // Default Chicago, IL
         zoom: 10,
+        interactive: false,
     });
 
     const mapMobile = new mapboxgl.Map({
@@ -437,6 +440,7 @@
                         <span class="font-semibold text-[16px]">${restaurant.name}</span>
                         <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
                         <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
                     </div>
 
                 </div>`;
@@ -455,7 +459,7 @@
                         <span class="font-semibold text-[18px]">${restaurant.name}</span>
                         <p class="font-semibold text-custom-blue text-[14px] pt-1">${restaurant.cuisine}</p>
                         <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
                     </div>
                 </div>
             </div>`;
@@ -486,6 +490,7 @@
                         <p class="font-semibold text-[16px]">${event.name}</p>
                         <p class="font-semibold right-0 text-custom-blue text-[12px] pt-1">${event.type}</p>
                         <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
                     </div>
                 </div>`;
             addMarker(map, event.longitude, event.latitude, event.name, bounds);
@@ -503,7 +508,7 @@
                         <span class="font-semibold text-[18px]">${event.name}</span>
                         <p class="font-semibold text-custom-blue text-[14px] pt-1">${event.type}</p>
                         <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
-                        <button class="text-custom-blue font-medium pt-2 text-[14px] cursor-pointer">View</button>
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
                     </div>
                 </div>
             </div>`;
@@ -523,17 +528,18 @@
         occasion: 'Birthday Party',
         date: 'Wed 12th, 2024',
         restaurants: [
-            {name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', longitude: -87.6312, latitude: 41.8839},
-            {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', longitude: -87.6272, latitude: 41.8811},
-            {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', longitude: -87.6205, latitude: 41.8795}
+            {name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', isStatic: '', longitude: -87.6312, latitude: 41.8839},
+            {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', isStatic: '* Static for Demo 1', longitude: -87.6272, latitude: 41.8811},
+            {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', isStatic: '* Static for Demo 1', longitude: -87.6205, latitude: 41.8795}
         ],
         events: [
-            {name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', longitude: -87.6298, latitude: 41.8803},
-            {name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', longitude: -87.6268, latitude: 41.8785},
+            {name: 'DJ Daddy Concert', type: 'Music', address: 'Arena St', isStatic: '* Static for Demo 1', longitude: -87.6298, latitude: 41.8803},
+            {name: 'Art Exhibition', type: 'Art', address: 'Gallery Ln', isStatic: '* Static for Demo 1', longitude: -87.6268, latitude: 41.8785},
             {
                 name: 'London House Night',
                 type: 'Party',
                 address: '85 E Wacker Dr',
+                isStatic: '* Static for Demo 1',
                 longitude: -87.6270,
                 latitude: 41.8765
             }
