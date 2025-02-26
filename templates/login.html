@@ -208,7 +208,32 @@
                  </ul>
                  {% endif %}
                  <!-- Login Form -->
+                 <form method="POST" action="{% url 'login' %}" class="mt-6 space-y-4 w-full">
+                     {% csrf_token %}
 
+                     <div class="text-left">
+                         <label class="text-[#A1A1A1] font-light text-sm">Email Address or Username</label>
+                         <input type="text" name="username" placeholder="john.doe@example.com"
+                                class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue"
+                                required>
+                     </div>
+
+                     <div class="text-left relative">
+                         <label class="text-[#A1A1A1] font-light text-sm">Password</label>
+                         <input type="password" name="password" placeholder="Enter Your Password"
+                                class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue"
+                                required>
+                     </div>
+
+                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 py-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
+                         Sign In
+                     </button>
+
+                     <p class="text-gray-500 text-sm mt-6">
+                         Don’t have an account? <a href="{% url 'signup' %}" class="text-custom-blue font-semibold">Sign Up</a>
+                     </p>
+                     <a href="{% url 'forgot' %}" class="text-custom-blue text-sm mt-4 font-semibold">Forgot Password?</a>
+                 </form>
              </div>
          </div>
      </section>

@@ -64,7 +64,7 @@
               >Explore</a
             >
             <a
-              href="SphereAi"
+              href="#"
               class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer"
               >SphereAi</a
             >
@@ -191,7 +191,7 @@
                     >Explore</a
                   >
                   <a
-                    href="{% url 'SphereAi' %}"
+                    href="#"
                     class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
                     >SphereAi</a
                   >
@@ -436,7 +436,7 @@
               </span>
               <select
                 id="preferred-time"
-                class="text-[16px] font-normal rounded-md"
+                class="text-[16px] font-normal rounded-md w-full"
                 required
               >
                 <option disabled selected hidden>Choose Time</option>
@@ -462,7 +462,7 @@
                   alt="Peoples Icon"
                 />
               </span>
-              <select id="guests" class="text-[16px] font-normal rounded-md">
+              <select id="guests" class="text-[16px] font-normal rounded-md w-full">
                 <option disabled selected hidden>Choose Guests</option>
                 <option>1 Guest</option>
                 <option>2 Guests</option>
@@ -492,7 +492,7 @@
                   alt="Peoples Icon"
                 />
               </span>
-              <select id="food" class="text-[16px] font-normal rounded-md">
+              <select id="food" class="text-[16px] font-normal rounded-md w-full">
                 <option disabled selected hidden>Choose Food</option>
                 <option>Italian</option>
                 <option>Mexican</option>
@@ -506,7 +506,7 @@
           <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
             <button
               id="recreate-btn"
-              class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+              class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
             >
               Craft Your Plan
             </button>
@@ -770,7 +770,7 @@
         document
           .getElementById("recreate-btn")
           .addEventListener("click", async function () {
-            const apiKey = "API KEY GOES HERE";
+            const apiKey = "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";
             const apiUrl = "https://api.openai.com/v1/chat/completions";
 
             const responseContainer =
