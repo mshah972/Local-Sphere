@@ -50,7 +50,7 @@
                     Explore
                 </a>
                 <!-- SphereAi -->
-                <a href="SphereAi"
+                <a href="{% url 'SphereAi' %}"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
                     SphereAi
                 </a>
@@ -391,8 +391,7 @@ ddocument.addEventListener("DOMContentLoaded", function () {
             cuisineTag.dataset.cuisine = selectedValue; // Set data attribute for easy identification
             cuisineTag.innerHTML = `
             <span>${selectedValue}</span>
-            <span class="ml-2 cursor-pointer removeCuisine"><img class="w-5 h-auto" src="../static/removeIcon.svg"></span>
-        `;
+            <span class="ml-2 cursor-pointer removeCuisine"><img class="w-5 h-auto" src="../static/removeIcon.svg"></span>`;
 
             // Append to the list
             userCuisinesDisplay.appendChild(cuisineTag);
