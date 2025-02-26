@@ -123,11 +123,15 @@
               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold"
               >Plan Confirmation (Testing)</a
             >
-            <a
-              href="{% url 'login' %}"
-              class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold"
-              >Log in</a
-            >
+            {% if not user.is_authenticated %}
+            <!-- Login Button (Hidden if Logged In) -->
+            <a id="login-button" href="{% url 'login' %}"
+               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Log in</a>
+            {% else %}
+            <!-- Logout Button (Shown if Logged In) -->
+            <a id="logout-button" href="{% url 'logout_view' %}"
+               class="font-mulish text-base font-bold text-custom-red hover:font-extrabold">Log out</a>
+            {% endif %}
             <div>
               <button
                 class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"

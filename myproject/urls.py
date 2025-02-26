@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),  # Homepage
@@ -28,4 +29,8 @@ urlpatterns = [
     path('forgot/', views.forgot, name='forgot'),
     path('creation/', views.creation, name='creation'),
     path('account/', views.my_account, name='my_account'),
+    path('logout/', views.logout_view, name='logout_view'),
+
+
+
 ]

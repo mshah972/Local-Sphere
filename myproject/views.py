@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
+from django.contrib.auth import logout  # ✅ Import this
+
 
 
 def index(request):
@@ -91,6 +93,12 @@ def user_login(request):  # Fixed function name
             return redirect('login')
 
     return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)  # Logs out the user
+    return redirect('index')  # Redirect to home page (update as needed)
+
+
 
 
 @login_required
