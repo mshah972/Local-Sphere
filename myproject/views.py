@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
 from django.contrib.auth import logout  # ✅ Import this
-
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -61,8 +61,13 @@ def signup(request):
             user.save()
 
         messages.success(request, "User registered successfully!")
-        return redirect('creation')
-
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('creation')
+        else:
+            messages.error(request, "Error")
+            return redirect('index')
     return render(request, 'signup.html')
 
 
@@ -114,6 +119,6 @@ def planConfirmation(request):
 def forgot(request):
     return render(request, 'forgot.html')
 
-
+@login_required(login_url='login')  # Redirect to login page if not authenticated
 def creation(request):
     return render(request, 'UserCreation.html')
