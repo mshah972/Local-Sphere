@@ -841,8 +841,10 @@
                 const parsedMessage = JSON.parse(jsonString);
                 console.log("Parsed JSON:", parsedMessage);
 
-                if (!parsedMessage || !parsedMessage.restaurant) {
-                  throw new Error("Invalid JSON structure");
+                let restaurantData = parsedMessage.restaurant || parsedMessage.plan?.restaurant;
+
+                if (!restaurantData) {
+                  throw new Error("Invalid JSON structure: No restaurant data found");
                 }
 
                 // Extract restaurant details
