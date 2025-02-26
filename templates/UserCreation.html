@@ -37,24 +37,31 @@
                         class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
                     <span class="sr-only">Open main menu</span>
                     <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                         aria-hidden="true" data-slot="icon">
+                         aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
                     </svg>
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <!-- Explore Button -->
                 <a href="#"
-                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">Explore</a>
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    Explore
+                </a>
+                <!-- SphereAi -->
                 <a href="SphereAi"
-                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">SphereAi</a>
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    SphereAi
+                </a>
+                <!-- Company Dropdown -->
                 <div class="relative">
                     <button id="companyButton" type="button"
                             class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
                             aria-label="false">
                         Company
                         <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
-                             fill="currentColor" aria-hidden="true" data-slot="icon">
+                             fill="currentColor" aria-hidden="true">
                             <path id="arrowPath" fill-rule="evenodd"
                                   d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
                                   clip-rule="evenodd"/>
@@ -78,16 +85,27 @@
                     </div>
                 </div>
                 <a href="{% url 'planConfirmation' %}"
-                   class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Plan Confirmation
-                    (Testing)</a>
-                <a href="{% url 'login' %}"
-                   class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Log in</a>
+                   class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Plan Confirmation (Testing)</a>
+                
+                {% if not user.is_authenticated %}
+                    <!-- Login Button (Hidden if Logged In) -->
+                    <a id="login-button" href="{% url 'login' %}"
+                       class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">Log in</a>
+                {% endif %}
+    
+                <!-- Blue Button (Profile Picture + Name if Logged In, Start Exploring if Logged Out) -->
                 <div>
-                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                        <span aria-hidden="true">&rarr;</span>
-                    </button>
+                    <a href="{% if user.is_authenticated %}{% url 'my_account' %}{% else %}#{% endif %}"
+                       class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                        {% if user.is_authenticated %}
+                            <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
+                            <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                        {% else %}
+                            <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                            <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        {% endif %}
+                    </a>
                 </div>
             </div>
         </nav>
@@ -279,6 +297,33 @@
     </div>
 </main>
 <script>
+
+ddocument.addEventListener("DOMContentLoaded", function () {
+        // Simulated user authentication - Replace with actual authentication check
+        const userLoggedIn = true; // Change to false to simulate logged-out state
+        const userFirstName = "John"; // Replace with actual first name
+        const userLastName = "Doe"; // Replace with actual last name
+
+        const exploreLink = document.getElementById("explore-link");
+        const loginButton = document.getElementById("login-button");
+
+        const mobileExploreLink = document.getElementById("mobile-explore-link");
+        const mobileLoginButton = document.getElementById("mobile-login-button");
+
+        if (userLoggedIn) {
+            // Change 'Explore' to 'My Account' with First and Last Name
+            exploreLink.textContent = `${userFirstName} ${userLastName}`;
+            exploreLink.href = "/my-account"; // Update with actual account page URL
+            exploreLink.classList.add("cursor-pointer", "hover:font-extrabold");
+
+            mobileExploreLink.textContent = `${userFirstName} ${userLastName}`;
+            mobileExploreLink.href = "/my-account"; // Update with actual account page URL
+
+            // Remove Login Button (Desktop & Mobile)
+            if (loginButton) loginButton.remove();
+            if (mobileLoginButton) mobileLoginButton.remove();
+        }
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
         const fileInput = document.getElementById("fileInput");
