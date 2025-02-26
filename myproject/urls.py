@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.urls import path
+from .views import logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +30,6 @@ urlpatterns = [
     path('forgot/', views.forgot, name='forgot'),
     path('creation/', views.creation, name='creation'),
     path('account/', views.my_account, name='my_account'),
+
+    path('logout/', logout_view, name='logout'),
 ]

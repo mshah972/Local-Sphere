@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
 
 
@@ -109,3 +111,7 @@ def forgot(request):
 
 def creation(request):
     return render(request, 'UserCreation.html')
+
+def logout_view(request):
+    logout(request)  # Logs the user out
+    return redirect('index')  # Redirects to the index page
