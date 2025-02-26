@@ -462,7 +462,10 @@
                   alt="Peoples Icon"
                 />
               </span>
-              <select id="guests" class="text-[16px] font-normal rounded-md w-full">
+              <select
+                id="guests"
+                class="text-[16px] font-normal rounded-md w-full"
+              >
                 <option disabled selected hidden>Choose Guests</option>
                 <option>1 Guest</option>
                 <option>2 Guests</option>
@@ -492,7 +495,10 @@
                   alt="Peoples Icon"
                 />
               </span>
-              <select id="food" class="text-[16px] font-normal rounded-md w-full">
+              <select
+                id="food"
+                class="text-[16px] font-normal rounded-md w-full"
+              >
                 <option disabled selected hidden>Choose Food</option>
                 <option>Italian</option>
                 <option>Mexican</option>
@@ -770,8 +776,11 @@
         document
           .getElementById("recreate-btn")
           .addEventListener("click", async function () {
-            const apiKey = "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";
+            const apiKey =
+              "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";
             const apiUrl = "https://api.openai.com/v1/chat/completions";
+            const maxRetries = 3; // Maximum number of retries
+            let retryCount = 0;
 
             const responseContainer =
               document.getElementById("response-container");
@@ -783,49 +792,101 @@
             const attendees = formInputs.attendees.value;
             const food = formInputs.food.value;
 
-            const prompt = `Provide a date plan by selecting a restaurant based on these parameters:
-            - Location: ${location}
-            - Date: ${date}
-            - Time: ${time}
-            - Number of Attendees: ${attendees}
-            - Favorite Food: ${food}
-            `;
+            const prompt = `Please provide a date plan in ${location} on ${date} for ${attendees} people. The plan should include:
+        1. A ${food} restaurant.
 
-            try {
-              const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                  model: "gpt-4",
-                  messages: [
-                    {
-                      role: "system",
-                      content: "You are a helpful event planner.",
-                    },
-                    { role: "user", content: prompt },
-                  ],
-                }),
-              });
+        Return the response in JSON format:
 
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+            {{
+                "restaurant": {{
+                "name": "Restaurant Name",
+                "address": "123 Main St, City",
+                "cuisine": "Mexican",
+                "time": "7:00 PM",
+                "phone": "+1-234-567-8901"
+            }},
+        }}`;
+
+            async function fetchData() {
+              try {
+                const response = await fetch(apiUrl, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${apiKey}`,
+                  },
+                  body: JSON.stringify({
+                    model: "gpt-4",
+                    messages: [
+                      {
+                        role: "system",
+                        content:
+                          "You are a helpful event planner that will provide a response based on your current knowledge. Do not worry that you do not have real time access to future data just return a JSON object that we can parse with JSON.parse",
+                      },
+                      { role: "user", content: prompt },
+                    ],
+                  }),
+                });
+
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const message = data.choices[0].message.content;
+
+                console.log(message);
+
+                // Try to parse the message as JSON
+                try {
+                  const parsedMessage = JSON.parse(message);
+                  //console.log("Parsed message:", parsedMessage);
+
+                  const restaurantName =
+                    parsedMessage.restaurant?.name || "Unavailable";
+                  const restaurantAddress =
+                    parsedMessage.restaurant?.address || "Unavailable";
+                  const restaurantTime =
+                    parsedMessage.restaurant?.time || "Unavailable";
+                  const restaurantPhone =
+                    parsedMessage.restaurant?.phone || "Unavailable";
+                  const restaurantCuisine =
+                    parsedMessage.restaurant?.cuisine || "Unavailable";
+
+                  localStorage.setItem("restaurantName", restaurantName);
+                  localStorage.setItem("restaurantAddress", restaurantAddress);
+                  localStorage.setItem("restaurantTime", restaurantTime);
+                  localStorage.setItem("restaurantPhone", restaurantPhone);
+                  localStorage.setItem("planDate", date);
+                  localStorage.setItem("planAttendees", attendees);
+
+                  window.location.href = "/planConfirmation/";
+                } catch (parseError) {
+                  console.error("JSON parsing error:", parseError);
+                  if (retryCount < maxRetries) {
+                    retryCount++;
+                    console.log(`Retrying... Attempt ${retryCount}`);
+                    await fetchData(); // Retry the API call
+                  } else {
+                    throw new Error(
+                      "Max retries reached. Could not parse JSON."
+                    );
+                  }
+                }
+              } catch (error) {
+                console.error("Error:", error);
+                responseContainer.textContent = "Failed to fetch response.";
               }
-              console.log("Sending API request...");
-              const data = await response.json();
-              const message = data.choices[0].message.content;
-              responseContainer.textContent = message;
-            } catch (error) {
-              console.error("Error:", error);
-              responseContainer.textContent = "Failed to fetch response.";
             }
+
+            // Initial call to fetchData
+            await fetchData();
           });
         // DISCLAIMER: THE API KEY IS EXPOSED BE CAREFUL
         // END OF
         // FRONTEND API
       });
+      // END OF DOM CONTENT LOADED EVENT LISTENER
 
       ////////////////////////////////////// Header Script /////////////////////////////////////
 

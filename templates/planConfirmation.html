@@ -264,6 +264,7 @@
 </main>
 
 <script>
+    
     document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
         const dropdownMenu = document.getElementById("companyDropdownMenu");
@@ -522,13 +523,23 @@
 
     }
 
+    
+
+        const restaurantName = localStorage.getItem("restaurantName");
+        const restaurantAddress = localStorage.getItem("restaurantAddress");
+        const restaurantTime = localStorage.getItem("restaurantTime");
+        const restaurantPhone = localStorage.getItem("restaurantPhone");
+        const restaurantCuisine = localStorage.getItem("restaurantCuisine");
+        const planDate = localStorage.getItem("planDate");
+        const planAttendees = localStorage.getItem("planAttendees");
+
     const samplePlan = {
         location: 'Chicago, IL',
-        people: 6,
+        people: planAttendees,
         occasion: 'Birthday Party',
-        date: 'Wed 12th, 2024',
+        date: planDate,
         restaurants: [
-            {name: 'Restaurant A', cuisine: 'Italian', address: '123 Main St', isStatic: '', longitude: -87.6312, latitude: 41.8839},
+            {name: restaurantName, cuisine: restaurantCuisine, address: restaurantAddress, isStatic: '', longitude: -87.6312, latitude: 41.8839},
             {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', isStatic: '* Static for Demo 1', longitude: -87.6272, latitude: 41.8811},
             {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', isStatic: '* Static for Demo 1', longitude: -87.6205, latitude: 41.8795}
         ],
