@@ -802,8 +802,6 @@
                 "name": "Restaurant Name",
                 "address": "123 Main St, City",
                 "cuisine": "Mexican",
-                "time": "7:00 PM",
-                "phone": "+1-234-567-8901"
             }},
         }}`;
 
@@ -821,7 +819,7 @@
                       {
                         role: "system",
                         content:
-                          "You are a helpful event planner that will provide a response based on your current knowledge. Do not worry that you do not have real time access to future data just return a JSON object that we can parse with JSON.parse",
+                          "You are a helpful event planner that will provide a response based on your current knowledge. Do not worry that you do not have real time access to future data. It is okay if you are a little unsure about the data, but just respond in a JSON object that we can parse with JSON.parse",
                       },
                       { role: "user", content: prompt },
                     ],
@@ -840,7 +838,7 @@
                 // Try to parse the message as JSON
                 try {
                   const parsedMessage = JSON.parse(message);
-                  //console.log("Parsed message:", parsedMessage);
+                  console.log("Parsed message:", parsedMessage);
 
                   const restaurantName =
                     parsedMessage.restaurant?.name || "Unavailable";
@@ -850,13 +848,12 @@
                     parsedMessage.restaurant?.time || "Unavailable";
                   const restaurantPhone =
                     parsedMessage.restaurant?.phone || "Unavailable";
-                  const restaurantCuisine =
-                    parsedMessage.restaurant?.cuisine || "Unavailable";
 
                   localStorage.setItem("restaurantName", restaurantName);
                   localStorage.setItem("restaurantAddress", restaurantAddress);
                   localStorage.setItem("restaurantTime", restaurantTime);
                   localStorage.setItem("restaurantPhone", restaurantPhone);
+                  localStorage.setItem("planCuisine", food);
                   localStorage.setItem("planDate", date);
                   localStorage.setItem("planAttendees", attendees);
 

@@ -529,7 +529,7 @@
         const restaurantAddress = localStorage.getItem("restaurantAddress");
         const restaurantTime = localStorage.getItem("restaurantTime");
         const restaurantPhone = localStorage.getItem("restaurantPhone");
-        const restaurantCuisine = localStorage.getItem("restaurantCuisine");
+        const planCuisine = localStorage.getItem("planCuisine");
         const planDate = localStorage.getItem("planDate");
         const planAttendees = localStorage.getItem("planAttendees");
 
@@ -539,7 +539,7 @@
         occasion: 'Birthday Party',
         date: planDate,
         restaurants: [
-            {name: restaurantName, cuisine: restaurantCuisine, address: restaurantAddress, isStatic: '', longitude: -87.6312, latitude: 41.8839},
+            {name: restaurantName, cuisine: planCuisine, address: restaurantAddress, isStatic: '', longitude: -87.6312, latitude: 41.8839},
             {name: 'Restaurant B', cuisine: 'Mexican', address: '456 Elm St', isStatic: '* Static for Demo 1', longitude: -87.6272, latitude: 41.8811},
             {name: 'Restaurant C', cuisine: 'Japanese', address: '789 Oak St', isStatic: '* Static for Demo 1', longitude: -87.6205, latitude: 41.8795}
         ],
