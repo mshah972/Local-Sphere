@@ -760,7 +760,9 @@
           ).innerHTML = `${userProfile.food}`;
         }
 
+        // START OF
         // FRONTEND API
+        // DISCLAIMER: THE API KEY IS EXPOSED BE CAREFUL
         // Get all form inputs
         // const formInputs contains all user inputs
 
@@ -781,13 +783,13 @@
             const attendees = formInputs.attendees.value;
             const food = formInputs.food.value;
 
-            const prompt = `Create a detailed plan for an event with the following details:
+            const prompt = `Provide a date plan by selecting a restaurant based on these parameters:
             - Location: ${location}
             - Date: ${date}
             - Time: ${time}
             - Number of Attendees: ${attendees}
             - Favorite Food: ${food}
-            Please provide a comprehensive plan including venue suggestions, activities, and food recommendations.`;
+            `;
 
             try {
               const response = await fetch(apiUrl, {
@@ -797,7 +799,7 @@
                   Authorization: `Bearer ${apiKey}`,
                 },
                 body: JSON.stringify({
-                  model: "gpt-3.5-turbo", // Use the model you want
+                  model: "gpt-4",
                   messages: [
                     {
                       role: "system",
@@ -811,6 +813,7 @@
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
+              console.log("Sending API request...");
               const data = await response.json();
               const message = data.choices[0].message.content;
               responseContainer.textContent = message;
@@ -819,6 +822,8 @@
               responseContainer.textContent = "Failed to fetch response.";
             }
           });
+        // DISCLAIMER: THE API KEY IS EXPOSED BE CAREFUL
+        // END OF
         // FRONTEND API
       });
 
