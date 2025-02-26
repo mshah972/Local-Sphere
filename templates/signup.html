@@ -23,7 +23,7 @@
             }
         </style>
     </head>
-    <body class="bg-custom-white">
+
     <main role="main" class="flex flex-col mb-10 min-h-screen">
         <header class="relative z-50">
             <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
@@ -208,6 +208,13 @@
                 <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
                 <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Start Creating Exciting Night Outs</h1>
                 <p class="font-normal text-gray-500 text-sm mt-2">Your Smart City Companion Starts Here</p>
+                {% if messages %}
+                <div class="mt-4 p-4 bg-red-500 border border-red-700 text-white font-semibold rounded-lg shadow-md">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
                 <!-- Login Form -->
                 <form method="POST" action="{% url 'signup' %}" class="mt-6 space-y-4 w-full">
@@ -248,6 +255,7 @@
                         <input type="password" name="confirm_password" placeholder="Confirm Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
+
                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
                         Sign Up
                     </button>
@@ -281,6 +289,7 @@
                 <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
                 <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Welcome Back, Explorer</h1>
                 <p class="font-normal text-gray-500 text-sm mt-2">Back to Building Better Days</p>
+
 
                 <!-- Login Form -->
                 <form class="mt-6 space-y-4 w-full">
@@ -316,11 +325,13 @@
                         </div>
                     </div>
 
+
                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
                         Sign Up
                     </button>
 
                     <div class="flex items-center justify-between w-full gap-4 mt-4">
+
                         <button class="bg-black w-full h-14 text-white py-2 px-6 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 cursor-pointer">
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="2443" height="2500" preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google">
                                 <path fill="#4285F4" d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
@@ -340,6 +351,9 @@
                     <p class="text-gray-500 text-sm mt-6">
                         Already have an account? <a href="{% url 'login' %}" class="text-custom-blue font-semibold">Sign In</a>
                     </p>
+
+
+
                 </form>
             </div>
         </div>

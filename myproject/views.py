@@ -33,6 +33,7 @@ def signup(request):
         last_name = request.POST.get('lname')
         phone = request.POST.get('phone')
 
+
         # Validation
         if not email:
             messages.error(request, "Email is required.")
@@ -46,6 +47,9 @@ def signup(request):
             messages.error(request, "Passwords do not match.")
             return redirect('signup')
 
+        if len(phone) != 10 or not phone.isnumeric():
+            messages.error(request, "Telephone is invalid")
+            return redirect('signup')
         # Create user
         user = CustomUser.objects.create_user(
             email=email,
