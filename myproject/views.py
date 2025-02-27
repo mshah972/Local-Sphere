@@ -69,7 +69,6 @@ def signup(request):
         if new_user:
             login(request, new_user) 
 
-        messages.success(request, "User registered successfully!")
         return redirect('creation') 
 
     return render(request, 'signup.html')
