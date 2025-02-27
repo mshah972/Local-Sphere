@@ -94,10 +94,9 @@ def user_login(request):  # Fixed function name
 
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successful!")
             return redirect('index')  # Redirect to index (homepage)
         else:
-            messages.error(request, "Invalid email/username or password.")
+            messages.error(request, "Invalid username or password.")
             return redirect('login')
 
     return render(request, 'login.html')

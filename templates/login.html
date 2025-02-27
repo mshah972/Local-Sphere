@@ -209,6 +209,13 @@
                  <img src="../static/logo2.svg" alt="Local Sphere Logo" class="w-32 mx-auto">
                  <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Welcome Back, Explorer</h1>
                  <p class="font-normal text-gray-500 text-sm mt-2">Back to Building Better Days</p>
+                 {% if messages %}
+                <div class="mt-4 p-4 bg-red-500 border border-red-700 text-white font-semibold rounded-lg shadow-md">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
                  <!-- Login Form -->
                  <form method="POST" action="{% url 'login' %}" class="mt-6 space-y-4 w-full">
