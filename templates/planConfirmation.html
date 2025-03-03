@@ -23,6 +23,49 @@
             top: 0;
             width: auto;
         }
+
+        /* 🔹 Skeleton Card */
+        .skeleton-card {
+            background: #f3f3f3;
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px;
+        }
+
+        /* 🔹 Skeleton Image */
+        .skeleton-img {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+            background-size: 400% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* 🔹 Skeleton Text Blocks */
+        .skeleton-text {
+            height: 16px;
+            background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+            background-size: 400% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        /* 🔹 Skeleton Icon (Placeholder for Rating) */
+        .skeleton-icon {
+            background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+            background-size: 400% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 50%;
+        }
+
+        /* 🔹 Loading Animation */
+        @keyframes shimmer {
+            0% {
+                background-position: 100% 0;
+            }
+            100% {
+                background-position: -100% 0;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-custom-white">
@@ -223,6 +266,67 @@
             <!-- Restaurant Recommendations -->
             <h2 class="mt-4 mb-2 text-xl font-medium">Recommended Restaurants</h2>
             <div class="overflow-visible">
+                <div id="restaurant-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Skeleton Card (Matches the real card) -->
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <div class="skeleton-text h-5 w-3/4 mb-2">
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                            </div> <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <div class="skeleton-text h-5 w-3/4 mb-2"></div> <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <div class="skeleton-text h-5 w-3/4 mb-2"></div> <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div id="restaurant-list" class="flex flex-row justify-start w-full gap-6 p-2">
                     <!-- Content dynamically loads here -->
                 </div>
@@ -439,219 +543,377 @@
         });
     });
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoibXNoYWg3NiIsImEiOiJjbTdmZ2dvenAwb2JpMm1weDdtZmR5ZDB6In0.JMxS2qZo-c8JqWcOYfME3A';
-
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-87.6298, 41.8781], // Default Chicago, IL
-        zoom: 10,
-        interactive: false,
-    });
-
-    const mapMobile = new mapboxgl.Map({
-        container: 'map-mobile',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-87.6298, 41.8781], // Default Chicago, IL
-        zoom: 10,
-        interactive: false,
-    });
-
-    // 🔹 Convert address to coordinates
-    async function getCoordinates(address) {
+    ////////////////////////////////////// Header Script /////////////////////////////////////
+    document.addEventListener("DOMContentLoaded", async function () {
         try {
-            const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
-            const data = await response.json();
-            return data.features.length > 0 ? data.features[0].center : null;
-        } catch (error) {
-            console.error("Error fetching coordinates:", error);
-            return null;
-        }
-    }
+            console.log("🔹 Fetching Mapbox API Key...");
 
-    // 🔹 Add marker to map using address or lat/lon
-    async function addMarker(map, addressOrCoords, title, bounds) {
-        let coordinates;
+            const response = await fetch("/api/getMapboxApiKey/");
 
-        if (Array.isArray(addressOrCoords) && addressOrCoords.length === 2) {
-            coordinates = addressOrCoords; // Use lat/lon
-        } else {
-            coordinates = await getCoordinates(addressOrCoords); // Get lat/lon from address
-        }
-
-        if (coordinates) {
-            new mapboxgl.Marker()
-                .setLngLat(coordinates)
-                .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<div class='p-2'><strong>${title}</strong></div>`))
-                .addTo(map);
-
-            bounds.extend(coordinates);
-        }
-    }
-
-    // 🔹 Load and display the plan
-    async function loadPlan(planData) {
-        document.getElementById('location').textContent = planData.location;
-        document.getElementById('plan-details').textContent = `${planData.people} • ${planData.date}`;
-        document.getElementById('location-mobile').textContent = planData.location;
-        document.getElementById('plan-details-mobile').textContent = `${planData.people} • ${planData.date}`;
-
-        const bounds = new mapboxgl.LngLatBounds();
-        const restaurantList = document.getElementById('restaurant-list');
-        const restaurantListMobile = document.getElementById('restaurant-list-mobile');
-        const eventList = document.getElementById('event-list');
-        const eventListMobile = document.getElementById('event-list-mobile');
-
-        restaurantList.innerHTML = '';
-        restaurantListMobile.innerHTML = '';
-        eventList.innerHTML = '';
-        eventListMobile.innerHTML = '';
-
-        for (const restaurant of planData.restaurants) {
-            const { rating, imageUrl } = await getRestaurantDetails(restaurant.name, restaurant.address);
-
-            restaurantList.innerHTML += `
-            <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                <div class="w-full h-20">
-                    <img src="${imageUrl}"
-                         alt="${restaurant.name}"
-                         class="w-full h-full object-cover rounded-t-3xl">
-                </div>
-                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                </button>
-                <div class="flex flex-col items-start justify-between p-4">
-                    <div class="flex flex-row justify-between items-center w-full">
-                        <span class="font-semibold text-[16px]">${restaurant.name}</span>
-                        <p class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${rating}</p>
-                    </div>
-                    <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
-                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
-                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
-                </div>
-            </div>`;
-
-            restaurantListMobile.innerHTML += `
-            <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
-                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-row w-full items-center justify-between p-5">
-                    <div class="flex flex-col items-start justify-start">
-                        <span class="font-semibold text-[18px]">${restaurant.name}</span>
-                        <p class="font-semibold text-custom-blue text-[14px] pt-1">${restaurant.cuisine}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
-                    </div>
-                </div>
-            </div>`;
-
-            await addMarker(map, restaurant.address, restaurant.name, bounds);
-            await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
-        }
-
-        for (const event of planData.events) {
-            eventList.innerHTML += `
-            <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                <div class="w-full h-20">
-                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         alt="Event Image"
-                         class="w-full h-full object-cover rounded-t-3xl">
-                </div>
-                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                </button>
-                <div class="flex flex-col items-start justify-between p-4">
-                    <span class="font-semibold text-[16px]">${event.name}</span>
-                    <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
-                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
-                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
-                </div>
-            </div>`;
-
-            eventListMobile.innerHTML += `
-           <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
-                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                </button>
-
-                <div class="flex flex-row w-full items-center justify-between p-5">
-                    <div class="flex flex-col items-start justify-start">
-                        <span class="font-semibold text-[18px]">${event.name}</span>
-                        <p class="font-semibold text-custom-blue text-[14px] pt-1">${event.type}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
-                    </div>
-                </div>
-            </div>`;
-
-            await addMarker(map, event.address, event.name, bounds);
-            await addMarker(mapMobile, event.address, event.name, bounds);
-        }
-
-        if (!bounds.isEmpty()) {
-            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
-            mapMobile.fitBounds(bounds, { padding: 50, maxZoom: 15 });
-        }
-    }
-
-    // 🔹 Get saved data from localStorage (with fallbacks)
-    const restaurantName = localStorage.getItem("restaurantName") || "Unknown Restaurant";
-    const restaurantAddress = localStorage.getItem("restaurantAddress") || "Unknown Address";
-    const planCuisine = localStorage.getItem("planCuisine") || "Unknown Cuisine";
-    const planDate = localStorage.getItem("planDate") || new Date().toISOString().split("T")[0];
-    const planAttendees = localStorage.getItem("planAttendees") || "Unknown Guests";
-    const fetchedLocation = localStorage.getItem("location") || "Unknown Location";
-
-    // 🔹 Sample plan data
-    const samplePlan = {
-        location: fetchedLocation,
-        people: planAttendees,
-        date: planDate,
-        restaurants: [
-            { name: restaurantName, cuisine: planCuisine, address: restaurantAddress, isStatic:''},
-            { name: 'Restaurant B', cuisine: 'Mexican', address: '', isStatic:'*Static for demo 1'},
-            { name: 'Restaurant C', cuisine: 'Japanese', address: '', isStatic:'*Static for demo 1'}
-        ],
-        events: [
-            { name: 'DJ Daddy Concert', type: 'Music', address: '', isStatic:'*Static for demo 1' },
-            { name: 'Art Exhibition', type: 'Art', address: '', isStatic:'*Static for demo 1' },
-            { name: 'London House Night', type: 'Party', address: '', isStatic:'*Static for demo 1' }
-        ]
-    };
-
-    async function getRestaurantDetails(restaurantName, location) {
-        try {
-            const response = await fetch(`/api/getRestaurantDetails/?restaurantName=${encodeURIComponent(restaurantName)}&location=${encodeURIComponent(location)}`);
-            const data = await response.json();
-
-            if (response.status !== 200) {
-                console.error("Error fetching restaurant:", data.error);
-                return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+            if (!response.ok) {
+                throw new Error(`Server Error: ${response.status}`);
             }
 
-            return {
-                rating: data.rating,
-                imageUrl: data.imageUrl
+            const data = await response.json();
+
+            if (!data.mapboxApiKey) {
+                throw new Error("Mapbox API Key missing in response.");
+            }
+
+            console.log("✅ Mapbox API Key loaded successfully!");
+
+            // Set Mapbox Token
+            mapboxgl.accessToken = data.mapboxApiKey;
+
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [-87.6298, 41.8781], // Default Chicago, IL
+                zoom: 10,
+                interactive: false,
+            });
+
+            const mapMobile = new mapboxgl.Map({
+                container: 'map-mobile',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [-87.6298, 41.8781], // Default Chicago, IL
+                zoom: 10,
+                interactive: false,
+            });
+
+            // 🔹 Convert address to coordinates
+            async function getCoordinates(address) {
+                try {
+                    const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
+                    const data = await response.json();
+                    return data.features.length > 0 ? data.features[0].center : null;
+                } catch (error) {
+                    console.error("Error fetching coordinates:", error);
+                    return null;
+                }
+            }
+
+            // 🔹 Add marker to map using address or lat/lon
+            async function addMarker(map, addressOrCoords, title, bounds) {
+                let coordinates;
+
+                if (Array.isArray(addressOrCoords) && addressOrCoords.length === 2) {
+                    coordinates = addressOrCoords; // Use lat/lon
+                } else {
+                    coordinates = await getCoordinates(addressOrCoords); // Get lat/lon from address
+                }
+
+                if (coordinates) {
+                    new mapboxgl.Marker()
+                        .setLngLat(coordinates)
+                        .setPopup(new mapboxgl.Popup({offset: 25}).setHTML(`<div class='p-2'><strong>${title}</strong></div>`))
+                        .addTo(map);
+
+                    bounds.extend(coordinates);
+                }
+            }
+
+            // 🔹 Load and display the plan
+            // async function loadPlan(planData) {
+            //     document.getElementById('location').textContent = planData.location;
+            //     document.getElementById('plan-details').textContent = `${planData.people} • ${planData.date}`;
+            //     document.getElementById('location-mobile').textContent = planData.location;
+            //     document.getElementById('plan-details-mobile').textContent = `${planData.people} • ${planData.date}`;
+            //
+            //     const bounds = new mapboxgl.LngLatBounds();
+            //     const restaurantList = document.getElementById('restaurant-list');
+            //     const restaurantListMobile = document.getElementById('restaurant-list-mobile');
+            //     const eventList = document.getElementById('event-list');
+            //     const eventListMobile = document.getElementById('event-list-mobile');
+            //     const skeleton = document.getElementById("restaurant-skeleton");
+            //
+            //     skeleton.style.display = "grid";
+            //     restaurantList.style.display = "none";
+            //
+            //     restaurantList.innerHTML = '';
+            //     restaurantListMobile.innerHTML = '';
+            //     eventList.innerHTML = '';
+            //     eventListMobile.innerHTML = '';
+            //
+            //     for (const restaurant of planData.restaurants) {
+            //         const { rating, imageUrl } = await getRestaurantDetails(restaurant.name, restaurant.address);
+            //
+            //         restaurantList.innerHTML += `
+            //         <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+            //             <div class="w-full h-25">
+            //                 <img src="${imageUrl}"
+            //                      alt="${restaurant.name}"
+            //                      class="w-full h-full object-cover rounded-t-3xl">
+            //             </div>
+            //             <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+            //                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+            //                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            //                     </svg>
+            //             </button>
+            //             <div class="flex flex-col items-start justify-between p-4">
+            //                 <div class="flex flex-row justify-between items-center w-full">
+            //                     <span class="font-semibold text-[16px]">${restaurant.name}</span>
+            //                     <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${rating}</span>
+            //                 </div>
+            //                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
+            //                 <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+            //                 <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
+            //             </div>
+            //         </div>`;
+            //
+            //         restaurantListMobile.innerHTML += `
+            //         <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+            //             <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            //                 </svg>
+            //             </button>
+            //
+            //             <div class="flex flex-row w-full items-center justify-between p-5">
+            //                 <div class="flex flex-col items-start justify-start">
+            //                     <span class="font-semibold text-[18px]">${restaurant.name}</span>
+            //                     <p class="font-semibold text-custom-blue text-[14px] pt-1">${restaurant.cuisine}</p>
+            //                     <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
+            //                     <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
+            //                 </div>
+            //             </div>
+            //         </div>`;
+            //
+            //         await addMarker(map, restaurant.address, restaurant.name, bounds);
+            //         await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
+            //     }
+            //
+            //     for (const event of planData.events) {
+            //         eventList.innerHTML += `
+            //         <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+            //             <div class="w-full h-20">
+            //                 <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            //                      alt="Event Image"
+            //                      class="w-full h-full object-cover rounded-t-3xl">
+            //             </div>
+            //             <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+            //                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+            //                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            //                     </svg>
+            //             </button>
+            //             <div class="flex flex-col items-start justify-between p-4">
+            //                 <span class="font-semibold text-[16px]">${event.name}</span>
+            //                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
+            //                 <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
+            //                 <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
+            //             </div>
+            //         </div>`;
+            //
+            //         eventListMobile.innerHTML += `
+            //        <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+            //             <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+            //                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            //                 </svg>
+            //             </button>
+            //
+            //             <div class="flex flex-row w-full items-center justify-between p-5">
+            //                 <div class="flex flex-col items-start justify-start">
+            //                     <span class="font-semibold text-[18px]">${event.name}</span>
+            //                     <p class="font-semibold text-custom-blue text-[14px] pt-1">${event.type}</p>
+            //                     <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
+            //                     <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
+            //                 </div>
+            //             </div>
+            //         </div>`;
+            //
+            //         await addMarker(map, event.address, event.name, bounds);
+            //         await addMarker(mapMobile, event.address, event.name, bounds);
+            //     }
+            //
+            //     if (!bounds.isEmpty()) {
+            //         map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+            //         mapMobile.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+            //     }
+            // }
+
+            async function loadPlan(planData) {
+                document.getElementById('location').textContent = planData.location;
+                document.getElementById('plan-details').textContent = `${planData.people} • ${planData.date}`;
+                document.getElementById('location-mobile').textContent = planData.location;
+                document.getElementById('plan-details-mobile').textContent = `${planData.people} • ${planData.date}`;
+
+                const bounds = new mapboxgl.LngLatBounds();
+                const restaurantList = document.getElementById('restaurant-list');
+                const restaurantListMobile = document.getElementById('restaurant-list-mobile');
+                const eventList = document.getElementById('event-list');
+                const eventListMobile = document.getElementById('event-list-mobile');
+                const skeleton = document.getElementById("restaurant-skeleton");
+
+                // ✅ Show skeleton loader before loading
+                skeleton.style.display = "flex";
+                restaurantList.style.display = "none";
+                restaurantListMobile.style.display = "none";
+
+                // Clear previous results
+                restaurantList.innerHTML = '';
+                restaurantListMobile.innerHTML = '';
+                eventList.innerHTML = '';
+                eventListMobile.innerHTML = '';
+
+                // ✅ Fetch restaurant details and replace skeleton
+                for (const restaurant of planData.restaurants) {
+                    const {rating, imageUrl} = await getRestaurantDetails(restaurant.name, restaurant.address);
+
+                    restaurantList.innerHTML += `
+                        <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                            <div class="w-full h-25">
+                                <img src="${imageUrl}"
+                                     alt="${restaurant.name}"
+                                     class="w-full h-full object-cover rounded-t-3xl">
+                            </div>
+                            <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                            </button>
+                            <div class="flex flex-col items-start justify-between p-4">
+                                <div class="flex flex-row justify-between items-center w-full">
+                                    <span class="font-semibold text-[16px]">${restaurant.name}</span>
+                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${rating}</span>
+                                </div>
+                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
+                                <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                                <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
+                            </div>
+                        </div>`;
+
+                    restaurantListMobile.innerHTML += `
+                        <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+                            <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
+
+                            <div class="flex flex-row w-full items-center justify-between p-5">
+                                <div class="flex flex-col items-start justify-start">
+                                    <span class="font-semibold text-[18px]">${restaurant.name}</span>
+                                    <p class="font-semibold text-custom-blue text-[14px] pt-1">${restaurant.cuisine}</p>
+                                    <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${restaurant.address}</p>
+                                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                    await addMarker(map, restaurant.address, restaurant.name, bounds);
+                    await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
+                }
+
+                // ✅ Hide the skeleton and show real restaurant data
+                skeleton.style.display = "none";
+                restaurantList.style.display = "flex";
+                restaurantListMobile.style.display = "flex";
+
+                // ✅ Load events (no skeleton needed)
+                for (const event of planData.events) {
+                    eventList.innerHTML += `
+                        <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                            <div class="w-full h-20">
+                                <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                     alt="Event Image"
+                                     class="w-full h-full object-cover rounded-t-3xl">
+                            </div>
+                            <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                            </button>
+                            <div class="flex flex-col items-start justify-between p-4">
+                                <span class="font-semibold text-[16px]">${event.name}</span>
+                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
+                                <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
+                                <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
+                            </div>
+                        </div>`;
+
+                    eventListMobile.innerHTML += `
+                       <div class="relative font-poppins bg-gray-100 rounded-3xl min-w-full flex flex-row justify-between border border-gray-200 hover:bg-custom-white overflow-hidden snap-center">
+                            <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
+
+                            <div class="flex flex-row w-full items-center justify-between p-5">
+                                <div class="flex flex-col items-start justify-start">
+                                    <span class="font-semibold text-[18px]">${event.name}</span>
+                                    <p class="font-semibold text-custom-blue text-[14px] pt-1">${event.type}</p>
+                                    <p class="font-mulish font-light text-gray-600 text-[12px] pt-1">${event.address}</p>
+                                    <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.isStatic}</p>
+                                </div>
+                            </div>
+                        </div>`;
+
+                    await addMarker(map, event.address, event.name, bounds);
+                    await addMarker(mapMobile, event.address, event.name, bounds);
+                }
+
+                if (!bounds.isEmpty()) {
+                    map.fitBounds(bounds, {padding: 50, maxZoom: 15});
+                    mapMobile.fitBounds(bounds, {padding: 50, maxZoom: 15});
+                }
+            }
+
+
+            // 🔹 Get saved data from localStorage (with fallbacks)
+            const restaurantName = localStorage.getItem("restaurantName") || "Unknown Restaurant";
+            const restaurantAddress = localStorage.getItem("restaurantAddress") || "Unknown Address";
+            const planCuisine = localStorage.getItem("planCuisine") || "Unknown Cuisine";
+            const planDate = localStorage.getItem("planDate") || new Date().toISOString().split("T")[0];
+            const planAttendees = localStorage.getItem("planAttendees") || "Unknown Guests";
+            const fetchedLocation = localStorage.getItem("location") || "Unknown Location";
+
+            // 🔹 Sample plan data
+            const samplePlan = {
+                location: fetchedLocation,
+                people: planAttendees,
+                date: planDate,
+                restaurants: [
+                    {name: restaurantName, cuisine: planCuisine, address: restaurantAddress, isStatic: ''},
+                    {name: 'Restaurant B', cuisine: 'Mexican', address: '', isStatic: '*Static for demo 1'},
+                    {name: 'Restaurant C', cuisine: 'Japanese', address: '', isStatic: '*Static for demo 1'}
+                ],
+                events: [
+                    {name: 'DJ Daddy Concert', type: 'Music', address: '', isStatic: '*Static for demo 1'},
+                    {name: 'Art Exhibition', type: 'Art', address: '', isStatic: '*Static for demo 1'},
+                    {name: 'London House Night', type: 'Party', address: '', isStatic: '*Static for demo 1'}
+                ]
             };
+
+            async function getRestaurantDetails(restaurantName, location) {
+                try {
+                    const response = await fetch(`/api/getRestaurantDetails/?restaurantName=${encodeURIComponent(restaurantName)}&location=${encodeURIComponent(location)}`);
+                    const data = await response.json();
+
+                    if (response.status !== 200) {
+                        console.error("Error fetching restaurant:", data.error);
+                        return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+                    }
+
+                    return {
+                        rating: data.rating,
+                        imageUrl: data.imageUrl
+                    };
+                } catch (error) {
+                    console.error("Error fetching restaurant details:", error);
+                    return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+                }
+            }
+
+
+            // 🔹 Load plan on page load
+            await loadPlan(samplePlan);
+
         } catch (error) {
-            console.error("Error fetching restaurant details:", error);
-            return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+            console.error("Error fetching Mapbox API Key:", error);
         }
-    }
-
-
-    // 🔹 Load plan on page load
-    loadPlan(samplePlan);
+    });
 
 </script>
 </body>

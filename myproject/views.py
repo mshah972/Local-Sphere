@@ -165,5 +165,11 @@ def get_restaurant_details(request):
     return JsonResponse({"rating": rating, "imageUrl": image_url})
 
 def get_google_maps_api_key(request):
-    """Return Google Maps API Key from Django settings"""
     return JsonResponse({"apiKey": settings.GOOGLE_API_KEY})
+
+def get_mapbox_api_key(request):
+    """API endpoint to securely return Mapbox API key."""
+    if not settings.MAPBOX_ACCESS_TOKEN:
+        return JsonResponse({"error": "Mapbox API Key not found"}, status=500)
+
+    return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
