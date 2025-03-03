@@ -8,6 +8,18 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
+### For Chat ###
+import os
+import openai
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
 
@@ -173,3 +185,55 @@ def get_mapbox_api_key(request):
         return JsonResponse({"error": "Mapbox API Key not found"}, status=500)
 
     return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
+
+@csrf_exempt
+def generate_date_plan(request):
+    print(f"🔍 Received request: {request.method}")
+
+    if request.method == "OPTIONS":
+        print("✅ OPTIONS request received - CORS preflight successful")
+        return JsonResponse({"message": "CORS preflight successful"}, status=200)
+
+    if request.method == "POST":
+        try:
+            print("✅ POST request received")
+
+            data = json.loads(request.body)
+            print(f"📨 Received Data: {data}")
+
+            location = data.get("location", "Unknown")
+            date = data.get("date", "Unknown")
+            time = data.get("time", "Unknown")
+            attendees = data.get("attendees", "Unknown")
+            food = data.get("food", "Unknown")
+
+            print(f"📌 Extracted Inputs -> Location: {location}, Date: {date}, Time: {time}, Attendees: {attendees}, Food: {food}")
+
+            # ✅ Check if OpenAI API key is set correctly
+            if not openai.api_key:
+                print("❌ ERROR: OpenAI API Key is missing!")
+                return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
+
+            # ✅ Updated OpenAI API Call
+            client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": f"Plan a date in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine."}],
+                max_tokens=200,
+                temperature=0.7,
+            )
+
+            chat_response = response.choices[0].message.content
+            print(f"📝 OpenAI Response: {chat_response}")
+
+            return JsonResponse({"response": chat_response}, status=200)
+
+        except json.JSONDecodeError:
+            print("❌ Invalid JSON format received")
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+        except Exception as e:
+            print(f"❌ ERROR: {str(e)}")
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)

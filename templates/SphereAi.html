@@ -921,115 +921,53 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-            const apiKey = "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";
-            const apiUrl = "https://api.openai.com/v1/chat/completions";
-            const maxRetries = 3; // Maximum number of retries
-            let retryCount = 0;
+    const apiUrl = "http://localhost:8000/generate-date-plan/";;
 
-            const responseContainer = document.getElementById("response-container");
-            responseContainer.textContent = "Loading...";
+    const responseContainer = document.getElementById("response-container");
+    responseContainer.textContent = "Loading...";
 
-            // Fetch input values
-            const location = formInputs.location.value;
-            const date = formInputs.date.value;
-            const time = formInputs.time.value;
-            const attendees = formInputs.attendees.value;
-            const food = formInputs.food.value;
+    // Fetch input values
+    const location = document.getElementById("location").value;
+    const date = document.getElementById("preferred-date").value;
+    const time = document.getElementById("preferred-time").value;
+    const attendees = document.getElementById("guests").value;
+    const food = document.getElementById("food").value;
 
-            // Updated prompt to enforce valid JSON output
-            const prompt = `Please provide a date plan in ${location} on ${date} for ${attendees} people.
-              The plan should include a restaurant that serves ${food} cuisine.
+    console.log("🚀 Sending API Request to:", apiUrl);
+    console.log("📨 Payload:", { location, date, time, attendees, food });
 
-              Return ONLY valid JSON in the exact format below. Do NOT include any extra text, explanations, or markdown formatting:
-
-              {
-                "restaurant": {
-                  "name": "Restaurant Name",
-                  "address": "123 Main St, City",
-                  "cuisine": "${food}"
-                }
-              }`;
-
-            async function fetchData() {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${apiKey}`,
-                        },
-                        body: JSON.stringify({
-                            model: "gpt-4",
-                            messages: [
-                                {
-                                    role: "system",
-                                    content: "You are a helpful event planner that provides responses strictly in JSON format.",
-                                },
-                                {role: "user", content: prompt},
-                            ],
-                        }),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    let message = data.choices[0].message.content.trim(); // Trim any extra spaces
-                    console.log("Raw AI Response:", message);
-
-                    // Extract JSON portion from response
-                    let jsonStartIndex = message.indexOf("{"); // Find where JSON starts
-                    let jsonString = message.substring(jsonStartIndex).trim(); // Extract only the JSON part
-
-                    // Try to parse the extracted JSON
-                    try {
-                        const parsedMessage = JSON.parse(jsonString);
-                        console.log("Parsed JSON:", parsedMessage);
-
-                        let restaurantData = parsedMessage.restaurant || parsedMessage.plan?.restaurant;
-
-                        if (!restaurantData) {
-                            throw new Error("Invalid JSON structure: No restaurant data found");
-                        }
-
-                        // Extract restaurant details
-                        const restaurantName = parsedMessage.restaurant?.name || "Unavailable";
-                        const restaurantAddress = parsedMessage.restaurant?.address || "Unavailable";
-                        const restaurantCuisine = parsedMessage.restaurant?.cuisine || "Unavailable";
-
-                        // Store in localStorage
-                        localStorage.setItem("restaurantName", restaurantName);
-                        localStorage.setItem("restaurantAddress", restaurantAddress);
-                        localStorage.setItem("planCuisine", restaurantCuisine);
-                        localStorage.setItem("planDate", date);
-                        localStorage.setItem("planAttendees", attendees);
-                        localStorage.setItem("location", location);
-
-                        // Redirect to confirmation page
-                        window.location.href = "/planConfirmation/";
-
-                    } catch (parseError) {
-                        console.error("JSON parsing error:", parseError);
-
-                        if (retryCount < maxRetries) {
-                            retryCount++;
-                            console.log(`Retrying... Attempt ${retryCount}`);
-                            await fetchData(); // Retry API call
-                        } else {
-                            console.error("Max retries reached. Could not parse JSON.");
-                            responseContainer.textContent = "Failed to process the response.";
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    responseContainer.textContent = "Failed to fetch response.";
-                }
-            }
-
-            // Initial call to fetchData
-            await fetchData();
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({
+                location,
+                date,
+                time,
+                attendees,
+                food
+            }),
         });
+
+        console.log("✅ Response Status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("📩 Received Data:", data);
+
+        responseContainer.textContent = JSON.stringify(data, null, 2);
+
+    } catch (error) {
+        console.error("❌ Fetch error:", error);
+        responseContainer.textContent = `Fetch error: ${error.message}`;
+    }
+});
     });
 
     ////////////////////////////////////// Header Script /////////////////////////////////////

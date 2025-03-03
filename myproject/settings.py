@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-^67otg40ge#)v^_-_epk8$t@2t2oap!u*ju%)ym@-h9c_i2m3%
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if not MAPBOX_ACCESS_TOKEN:
     print("❌ ERROR: Mapbox API Key not found! Check .env file.")
@@ -37,7 +38,7 @@ if not MAPBOX_ACCESS_TOKEN:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost']
+ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1']
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
@@ -52,10 +53,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myproject'
+    'myproject',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,8 +66,29 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
+# Allow requests from frontend (React, Vue, etc.)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Adjust this to match your frontend URL
+]
+
+# Allow all HTTP methods (GET, POST, OPTIONS, etc.)
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "OPTIONS",
+]
+
+# Allow all headers
+CORS_ALLOW_HEADERS = [
+    "Content-Type",
+    "Authorization",
+]
+
+# Enable credentials if needed
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'myproject.urls'
 
 TEMPLATES = [
