@@ -21,6 +21,69 @@
             top: 0;
             width: auto;
         }
+
+        /* Google Maps Dropdown Styling */
+        .pac-container {
+            background-color: #004AAD !important; /* Blue background */
+            font-family: "Poppins", sans-serif !important;
+            border-radius: 16px !important; /* Match rounded style */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important; /* Enhanced shadow */
+            padding: 6px 0px !important; /* Remove top/bottom padding */
+            margin-top: 8px !important;
+            width: max-content !important;
+            min-width: 250px !important;
+        }
+
+        /* Style Each Suggestion Item */
+        .pac-item {
+            padding: 14px !important;
+            font-size: 14px !important;
+            font-weight: normal !important;
+            color: white !important; /* White text */
+            border-radius: 12px !important;
+            transition: background-color 0.3s ease-in-out !important;
+            border: none !important; /* Remove default borders */
+            margin: 8px !important; /* Remove unwanted spacing */
+        }
+
+        /* Fix White Gap Between Items */
+        .pac-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; /* Subtle separator */
+        }
+
+        /* Fix the White Border at the Top */
+        .pac-item:first-child {
+            margin-top: 0px !important;
+            padding-top: 12px !important;
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+        }
+
+        /* Last Item Rounded Border */
+        .pac-item:last-child {
+            border-bottom-left-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+        }
+
+        /* Highlighted Suggestion */
+        .pac-item:hover,
+        .pac-item.pac-selected {
+            background-color: #003580 !important; /* Darker blue on hover */
+            color: #fff !important;
+        }
+
+        /* Style the Highlighted Text */
+        .pac-item .pac-item-query {
+            font-weight: 500 !important;
+            font-size: 15px !important;
+            color: #F3EBDE !important;
+        }
+
+        .pac-container::after {
+            margin-right: 12px !important;
+            margin-left: 12px !important;
+        }
+
     </style>
 </head>
 <body class="bg-custom-white">
@@ -91,7 +154,7 @@
                             <!-- When Logged In: Show Profile with Dropdown -->
                             <div class="relative">
                                 <button id="userDropdownButton" type="button"
-                                    class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
                                     <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
                                     <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                     <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -762,7 +825,6 @@
     </div>
 
 </main>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const apiKey = "b84f959e6ea47b4faf97b74709d55105";
@@ -862,6 +924,66 @@
         // Run location function on page load
         getUserLocation();
     });
+
+    async function initializeGoogleMaps() {
+        try {
+            // Fetch Google Maps API Key from Django backend
+            const response = await fetch("/api/getGoogleMapsApiKey/");
+            const data = await response.json();
+            const apiKey = data.apiKey;
+
+            if (!apiKey) {
+                console.error("Google Maps API Key not found.");
+                return;
+            }
+
+            // Dynamically load Google Maps script
+            const script = document.createElement("script");
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initializeAutocomplete`;
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+
+        } catch (error) {
+            console.error("Error fetching Google Maps API Key:", error);
+        }
+    }
+
+    function initializeAutocomplete() {
+        const input = document.getElementById("location-search");
+        if (!input) {
+            console.error("Location input field not found.");
+            return;
+        }
+
+        let userPreferredLocation = localStorage.getItem("location") || "Chicago, IL";
+        input.value = userPreferredLocation; // Set default value
+
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["(cities)"], // Restrict to cities
+        });
+
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                alert("No details available for: " + place.name);
+                return;
+            }
+
+            document.getElementById("box-location").textContent = place.name;
+            localStorage.setItem("location", place.name);
+        });
+
+        google.maps.event.addListener(autocomplete, "place_changed", function () {
+            const pacContainer = document.querySelector(".pac-container");
+            if (pacContainer) {
+                pacContainer.style.width = input.offsetWidth + "px";
+            }
+        });
+    }
+
+    // Call the function to load Google Maps dynamically
+    document.addEventListener("DOMContentLoaded", initializeGoogleMaps);
 
     document.addEventListener("DOMContentLoaded", function () {
         // Simulated user authentication - Replace with actual authentication check

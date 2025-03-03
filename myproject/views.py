@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+import requests
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.conf import settings
+
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
 
 
@@ -123,3 +127,43 @@ def creation(request):
 def logout_view(request):
     logout(request)  # Logs the user out
     return redirect('index')  # Redirects to the index page
+
+def get_restaurant_details(request):
+    restaurant_name = request.GET.get("restaurantName")
+    location = request.GET.get("location")
+
+    if not restaurant_name or not location:
+        return JsonResponse({"error": "Missing required parameters"}, status=400)
+
+    GOOGLE_API_KEY = settings.GOOGLE_API_KEY  # Store in settings.py for security
+
+    # Step 1: Find restaurant using Google Places Text Search API
+    search_url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={restaurant_name}+{location}&key={GOOGLE_API_KEY}"
+    search_response = requests.get(search_url).json()
+
+    if "results" not in search_response or not search_response["results"]:
+        return JsonResponse({"error": "No restaurant found"}, status=404)
+
+    place_id = search_response["results"][0]["place_id"]
+
+    # Step 2: Get details (rating + photos)
+    details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,rating,photos&key={GOOGLE_API_KEY}"
+    details_response = requests.get(details_url).json()
+
+    if "result" not in details_response:
+        return JsonResponse({"error": "No details found"}, status=404)
+
+    # Extract rating
+    rating = details_response["result"].get("rating", "N/A")
+
+    # Extract first image if available
+    image_url = "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    if "photos" in details_response["result"]:
+        photo_ref = details_response["result"]["photos"][0]["photo_reference"]
+        image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photo_reference={photo_ref}&key={GOOGLE_API_KEY}"
+
+    return JsonResponse({"rating": rating, "imageUrl": image_url})
+
+def get_google_maps_api_key(request):
+    """Return Google Maps API Key from Django settings"""
+    return JsonResponse({"apiKey": settings.GOOGLE_API_KEY})

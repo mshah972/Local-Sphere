@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import logout_view
+from .views import logout_view, get_google_maps_api_key, get_restaurant_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +30,7 @@ urlpatterns = [
     path('forgot/', views.forgot, name='forgot'),
     path('creation/', views.creation, name='creation'),
     path('account/', views.my_account, name='my_account'),
-
     path('logout/', logout_view, name='logout'),
+    path("api/getRestaurantDetails/", get_restaurant_details, name="get_restaurant_details"),
+    path("api/getGoogleMapsApiKey/", get_google_maps_api_key, name="get_google_maps_api_key"),
 ]

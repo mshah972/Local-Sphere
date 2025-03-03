@@ -12,6 +12,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+ENV GOOGLE_API_KEY=${GOOGLE_API_KEY}
+
 # Set work directory
 WORKDIR /code
 

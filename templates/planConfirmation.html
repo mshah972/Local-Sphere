@@ -93,7 +93,7 @@
                                 <!-- When Logged In: Show Profile with Dropdown -->
                                 <div class="relative">
                                     <button id="userDropdownButton" type="button"
-                                        class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                        class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
                                         <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
                                         <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                         <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -508,11 +508,13 @@
         eventListMobile.innerHTML = '';
 
         for (const restaurant of planData.restaurants) {
+            const { rating, imageUrl } = await getRestaurantDetails(restaurant.name, restaurant.address);
+
             restaurantList.innerHTML += `
             <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                 <div class="w-full h-20">
-                    <img src="https://plus.unsplash.com/premium_photo-1663852297267-827c73e7529e?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         alt="Restaurant Image"
+                    <img src="${imageUrl}"
+                         alt="${restaurant.name}"
                          class="w-full h-full object-cover rounded-t-3xl">
                 </div>
                 <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
@@ -521,7 +523,10 @@
                         </svg>
                 </button>
                 <div class="flex flex-col items-start justify-between p-4">
-                    <span class="font-semibold text-[16px]">${restaurant.name}</span>
+                    <div class="flex flex-row justify-between items-center w-full">
+                        <span class="font-semibold text-[16px]">${restaurant.name}</span>
+                        <p class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${rating}</p>
+                    </div>
                     <p class="font-semibold text-custom-blue text-[12px] pt-1">${restaurant.cuisine}</p>
                     <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
                     <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.isStatic}</p>
@@ -605,10 +610,11 @@
     const planCuisine = localStorage.getItem("planCuisine") || "Unknown Cuisine";
     const planDate = localStorage.getItem("planDate") || new Date().toISOString().split("T")[0];
     const planAttendees = localStorage.getItem("planAttendees") || "Unknown Guests";
+    const fetchedLocation = localStorage.getItem("location") || "Unknown Location";
 
     // 🔹 Sample plan data
     const samplePlan = {
-        location: 'Chicago, IL',
+        location: fetchedLocation,
         people: planAttendees,
         date: planDate,
         restaurants: [
@@ -622,6 +628,27 @@
             { name: 'London House Night', type: 'Party', address: '', isStatic:'*Static for demo 1' }
         ]
     };
+
+    async function getRestaurantDetails(restaurantName, location) {
+        try {
+            const response = await fetch(`/api/getRestaurantDetails/?restaurantName=${encodeURIComponent(restaurantName)}&location=${encodeURIComponent(location)}`);
+            const data = await response.json();
+
+            if (response.status !== 200) {
+                console.error("Error fetching restaurant:", data.error);
+                return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+            }
+
+            return {
+                rating: data.rating,
+                imageUrl: data.imageUrl
+            };
+        } catch (error) {
+            console.error("Error fetching restaurant details:", error);
+            return { rating: "N/A", imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" };
+        }
+    }
+
 
     // 🔹 Load plan on page load
     loadPlan(samplePlan);
