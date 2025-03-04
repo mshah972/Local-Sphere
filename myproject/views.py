@@ -103,7 +103,6 @@ def user_login(request):  # Fixed function name
 
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successful!")
             return redirect('index')  # Redirect to index (homepage)
         else:
             messages.error(request, "Invalid username or password.")
@@ -130,7 +129,6 @@ def forgot(request):
         try:
             user = User.objects.get(email=email)
         except CustomUser.DoesNotExist:
-            messages.error(request, "Email not found.")
             return redirect('forgot')
 
         reset_token = get_random_string(32)
@@ -146,7 +144,6 @@ def forgot(request):
         #)
         print(reset_link)
 
-        messages.success(request, "Reset link sent.")
         return redirect('forgot')
 
     return render(request, 'forgot.html')
@@ -171,7 +168,6 @@ def password_reset_confirm(request, token):
             user.password = make_password(new_password)
             user.save()
             del password_reset_tokens[token]  # Remove used token
-            messages.success(request, "Password reset successfully.")
             return redirect("password_reset_complete")
         except CustomUser.DoesNotExist:
             return render(request, "password_reset_confirm.html", {"error": "User not found."})
@@ -180,7 +176,8 @@ def password_reset_confirm(request, token):
 
 
 def password_reset_complete(request):
-    return render(request, "password_reset_complete.html")
+    messages.success(request, "Password reset successfully.")
+    return render(request, "login.html")
 
 def creation(request):
     return render(request, 'UserCreation.html')
