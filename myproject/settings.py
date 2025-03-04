@@ -36,6 +36,12 @@ if not MAPBOX_ACCESS_TOKEN:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Change this for different email providers
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dhwangdepaul@gmail.com'  # Your email
+EMAIL_HOST_PASSWORD = 'hhsn urer ksiu dbcf'  # Use an App Password if using Gmail
 
 ALLOWED_HOSTS = ['0.0.0.0','localhost']
 

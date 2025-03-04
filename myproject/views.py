@@ -135,13 +135,13 @@ def forgot(request):
         password_reset_tokens[reset_token] = email  # Store token temporarily
         reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[reset_token]))
 
-        #send_mail(
-           # 'Password Reset Request',
-          #  f'Click the link below to reset your password:\n{reset_link}',
-        #    'no-reply@yourdomain.com',  # Change to your email
-         #   [email],
-        #    fail_silently=False,
-        #)
+        send_mail(
+            'Password Reset Request',
+            f'Click the link below to reset your password:\n{reset_link}',
+            'no-reply@yourdomain.com',  # Change to your email
+            [email],
+            fail_silently=False,
+        )
         print(reset_link)
 
         return redirect('forgot')
