@@ -255,24 +255,14 @@
                 <h1 class="font-mulish text-2xl font-extrabold text-custom-blue mt-2">Get Back to Creating Exciting Days!</h1>
 
                 <!-- Login Form -->
+                {% csrf_token %}
+
                 <form method="POST" action="{% url 'forgot' %}" class="mt-6 space-y-4 w-full">
                     {% csrf_token %}
 
                     <div class="text-left">
                         <label class="text-[#A1A1A1] font-light text-sm">Email</label>
-                        <input type="email" placeholder="Enter Your Email" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                    </div>
-
-                    <div class="text-left">
-                        <label class="text-[#A1A1A1] font-light text-sm">New Password</label>
-                        <input type="password" placeholder="Enter New Password" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                    </div>
-
-                    <div class="text-left">
-                        <label class="text-[#A1A1A1] font-light text-sm">Confirm Password</label>
-                        <div class="relative">
-                            <input type="password" placeholder="Re-Enter Your Password" class="font-mulish font-medium w-full border rounded-2xl border-[#DFDFDF] items-center p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
-                        </div>
+                        <input type="email" name = "email" placeholder="Enter Your Email" class="font-mulish font-normal w-full rounded-2xl border border-[#DFDFDF] p-3 mt-1 text-gray-700 focus:ring focus:ring-custom-blue" required>
                     </div>
 
                     <button type="submit" class="w-full bg-custom-blue text-white font-light mt-2 p-3 rounded-2xl hover:bg-blue-700 transition cursor-pointer">
