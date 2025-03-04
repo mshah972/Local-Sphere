@@ -92,7 +92,7 @@
                                 <div class="relative">
                                     <button id="userDropdownButton" type="button"
                                         class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                        <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
+                                        <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
                                         <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                         <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                             <path id="userArrowPath" fill-rule="evenodd"

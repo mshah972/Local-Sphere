@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key
+from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile
 from django.urls import path
 from .views import generate_date_plan
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,4 +39,8 @@ urlpatterns = [
     path("api/getGoogleMapsApiKey/", get_google_maps_api_key, name="get_google_maps_api_key"),
     path('api/getMapboxApiKey/', get_mapbox_api_key, name='get-mapbox-api-key'),
     path("generate-date-plan/", generate_date_plan, name="generate_date_plan"),
+    path('update-profile/', update_user_profile, name='update_user_profile'),
 ]
+
+if settings.DEBUG:  # Only serve media files in development
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

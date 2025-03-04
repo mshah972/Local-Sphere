@@ -237,3 +237,25 @@ def generate_date_plan(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+@login_required
+def update_user_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        user.location = request.POST.get('location', user.location)
+        user.occupation = request.POST.get('occupation', user.occupation)
+        user.biography = request.POST.get('biography', user.biography)
+
+        # Handle multiple selections for interests, cuisines, and diet restrictions
+        user.interests = json.loads(request.POST.get('interests', '[]'))
+        user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
+        user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
+
+        # Handle profile picture upload
+        if 'picture' in request.FILES:
+            user.picture = request.FILES['picture']
+
+        user.save()
+        return redirect('index')
+
+    return render(request, 'UserCreation.html')
