@@ -236,30 +236,33 @@ def generate_date_plan(request):
                     "role": "user",
                     "content": f"""
                     Generate a JSON object for a date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
+                    
                     The JSON should contain:
                     - "date": string (formatted as YYYY-MM-DD)
                     - "time": string
                     - "guests": integer
                     - "location": string
                     - "cuisine": string
-                    - "restaurants": an array of objects, each with:
+                    - "restaurants": an **array of exactly 3 objects**, each with:
                         - "name": string
                         - "address": string
                         - "website": string
                         - "rating": float
                         - "reservation_time": string
-                    - "events": an array of objects, each with:
+                    - "events": an **array of exactly 3 objects**, each with:
                         - "name": string
                         - "address": string
                         - "website": string
                         - "start_time": string
                         - "end_time": string
 
-                    Respond **ONLY** with a JSON object and **DO NOT** include Markdown, explanations, or disclaimers.
+                    ⚠️ **STRICT RULES**:
+                    - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
+                    - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
                     """
                 }
             ],
-            max_tokens=500,
+            max_tokens=600,
             temperature=0.7,
         )
 
@@ -268,6 +271,16 @@ def generate_date_plan(request):
         # ✅ Ensure OpenAI response is in valid JSON format
         try:
             plan_data = json.loads(chat_response)
+
+            # ✅ Extra Validation: Ensure OpenAI returns exactly 3 restaurants and 3 events
+            if len(plan_data.get("restaurants", [])) != 3:
+                print("⚠️ OpenAI did not return exactly 3 restaurants. Adjusting output.")
+                plan_data["restaurants"] = plan_data.get("restaurants", [])[:3]
+
+            if len(plan_data.get("events", [])) != 3:
+                print("⚠️ OpenAI did not return exactly 3 events. Adjusting output.")
+                plan_data["events"] = plan_data.get("events", [])[:3]
+
         except json.JSONDecodeError:
             print("❌ ERROR: OpenAI response is not valid JSON.")
             return JsonResponse({"error": "Invalid AI response format"}, status=500)
