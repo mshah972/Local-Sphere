@@ -921,10 +921,7 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-    const apiUrl = "http://localhost:8000/generate-date-plan/";;
-
-    const responseContainer = document.getElementById("response-container");
-    responseContainer.textContent = "Loading...";
+    const apiUrl = "http://localhost:8000/generate-date-plan/";
 
     // Fetch input values
     const location = document.getElementById("location").value;
@@ -961,11 +958,15 @@
         const data = await response.json();
         console.log("📩 Received Data:", data);
 
-        responseContainer.textContent = JSON.stringify(data, null, 2);
+        // Store the response data in localStorage
+        localStorage.setItem("planData", JSON.stringify(data));
+
+        // Redirect to the plan confirmation page
+        window.location.href = "{% url 'planConfirmation' %}";
 
     } catch (error) {
         console.error("❌ Fetch error:", error);
-        responseContainer.textContent = `Fetch error: ${error.message}`;
+        alert(`Error creating plan: ${error.message}`);
     }
 });
     });
