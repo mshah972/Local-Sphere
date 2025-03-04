@@ -136,6 +136,9 @@ def forgot(request):
 def creation(request):
     return render(request, 'UserCreation.html')
 
+def about(request):
+    return render(request, 'about.html')
+
 def logout_view(request):
     logout(request)  # Logs the user out
     return redirect('index')  # Redirects to the index page
