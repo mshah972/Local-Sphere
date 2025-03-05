@@ -191,6 +191,7 @@ def get_mapbox_api_key(request):
     return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
 
 @csrf_exempt
+@login_required  # Ensures only logged-in users can generate a plan
 def generate_date_plan(request):
     print(f"🔍 Received request: {request.method}")
 
@@ -219,20 +220,22 @@ def generate_date_plan(request):
         attendees = data["attendees"]
         food = data["food"]
 
-        # ✅ Optional Fields (Future Implementation)
-        dietary_restrictions = data.get("dietary_restrictions", "None")
-        favorite_foods = data.get("favorite_foods", "None")
-        favorite_cuisines = data.get("favorite_cuisines", "None")
-        favorite_interests = data.get("favorite_interests", "None")
+        # ✅ Get User Preferences from Database
+        user = request.user  # Get logged-in user
 
-        print(f"📌 Extracted Inputs -> Location: {location}, Date: {date}, Time: {time}, Attendees: {attendees}, Food: {food}, Dietary Restrictions: {dietary_restrictions}, Favorite Foods: {favorite_foods}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
+        dietary_restrictions = user.diet_restrictions if user.diet_restrictions else "None"
+        favorite_foods = user.favorite_foods if hasattr(user, "favorite_foods") else "None"
+        favorite_cuisines = user.favorite_cuisines if user.favorite_cuisines else "None"
+        favorite_interests = user.interests if user.interests else "None"
+
+        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Foods: {favorite_foods}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
 
         # ✅ Check if OpenAI API key is set correctly
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
             return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
 
-        # ✅ OpenAI API Call with strict JSON format enforcement
+        # ✅ OpenAI API Call with User Preferences
         client = openai.OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
             model="gpt-4",
@@ -242,7 +245,7 @@ def generate_date_plan(request):
                     "content": f"""
                     Generate a JSON object for a date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
 
-                    Take into account the following additional preferences:
+                    Take into account the user's saved preferences:
                     - **Dietary Restrictions:** {dietary_restrictions}
                     - **Favorite Foods:** {favorite_foods}
                     - **Favorite Cuisines:** {favorite_cuisines}
@@ -270,7 +273,7 @@ def generate_date_plan(request):
                     **IMPORTANT RULES**:
                     - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
                     - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
-                    - The selections must be **realistic, diverse, and match the provided preferences**.
+                    - The selections must be **realistic, diverse, and match the user's saved preferences**.
                     - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
                     """
                 }
