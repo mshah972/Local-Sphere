@@ -219,7 +219,13 @@ def generate_date_plan(request):
         attendees = data["attendees"]
         food = data["food"]
 
-        print(f"📌 Extracted Inputs -> Location: {location}, Date: {date}, Time: {time}, Attendees: {attendees}, Food: {food}")
+        # ✅ Optional Fields (Future Implementation)
+        dietary_restrictions = data.get("dietary_restrictions", "None")
+        favorite_foods = data.get("favorite_foods", "None")
+        favorite_cuisines = data.get("favorite_cuisines", "None")
+        favorite_interests = data.get("favorite_interests", "None")
+
+        print(f"📌 Extracted Inputs -> Location: {location}, Date: {date}, Time: {time}, Attendees: {attendees}, Food: {food}, Dietary Restrictions: {dietary_restrictions}, Favorite Foods: {favorite_foods}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
 
         # ✅ Check if OpenAI API key is set correctly
         openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -235,7 +241,13 @@ def generate_date_plan(request):
                     "role": "user",
                     "content": f"""
                     Generate a JSON object for a date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
-                    
+
+                    Take into account the following additional preferences:
+                    - **Dietary Restrictions:** {dietary_restrictions}
+                    - **Favorite Foods:** {favorite_foods}
+                    - **Favorite Cuisines:** {favorite_cuisines}
+                    - **Favorite Interests for Activities:** {favorite_interests}
+
                     The JSON should contain:
                     - "date": string (formatted as YYYY-MM-DD)
                     - "time": string
@@ -258,13 +270,13 @@ def generate_date_plan(request):
                     ⚠️ **STRICT RULES**:
                     - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
                     - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
+                    - Restaurants and events should be selected based on the provided preferences.
                     """
                 }
             ],
             max_tokens=600,
             temperature=0.7,
         )
-
 
         chat_response = response.choices[0].message.content.strip()
 
