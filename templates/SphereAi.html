@@ -761,7 +761,7 @@
             return;
         }
 
-        let userPreferredLocation = localStorage.getItem("location") || "Chicago, IL";
+        let userPreferredLocation = localStorage.getItem("location") || "Search City";
         input.value = userPreferredLocation; // Set default value
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
