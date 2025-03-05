@@ -85,160 +85,160 @@
         }
 
         .team-member {
-                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            }
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
 
-            .team-member:hover {
-                transform: translateY(-5px) scale(1.05);
-                box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
-            }
+        .team-member:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        }
 
-            .container .card .icon {
+        .container .card .icon {
 
-position: absolute;
+            position: absolute;
 
-top: 0;
+            top: 0;
 
-left: 0;
+            left: 0;
 
-width: 100%;
+            width: 100%;
 
-height: 100%;
+            height: 100%;
 
-background: #2c73df;
+            background: #2c73df;
 
-}
+        }
 
-.container .card .icon .fa {
+        .container .card .icon .fa {
 
-position: absolute;
+            position: absolute;
 
-top: 50%;
+            top: 50%;
 
-left: 50%;
+            left: 50%;
 
-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
 
-font-size: 80px;
+            font-size: 80px;
 
-color: #fff;
+            color: #fff;
 
-}
+        }
 
-.container .card .slide {
+        .container .card .slide {
 
-width: 300px;
+            width: 300px;
 
-height: 200px;
+            height: 200px;
 
-transition: 0.5s;
+            transition: 0.5s;
 
-}
+        }
 
-.container .card .slide.slide1 {
+        .container .card .slide.slide1 {
 
-position: relative;
+            position: relative;
 
-display: flex;
+            display: flex;
 
-justify-content: center;
+            justify-content: center;
 
-align-items: center;
+            align-items: center;
 
-z-index: 1;
+            z-index: 1;
 
-transition: .7s;
+            transition: .7s;
 
-transform: translateY(100px);
+            transform: translateY(100px);
 
-}
+        }
 
-.container .card:hover .slide.slide1{
+        .container .card:hover .slide.slide1 {
 
-transform: translateY(0px);
+            transform: translateY(0px);
 
-}
+        }
 
-.container .card .slide.slide2 {
+        .container .card .slide.slide2 {
 
-position: relative;
+            position: relative;
 
-display: flex;
+            display: flex;
 
-justify-content: center;
+            justify-content: center;
 
-align-items: center;
+            align-items: center;
 
-padding: 20px;
+            padding: 20px;
 
-box-sizing: border-box;
+            box-sizing: border-box;
 
-transition: .8s;
+            transition: .8s;
 
-transform: translateY(-100px);
+            transform: translateY(-100px);
 
-box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 
-}
+        }
 
-.container .card:hover .slide.slide2{
+        .container .card:hover .slide.slide2 {
 
-transform: translateY(0);
+            transform: translateY(0);
 
-}
+        }
 
-.container .card .slide.slide2::after{
+        .container .card .slide.slide2::after {
 
-content: "";
+            content: "";
 
-position: absolute;
+            position: absolute;
 
-width: 30px;
+            width: 30px;
 
-height: 4px;
+            height: 4px;
 
-bottom: 15px;
+            bottom: 10px;
 
-left: 50%;
+            left: 50%;
 
-left: 50%;
+            left: 50%;
 
-transform: translateX(-50%);
+            transform: translateX(-50%);
 
-background: #2c73df;
+            background: #2c73df;
 
-}
+        }
 
-.container .card .slide.slide2 .content p {
+        .container .card .slide.slide2 .content p {
 
-margin: 0;
+            margin-bottom: 10px;
 
-padding: 0;
+            padding: 0;
 
-text-align: center;
+            text-align: center;
 
-color: #414141;
+            color: #414141;
 
-}
+        }
 
-.container .card .slide.slide2 .content h3 {
+        .container .card .slide.slide2 .content h3 {
 
-margin: 0 0 10px 0;
+            margin: 0;
 
-padding: 0;
+            padding: 0;
 
-font-size: 24px;
+            font-size: 24px;
 
-text-align: center;
+            text-align: center;
 
-color: #414141;
+            color: #414141;
 
-} 
+        }
 
-.Image img {
-    transform: scale(1.8); /* Increases size by 10% */
-    transition: transform 0.3s ease-in-out;
-}
+        .Image img {
+            transform: scale(1.8); /* Increases size by 10% */
+            transition: transform 0.3s ease-in-out;
+        }
 
     </style>
 </head>
@@ -303,55 +303,57 @@ color: #414141;
                         </div>
                     </div>
                 </div>
-                
+
                 <div>
                     <div>
                         {% if user.is_authenticated %}
-                            <!-- When Logged In: Show Profile with Dropdown -->
-                            <div class="relative">
-                                <button id="userDropdownButton" type="button"
+                        <!-- When Logged In: Show Profile with Dropdown -->
+                        <div class="relative">
+                            <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
-                                    <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path id="userArrowPath" fill-rule="evenodd"
-                                            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                            clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                    
-                                <!-- Dropdown Menu -->
-                                <div id="userDropdownMenu"
-                                    class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
-                                    <a href="{% url 'logout' %}"
-                                        class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
-                                        Logout
-                                    </a>
-                                </div>
-                            </div>
-                            {% else %}
-                            <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
-                            <div class="flex items-center gap-4">
-                                <!-- Log In Button -->
-                                <a href="{% url 'login' %}"
-                                    class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
-                                    Log in
-                                </a>
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                     fill="currentColor" aria-hidden="true">
+                                    <path id="userArrowPath" fill-rule="evenodd"
+                                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
 
-                                <!-- "Start Exploring" Button -->
-                                <a href="{% url 'signup' %}"
-                                    class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                                    <span aria-hidden="true">&rarr;</span>
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu"
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Logout
                                 </a>
                             </div>
+                        </div>
+                        {% else %}
+                        <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                        <div class="flex items-center gap-4">
+                            <!-- Log In Button -->
+                            <a href="{% url 'login' %}"
+                               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                Log in
+                            </a>
+
+                            <!-- "Start Exploring" Button -->
+                            <a href="{% url 'signup' %}"
+                               class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
-    
+
         <!-- Mobile menu, show/hide based on menu open state. -->
         <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
             <div class="fixed inset-0 z-10"></div>
@@ -416,105 +418,170 @@ color: #414141;
     <!-- NEW PAGE COPY THIS UP  -->
 
     <body class="bg-custom-white">
-        <div class="max-w-9xl mx-auto px-6 py-12 mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 font-poppins">
-            <!-- Header Section -->
-            <div class="relative w-full h-30 rounded-xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="City View" class="w-full h-full object-cover">
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <h1 class="text-white text-3xl font-bold">About Us</h1>
-                </div>
+    <div class="max-w-9xl mx-auto px-6 py-12 mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 font-poppins">
+        <!-- Header Section -->
+        <div class="relative w-full h-30 rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 alt="City View" class="w-full h-full object-cover">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <h1 class="text-white text-3xl font-bold">About Us</h1>
             </div>
-            
-            <!-- About Section -->
-            <div class="mt-10">
-                <h2 class="text-2xl font-bold text-gray-900">About Local Sphere</h2>
-                <p class="mt-4 text-gray-700">Lorem ipsum odor amet, consectetur adipiscing elit. Nibh arcu hendrerit vulputate at lectus morbi. Suspendisse non lectus dui mauris efficitur nascetur mus suscipit. Sapien purus mi litora pretium posuere augue hendrerit mattis. Pulvinar lacinia suscipit montes dis, tempus non dignissim. Netus per aliquam semper tortor hac urna potenti. Nulla interdum dignissim hac dictum elit.</p>
-            </div>
-            
+        </div>
 
-                <!-- Team Section -->
-                <div class="mt-12 p-2">
-                    <h2 class="text-2xl font-bold text-gray-900 text-center">Our Team</h2>
-                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        
-                        <!-- Team Member 1 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Moksh</h3>
-                            <p class="text-gray-600">Lead Developer</p>
-                            <p class="mt-2 text-gray-500 text-sm">I am a Software Engineer and I enjoy Video games.</p>
-                        </div>
-
-                        <!-- Team Member 2 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Jose Nunez</h3>
-                            <p class="text-gray-600">UI/UX Designer</p>
-                            <p class="mt-2 text-gray-500 text-sm">I am a Computer Science major and I enjoy playing soccer and video games.</p>
-                        </div>
-
-                        <!-- Team Member 3 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Kevin</h3>
-                            <p class="text-gray-600">Project Manager</p>
-                            <p class="mt-2 text-gray-500 text-sm">I work as a Network Engineer and I like to automate.</p>
-                        </div>
-
-                        <!-- Team Member 4 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Daniel</h3>
-                            <p class="text-gray-600">Presentation Manager</p>
-                            <p class="mt-2 text-gray-500 text-sm">I am a Software Engineer, I play the piano and guitar.</p>
-                        </div>
-
-                        <!-- Team Member 5 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Peter</h3>
-                            <p class="text-gray-600">Documentation Manager</p>
-                            <p class="mt-2 text-gray-500 text-sm">Majoring in Accounting and Computer Science. From Mt. Prospect IL.</p>
-                        </div>
-
-                        <!-- Team Member 6 -->
-                        <div class="bg-gray-100 p-6 rounded-lg text-center shadow-md flex flex-col items-center team-member">
-                            <img src="../static/logo1.svg" alt="Team Logo" class="w-16 h-16">
-                            <h3 class="mt-4 font-semibold text-gray-900">Jeniece</h3>
-                            <p class="text-gray-600">Testing Manager</p>
-                            <p class="mt-2 text-gray-500 text-sm">I am an Executive Support Analyst & I love cooking!</p>
-                        </div>
-
-                        <!-- New ones? -->
+        <!-- About Section -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-bold text-gray-900">About Local Sphere</h2>
+            <p class="mt-4 text-gray-700">Lorem ipsum odor amet, consectetur adipiscing elit. Nibh arcu hendrerit
+                vulputate at lectus morbi. Suspendisse non lectus dui mauris efficitur nascetur mus suscipit. Sapien
+                purus mi litora pretium posuere augue hendrerit mattis. Pulvinar lacinia suscipit montes dis, tempus non
+                dignissim. Netus per aliquam semper tortor hac urna potenti. Nulla interdum dignissim hac dictum
+                elit.</p>
+        </div>
 
 
-                            <div class="container">
-                                <div class="card">
-                                    <div class="slide slide1 bg-custom-blue">
-                                        <div class="content bg-custom-blue">
-                                            <div class="Image">
-                                                <i class="Image" aria-hidden="true">
-                                                    <img src="../static/jose.png" alt="Team Logo" class="w-17 h-16">
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="slide slide2 bg-white">
-                                        <div class="content">
-                                            <h3>
-                                                Jose Nunez 
-                                            </h3>
-                                            <p>Testing Manager</p>
-                                            <p>I am an Executive Support Analyst & I love cooking!</p>
-                                        </div>
-                                    </div>
+        <!-- Team Section -->
+        <div class="mt-12 p-2">
+            <h2 class="text-2xl font-bold text-gray-900 text-center">Our Team</h2>
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Jose.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Jose Nunez
+                                </h3>
+                                <p class="font-mulish font-normal">UI/UX Designer</p>
+                                <p class="font-normal text-sm">I am a Computer Science major and I enjoy playing soccer and
+                                    video games.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>     
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Moksh.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Moksh Shah
+                                </h3>
+                                <p class="font-mulish font-normal">Developer</p>
+                                <p class="font-normal text-sm">I am a Software Engineer and I enjoy Video games.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/favicon.svg" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Kevin
+                                </h3>
+                                <p class="font-mulish font-normal">Project Manager</p>
+                                <p class="font-normal text-sm">I work as a Network Engineer and I like to automate.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Peter.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Peter
+                                </h3>
+                                <p class="font-mulish font-normal">Documentation Manager</p>
+                                <p class="font-normal text-sm">Majoring in Accounting and Computer Science. From Mt. Prospect
+                                    IL.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Daniel.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Daniel
+                                </h3>
+                                <p class="font-mulish font-normal">Presentation Manager</p>
+                                <p class="font-normal text-sm">I am a Software Engineer, I play the piano and guitar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Jeniece.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Jeniece
+                                </h3>
+                                <p class="font-mulish font-normal">Testing Manager</p>
+                                <p class="font-normal text-sm">I am an Executive Support Analyst & I love cooking!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </div>
+    </div>
     </body>
 
     <script>
@@ -525,7 +592,7 @@ color: #414141;
             const dropdownMenu = document.getElementById("companyDropdownMenu");
             const dropdownIcon = document.getElementById("dropdownIcon");
             const arrowPath = document.getElementById("arrowPath");
-    
+
             toggleButton.addEventListener("click", function () {
                 if (dropdownMenu.classList.contains("hidden")) {
                     // Show dropdown with animation
@@ -534,45 +601,45 @@ color: #414141;
                         dropdownMenu.classList.remove("opacity-0", "scale-95");
                         dropdownMenu.classList.add("opacity-100", "scale-100");
                     }, 10);
-    
+
                     // Rotate the arrow up
                     dropdownIcon.classList.add("rotate-180");
                 } else {
                     // Hide dropdown with animation
                     dropdownMenu.classList.remove("opacity-100", "scale-100");
                     dropdownMenu.classList.add("opacity-0", "scale-95");
-    
+
                     setTimeout(() => {
                         dropdownMenu.classList.add("hidden");
                     }, 300); // Wait for animation to complete before hiding
-    
+
                     // Rotate the arrow back down
                     dropdownIcon.classList.remove("rotate-180");
                 }
             });
-    
+
             // Hide dropdown when clicking outside
             document.addEventListener("click", function (event) {
                 if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.remove("opacity-100", "scale-100");
                     dropdownMenu.classList.add("opacity-0", "scale-95");
-    
+
                     setTimeout(() => {
                         dropdownMenu.classList.add("hidden");
                     }, 300);
-    
+
                     // Reset arrow to down position
                     dropdownIcon.classList.remove("rotate-180");
                 }
             });
         });
-    
+
         document.addEventListener("DOMContentLoaded", function () {
             const mobileDropdownButton = document.getElementById("mobileCompanyButton");
             const mobileDropdown = document.getElementById("mobileCompanyDropdown");
             const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
             const mobileArrowPath = document.getElementById("mobileArrowPath");
-    
+
             mobileDropdownButton.addEventListener("click", function () {
                 if (mobileDropdown.classList.contains("hidden")) {
                     // Show dropdown with animation
@@ -581,61 +648,61 @@ color: #414141;
                         mobileDropdown.classList.remove("opacity-0", "scale-95");
                         mobileDropdown.classList.add("opacity-100", "scale-100");
                     }, 10);
-    
+
                     // Rotate the arrow up
                     mobileDropdownIcon.classList.add("rotate-180");
                 } else {
                     // Hide dropdown with animation
                     mobileDropdown.classList.remove("opacity-100", "scale-100");
                     mobileDropdown.classList.add("opacity-0", "scale-95");
-    
+
                     setTimeout(() => {
                         mobileDropdown.classList.add("hidden");
                     }, 300); // Wait for animation to complete before hiding
-    
+
                     // Rotate the arrow back down
                     mobileDropdownIcon.classList.remove("rotate-180");
                 }
             });
-    
+
             // Hide dropdown when clicking outside
             document.addEventListener("click", function (event) {
                 if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
                     mobileDropdown.classList.remove("opacity-100", "scale-100");
                     mobileDropdown.classList.add("opacity-0", "scale-95");
-    
+
                     setTimeout(() => {
                         mobileDropdown.classList.add("hidden");
                     }, 300);
-    
+
                     // Reset arrow to down position
                     mobileDropdownIcon.classList.remove("rotate-180");
                 }
             });
         });
-    
+
         document.addEventListener("DOMContentLoaded", function () {
             const mobileMenu = document.getElementById("mobileMenu");
             const openMobileMenu = document.getElementById("openMobileMenu");
             const closeMobileMenu = document.getElementById("closeMobileMenu");
             const mobileBackdrop = document.getElementById("mobileBackdrop");
-    
+
             // Open mobile menu when clicking the hamburger button
             openMobileMenu.addEventListener("click", function () {
                 mobileMenu.classList.remove("hidden");
             });
-    
+
             // Close mobile menu when clicking the close button
             closeMobileMenu.addEventListener("click", function () {
                 mobileMenu.classList.add("hidden");
             });
-    
+
             // Close mobile menu when clicking outside (on the backdrop)
             mobileBackdrop.addEventListener("click", function () {
                 mobileMenu.classList.add("hidden");
             });
         });
-    
+
     </script>
-    </body>
-    </html>
+</body>
+</html>
