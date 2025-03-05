@@ -84,6 +84,36 @@
             margin-right: 12px !important;
             margin-left: 12px !important;
         }
+        .loading-container {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .show {
+            display: block;
+            opacity: 1;
+        }
+
+        .dot {
+            animation: blink 1.5s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
 
     </style>
 </head>
@@ -511,12 +541,16 @@
             <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
                 <button
-                        id="recreate-btn"
-                        class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    id="recreate-btn"
+                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    onclick="showLoading()"
                 >
                     Craft Your Plan
                 </button>
+                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
             </div>
+
+            
             <!--HERE-->
             <div id="response-container" class="mt-4"></div>
             <!--HERE-->
@@ -970,6 +1004,16 @@
     }
 });
     });
+
+    function showLoading() {
+    let loadingText = document.getElementById("loadingText");
+    loadingText.classList.add("show");
+
+    // Simulate loading process (hide after 3 seconds)
+    setTimeout(() => {
+        loadingText.classList.remove("show");
+    }, 300000);
+}
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
