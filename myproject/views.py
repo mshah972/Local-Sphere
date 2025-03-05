@@ -8,6 +8,11 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from django.urls import reverse
+from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
+from django.contrib.auth.hashers import make_password
 from PIL import Image, ImageStat
 from io import BytesIO
 ### For Chat ###
@@ -23,7 +28,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
+password_reset_tokens = {}
 
 
 def index(request):
@@ -94,7 +99,6 @@ def signup(request):
 
 def user_login(request):  # Fixed function name
     print("Request method:", request.method)  # Debugging
-
     if request.method == 'POST':
         username_or_email = request.POST.get('username')
         password = request.POST.get('password')
@@ -112,7 +116,6 @@ def user_login(request):  # Fixed function name
 
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successful!")
             return redirect('index')  # Redirect to index (homepage)
         else:
             messages.error(request, "Invalid username or password.")
@@ -132,8 +135,62 @@ def planConfirmation(request):
 
 
 def forgot(request):
-    return render(request, 'forgot.html')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        User = get_user_model()
 
+        try:
+            user = User.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return redirect('forgot')
+
+        reset_token = get_random_string(32)
+        password_reset_tokens[reset_token] = email  # Store token temporarily
+        reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[reset_token]))
+
+        send_mail(
+            'Password Reset Request',
+            f'Click the link below to reset your password:\n{reset_link}',
+            'no-reply@yourdomain.com',  # Change to your email
+            [email],
+            fail_silently=False,
+        )
+        print(reset_link)
+
+        return redirect('forgot')
+
+    return render(request, 'forgot.html')
+def password_reset_confirm(request, token):
+    email = password_reset_tokens.get(token)
+    if not email:
+        return render(request, "password_reset_confirm.html", {"error": "Invalid or expired token."})
+
+    if request.method == 'POST':
+        new_password = request.POST.get("newpassword")
+        confirm_password = request.POST.get("confirmnewpassword")
+
+
+
+        if new_password != confirm_password:
+            return render(request, "password_reset_confirm.html", {"token": token, "error": "Passwords do not match."})
+
+        User = get_user_model()
+
+        try:
+            user = User.objects.get(email=email)
+            user.password = make_password(new_password)
+            user.save()
+            del password_reset_tokens[token]  # Remove used token
+            return redirect("password_reset_complete")
+        except CustomUser.DoesNotExist:
+            return render(request, "password_reset_confirm.html", {"error": "User not found."})
+
+    return render(request, "password_reset_confirm.html", {"token": token})
+
+
+def password_reset_complete(request):
+    messages.success(request, "Password reset successfully.")
+    return render(request, "login.html")
 
 def creation(request):
     return render(request, 'UserCreation.html')

@@ -24,6 +24,7 @@ from .views import generate_date_plan
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),  # Homepage
@@ -42,7 +43,11 @@ urlpatterns = [
     path("generate-date-plan/", generate_date_plan, name="generate_date_plan"),
     path('update-profile/', update_user_profile, name='update_user_profile'),
     path('api/getLocationImage/', get_location_image, name='get_location_image'),
+    path('reset/<str:token>/', views.password_reset_confirm, name='password_reset_confirm'),
+    path("resetcomplete/", views.password_reset_complete, name="password_reset_complete"),
+
 ]
 
 if settings.DEBUG:  # Only serve media files in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
