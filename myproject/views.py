@@ -313,23 +313,46 @@ def generate_date_plan(request):
 def update_user_profile(request):
     if request.method == 'POST':
         user = request.user
+
         user.location = request.POST.get('location', user.location)
         user.occupation = request.POST.get('occupation', user.occupation)
         user.biography = request.POST.get('biography', user.biography)
 
-        # Handle multiple selections for interests, cuisines, and diet restrictions
-        user.interests = json.loads(request.POST.get('interests', '[]'))
-        user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
-        user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
+        # Handle JSON fields safely
+        try:
+            user.interests = json.loads(request.POST.get('interests', '[]'))
+            user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
+            user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
+        except json.JSONDecodeError:
+            user.interests, user.favorite_cuisines, user.diet_restrictions = [], [], []
+
 
         # Handle profile picture upload
-        if 'picture' in request.FILES:
-            user.picture = request.FILES['picture']
+        profile_picture = request.FILES.get('picture', None)
 
+        # Debugging Statements
+        print("🔹 DEBUG: User Profile Data Before Saving:")
+        print(f"   - User: {user.username} (ID: {user.id})")
+        print(f"   - Location: {user.location}")
+        print(f"   - Occupation: {user.occupation}")
+        print(f"   - Biography: {user.biography}")
+        print(f"   - Interests: {user.interests}")
+        print(f"   - Favorite Cuisines: {user.favorite_cuisines}")
+        print(f"   - Diet Restrictions: {user.diet_restrictions}")
+        print(f"   - Profile Picture Uploaded: {'Yes' if profile_picture else 'No'}")
+
+
+        if profile_picture:
+            user.picture = profile_picture
+
+        # Save user data
         user.save()
+        print("✅ User profile successfully updated!\n")
+
         return redirect('index')
 
     return render(request, 'UserCreation.html')
+
 
 @csrf_exempt
 def get_location_image(request):

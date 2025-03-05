@@ -910,11 +910,16 @@
                     throw new Error("No city data found.");
                 }
 
+                // Extract city name
                 const cityName = data[0].name;
                 document.getElementById("city-name").innerText = cityName;
                 document.getElementById("location-search").value = cityName;
                 document.getElementById("location-search-mobile").value = cityName;
 
+                console.log("Fetched city name:", cityName);
+
+                // Fetch city background image after getting city name
+                updateLocationBackground(cityName);
             } catch (error) {
                 console.error("City fetch error:", error);
                 document.getElementById("city-name").innerText = "Unknown Location";
@@ -927,8 +932,8 @@
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        fetchWeather(latitude, longitude);
                         fetchCityName(latitude, longitude);
+                        fetchWeather(latitude, longitude);
                     },
                     (error) => {
                         console.error("Geolocation error:", error);
@@ -940,6 +945,44 @@
             } else {
                 console.error("Geolocation not supported.");
                 document.getElementById("city-name").innerText = "Geolocation Not Supported";
+            }
+        }
+
+        // Function to fetch high-quality background image using Google Maps Place Photo API
+        async function updateLocationBackground(cityName) {
+            const backgroundImage = document.getElementById("background-image");
+            const skeletonLoader = document.getElementById("skeleton-loader");
+
+            console.log("Fetching high-quality image for:", cityName);
+
+            try {
+                const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
+                const data = await response.json();
+
+                if (!data.image_url) throw new Error("No image URL received.");
+
+                // Preload image before showing it
+                const img = new Image();
+                img.src = data.image_url;
+
+                img.onload = function () {
+                    // Hide skeleton and fade in the image
+                    skeletonLoader.style.display = "none";
+                    backgroundImage.src = data.image_url;
+                    backgroundImage.alt = `${cityName} Skyline`;
+                    backgroundImage.classList.add("opacity-100");
+                    console.log("Updated background image:", data.image_url);
+                };
+            } catch (error) {
+                console.error("Error fetching high-quality location image:", error);
+
+                // 🔹 Fallback: Use Unsplash
+                backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
+
+                backgroundImage.onload = function () {
+                    skeletonLoader.style.display = "none";
+                    backgroundImage.classList.add("opacity-100");
+                };
             }
         }
 
@@ -978,7 +1021,7 @@
             return;
         }
 
-        let userPreferredLocation = localStorage.getItem("location") || "Chicago, IL";
+        let userPreferredLocation =  "Fetching Location...";
         input.value = userPreferredLocation; // Set default value
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
@@ -991,9 +1034,6 @@
                 alert("No details available for: " + place.name);
                 return;
             }
-
-            document.getElementById("box-location").textContent = place.name;
-            localStorage.setItem("location", place.name);
         });
 
         google.maps.event.addListener(autocomplete, "place_changed", function () {
@@ -1056,52 +1096,53 @@
         greetingElement.textContent = greetingMessage;
     });
 
-    async function updateLocationBackground() {
-        const cityNameElement = document.getElementById("city-name");
-        const backgroundImage = document.getElementById("background-image");
-        const skeletonLoader = document.getElementById("skeleton-loader");
-
-        let cityName = localStorage.getItem("location") || "Chicago";
-
-        if (cityNameElement && cityNameElement.innerText !== "Loading...") {
-            cityName = cityNameElement.innerText;
-        }
-
-        console.log("Fetching high-quality image for:", cityName);
-
-        try {
-            const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
-            const data = await response.json();
-
-            if (!data.image_url) throw new Error("No image URL received.");
-
-            // Preload image before showing it
-            const img = new Image();
-            img.src = data.image_url;
-
-            img.onload = function () {
-                // Hide skeleton and fade in the image
-                skeletonLoader.style.display = "none";
-                backgroundImage.src = data.image_url;
-                backgroundImage.alt = `${cityName} Skyline`;
-                backgroundImage.classList.add("opacity-100");
-                console.log("Updated background image:", data.image_url);
-            };
-        } catch (error) {
-            console.error("Error fetching high-quality location image:", error);
-
-            // 🔹 Fallback: Use Unsplash
-            backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
-
-            backgroundImage.onload = function () {
-                skeletonLoader.style.display = "none";
-                backgroundImage.classList.add("opacity-100");
-            };
-        }
-    }
-
-    // Run function after DOM loads
-    document.addEventListener("DOMContentLoaded", updateLocationBackground);
+    // async function updateLocationBackground() {
+    //     const cityNameElement = document.getElementById("city-name");
+    //     const backgroundImage = document.getElementById("background-image");
+    //     const skeletonLoader = document.getElementById("skeleton-loader");
+    //     const location = document.getElementById("city-name");
+    //
+    //     let cityName = location;
+    //
+    //     if (cityNameElement && cityNameElement.innerText !== "Loading...") {
+    //         cityName = cityNameElement.innerText;
+    //     }
+    //
+    //     console.log("Fetching high-quality image for:", cityName);
+    //
+    //     try {
+    //         const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
+    //         const data = await response.json();
+    //
+    //         if (!data.image_url) throw new Error("No image URL received.");
+    //
+    //         // Preload image before showing it
+    //         const img = new Image();
+    //         img.src = data.image_url;
+    //
+    //         img.onload = function () {
+    //             // Hide skeleton and fade in the image
+    //             skeletonLoader.style.display = "none";
+    //             backgroundImage.src = data.image_url;
+    //             backgroundImage.alt = `${cityName} Skyline`;
+    //             backgroundImage.classList.add("opacity-100");
+    //             console.log("Updated background image:", data.image_url);
+    //         };
+    //     } catch (error) {
+    //         console.error("Error fetching high-quality location image:", error);
+    //
+    //         // 🔹 Fallback: Use Unsplash
+    //         backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
+    //
+    //         backgroundImage.onload = function () {
+    //             skeletonLoader.style.display = "none";
+    //             backgroundImage.classList.add("opacity-100");
+    //         };
+    //     }
+    // }
+    //
+    // // Run function after DOM loads
+    // document.addEventListener("DOMContentLoaded", updateLocationBackground);
 
 
 

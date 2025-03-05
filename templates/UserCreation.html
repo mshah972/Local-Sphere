@@ -419,6 +419,7 @@
         const userDescriptionInput = document.getElementById("biography");
         const cuisineDropdown = document.getElementById("cuisineDropdown");
         const interestDropdown = document.getElementById("interestDropdown");
+        const dietRestrictionDropdown = document.getElementById("dietRestrictionDropdown");
 
         // Get display elements
         const userDescriptionDisplay = document.getElementById("userDescriptionDisplay");
@@ -431,6 +432,15 @@
         userInterestsTable.id = "userInterests";
         userInterestsTable.classList.add("space-y-2", "text-center");
 
+        // Display container for dietary restriction icons
+        const dietRestrictionsDisplay = document.createElement("div");
+        dietRestrictionsDisplay.id = "dietRestrictionsDisplay";
+        dietRestrictionsDisplay.classList.add("flex", "gap-2", "mt-2");
+
+        // Insert dietary restrictions display below email
+        const userEmailElement = document.querySelector(".font-mulish.text-white.font-light");
+        userEmailElement.parentNode.insertBefore(dietRestrictionsDisplay, userEmailElement.nextSibling);
+
         // Insert Interests Container
         const interestsContainer = document.createElement("div");
         interestsContainer.id = "interestsContainer";
@@ -442,7 +452,7 @@
         interestsContainer.appendChild(userInterestsTable);
         cuisinesContainer.parentNode.insertBefore(interestsContainer, cuisinesContainer);
 
-        // Function to toggle cuisines table visibility
+        // Function to toggle visibility of elements
         function toggleVisibility(container, table) {
             container.style.display = table.children.length > 0 ? "block" : "none";
         }
@@ -516,6 +526,47 @@
             dropdown.selectedIndex = 0;
         }
 
+        // Function to add diet restriction icons
+        function addDietIcon(selectedValue) {
+            if (!selectedValue) return;
+
+            // Check if already selected
+            if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+
+            // Icon mapping for dietary restrictions
+            const dietIcons = {
+                "Vegan": "../static/vegan.svg",
+                "Vegetarian": "../static/vegetarian.svg",
+                "Lactose Intolerance": "../static/lactose.svg",
+                "Gluten Intolerance": "../static/gluten.svg",
+                "Ketogenic Diet": "../static/keto.svg",
+                "Kosher and Halal": "../static/halal.svg"
+            };
+
+            // Create dietary restriction icon element
+            const dietIcon = document.createElement("img");
+            dietIcon.src = dietIcons[selectedValue] || "../static/diet-icons/default.svg";
+            dietIcon.alt = selectedValue;
+            dietIcon.title = selectedValue;
+            dietIcon.className = "w-8 h-8";
+
+            // Append icon to the display area
+            dietIcon.dataset.item = selectedValue;
+            dietRestrictionsDisplay.appendChild(dietIcon);
+
+            // Update dropdown to hide selected options
+            updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+
+            // Remove item when clicking the icon
+            dietIcon.addEventListener("click", function () {
+                dietIcon.remove();
+                updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+            });
+
+            // Reset dropdown selection
+            dietRestrictionDropdown.selectedIndex = 0;
+        }
+
         // Add selected cuisine on dropdown change
         if (cuisineDropdown) {
             cuisineDropdown.addEventListener("change", function () {
@@ -530,6 +581,13 @@
             });
         }
 
+        // Add selected diet restriction on dropdown change
+        if (dietRestrictionDropdown) {
+            dietRestrictionDropdown.addEventListener("change", function () {
+                addDietIcon(dietRestrictionDropdown.value.trim());
+            });
+        }
+
         // Hide tables initially if no selections exist
         toggleVisibility(cuisinesContainer, userCuisinesTable);
         toggleVisibility(interestsContainer, userInterestsTable);
@@ -537,13 +595,29 @@
 
 
 
+
     document.addEventListener("DOMContentLoaded", function () {
         function updateHiddenFields() {
-            document.getElementById("interests").value = JSON.stringify([...document.getElementById("interestDropdown").selectedOptions].map(opt => opt.value));
-            document.getElementById("favorite_cuisines").value = JSON.stringify([...document.getElementById("cuisineDropdown").selectedOptions].map(opt => opt.value));
-            document.getElementById("diet_restrictions").value = JSON.stringify([...document.getElementById("dietRestrictionDropdown").selectedOptions].map(opt => opt.value));
+            // Convert selected options to an array of values and update hidden fields
+            document.getElementById("interests").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedInterest div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("favorite_cuisines").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedCuisines div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("diet_restrictions").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedDietRestriction img")].map(item => item.dataset.item)
+            );
+
+            console.log("🔹 DEBUG: Hidden Fields Updated Before Submission:");
+            console.log("   - Interests:", document.getElementById("interests").value);
+            console.log("   - Favorite Cuisines:", document.getElementById("favorite_cuisines").value);
+            console.log("   - Diet Restrictions:", document.getElementById("diet_restrictions").value);
         }
 
+        // Run updateHiddenFields() when form is submitted
         document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
     });
 
