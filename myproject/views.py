@@ -267,10 +267,11 @@ def generate_date_plan(request):
                         - "start_time": string
                         - "end_time": string
 
-                    ⚠️ **STRICT RULES**:
+                    **IMPORTANT RULES**:
                     - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
                     - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
-                    - Restaurants and events should be selected based on the provided preferences.
+                    - The selections must be **realistic, diverse, and match the provided preferences**.
+                    - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
                     """
                 }
             ],
