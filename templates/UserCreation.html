@@ -343,12 +343,12 @@
                         <select id="dietRestrictionDropdown"
                                 class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
-                            <option>Vegan</option>
-                            <option>Vegetarian</option>
-                            <option>Lactose Intolerance</option>
-                            <option>Gluten Intolerance</option>
-                            <option>Ketogenic Diet</option>
-                            <option>Kosher and Halal</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Lactose Intolerance">Lactose Intolerance</option>
+                            <option value="Gluten Intolerance">Gluten Intolerance</option>
+                            <option value="Keto">Ketogenic Diet</option>
+                            <option value="Halal">Kosher and Halal</option>
                         </select>
                         <input type="hidden" id="diet_restrictions" name="diet_restrictions">
                     </div>
@@ -437,6 +437,10 @@
         dietRestrictionsDisplay.id = "dietRestrictionsDisplay";
         dietRestrictionsDisplay.classList.add("flex", "gap-2", "mt-2");
 
+        const selectedDietRestrictionsDisplay = document.getElementById("selectedDietRestriction");
+        const dietRestrictionsHiddenInput = document.getElementById("diet_restrictions");
+
+
         // Insert dietary restrictions display below email
         const userEmailElement = document.querySelector(".font-mulish.text-white.font-light");
         userEmailElement.parentNode.insertBefore(dietRestrictionsDisplay, userEmailElement.nextSibling);
@@ -469,6 +473,12 @@
             [...dropdown.options].forEach(option => {
                 option.style.display = selectedItems.includes(option.value) ? "none" : "";
             });
+        }
+
+        function updateDietRestrictionsField() {
+            const selectedRestrictions = [...selectedDietRestrictionsDisplay.children].map(item => item.dataset.item);
+            dietRestrictionsHiddenInput.value = JSON.stringify(selectedRestrictions);
+            console.log("Diet Restrictions:", dietRestrictionsHiddenInput.value);
         }
 
         // Function to add an item to both the tag section and table
@@ -532,6 +542,7 @@
 
             // Check if already selected
             if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+            if ([...selectedDietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
 
             // Icon mapping for dietary restrictions
             const dietIcons = {
@@ -554,11 +565,29 @@
             dietIcon.dataset.item = selectedValue;
             dietRestrictionsDisplay.appendChild(dietIcon);
 
+            const restrictionTag = document.createElement("div");
+            restrictionTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            restrictionTag.dataset.item = selectedValue;
+            restrictionTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+
+            // Append to the display container
+            selectedDietRestrictionsDisplay.appendChild(restrictionTag);
+
+            updateDietRestrictionsField();
+
             // Update dropdown to hide selected options
             updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
 
-            // Remove item when clicking the icon
-            dietIcon.addEventListener("click", function () {
+            // // Remove item when clicking the icon
+            // dietIcon.addEventListener("click", function () {
+            //
+            // });
+
+            restrictionTag.querySelector(".removeItem").addEventListener("click", function () {
+                restrictionTag.remove();
+                updateDietRestrictionsField();
                 dietIcon.remove();
                 updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
             });
@@ -591,6 +620,7 @@
         // Hide tables initially if no selections exist
         toggleVisibility(cuisinesContainer, userCuisinesTable);
         toggleVisibility(interestsContainer, userInterestsTable);
+
     });
 
 
@@ -608,7 +638,7 @@
             );
 
             document.getElementById("diet_restrictions").value = JSON.stringify(
-                [...document.querySelectorAll("#selectedDietRestriction img")].map(item => item.dataset.item)
+                [...document.querySelectorAll("#selectedDietRestriction div")].map(item => item.dataset.item)
             );
 
             console.log("🔹 DEBUG: Hidden Fields Updated Before Submission:");

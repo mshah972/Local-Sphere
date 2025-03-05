@@ -274,20 +274,14 @@
 
                         <!-- Skeleton Content -->
                         <div class="p-4">
-                            <div class="skeleton-text h-5 w-3/4 mb-2">
-                                <div class="flex items-center justify-between mt-2">
-                                    <div class="skeleton-text h-5 w-12"></div>
-                                    <div class="skeleton-icon w-6 h-6"></div>
-                                </div>
-                            </div> <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-
                             <!-- Rating + Icon -->
                             <div class="flex items-center justify-between mt-2">
                                 <div class="skeleton-text h-5 w-12"></div>
                                 <div class="skeleton-icon w-6 h-6"></div>
                             </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
                         </div>
                     </div>
                     <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
@@ -296,15 +290,14 @@
 
                         <!-- Skeleton Content -->
                         <div class="p-4">
-                            <div class="skeleton-text h-5 w-3/4 mb-2"></div> <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-
                             <!-- Rating + Icon -->
                             <div class="flex items-center justify-between mt-2">
                                 <div class="skeleton-text h-5 w-12"></div>
                                 <div class="skeleton-icon w-6 h-6"></div>
                             </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
                         </div>
                     </div>
                     <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
@@ -313,15 +306,14 @@
 
                         <!-- Skeleton Content -->
                         <div class="p-4">
-                            <div class="skeleton-text h-5 w-3/4 mb-2"></div> <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-
                             <!-- Rating + Icon -->
                             <div class="flex items-center justify-between mt-2">
                                 <div class="skeleton-text h-5 w-12"></div>
                                 <div class="skeleton-icon w-6 h-6"></div>
                             </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
                         </div>
                     </div>
                 </div>
@@ -336,6 +328,58 @@
             <!-- Event Recommendations -->
             <h2 class="mt-6 mb-2 text-xl font-medium">Recommended Events</h2>
             <div class="overflow-visible">
+                <div id="event-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Skeleton Card (Matches the real card) -->
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                        </div>
+                    </div>
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                        </div>
+                    </div>
+                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                        <!-- Skeleton Image -->
+                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                        <!-- Skeleton Content -->
+                        <div class="p-4">
+                            <!-- Rating + Icon -->
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="skeleton-text h-5 w-12"></div>
+                                <div class="skeleton-icon w-6 h-6"></div>
+                            </div>
+                            <!-- Title -->
+                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                        </div>
+                    </div>
+                </div>
+
                 <div id="event-list" class="flex flex-row justify-start w-full gap-6 p-2">
                     <!-- Content dynamically loads here -->
                 </div>
@@ -610,40 +654,45 @@
         async function getRestaurantDetails(restaurantName, location) {
             if (!restaurantName || !location || location.trim() === "") {
                 console.warn(`⚠️ Skipping API request: Missing restaurant name or location for "${restaurantName}"`);
-                return { rating: "N/A", imageUrl: "https://via.placeholder.com/150" };
+                return { rating: "N/A", imageUrl: "../static/default.jpg" };
             }
 
             try {
                 const response = await fetch(`/api/getRestaurantDetails/?restaurantName=${encodeURIComponent(restaurantName)}&location=${encodeURIComponent(location)}`);
                 if (!response.ok) {
                     console.error(`❌ API Error: ${response.status}`);
-                    return { rating: "N/A", imageUrl: "https://via.placeholder.com/150" };
+                    return { rating: "N/A", imageUrl: "../static/default.jpg" };
                 }
                 return await response.json();
             } catch (error) {
                 console.error("❌ Error fetching restaurant details:", error);
-                return { rating: "N/A", imageUrl: "https://via.placeholder.com/150" };
+                return { rating: "N/A", imageUrl: "../static/default.jpg" };
             }
         }
 
         // 🔹 Load and display the plan
         async function loadPlan(planData) {
             document.getElementById('location').textContent = planData.location;
-            document.getElementById('plan-details').textContent = `${planData.guests} Peoples • ${planData.date}`;
+            document.getElementById('plan-details').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.date}`;
             document.getElementById('location-mobile').textContent = planData.location;
-            document.getElementById('plan-details-mobile').textContent = `${planData.guests} Peoples • ${planData.date}`;
+            document.getElementById('plan-details-mobile').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.date}`;
 
             const bounds = new mapboxgl.LngLatBounds();
             const restaurantList = document.getElementById('restaurant-list');
             const restaurantListMobile = document.getElementById('restaurant-list-mobile');
             const eventList = document.getElementById('event-list');
             const eventListMobile = document.getElementById('event-list-mobile');
-            const skeleton = document.getElementById("restaurant-skeleton");
+            const restaurantSkeleton = document.getElementById("restaurant-skeleton");
+            const eventSkeleton = document.getElementById('event-skeleton');
+
 
             // ✅ Show skeleton loader before loading
-            skeleton.style.display = "flex";
+            restaurantSkeleton.style.display = "flex";
+            eventSkeleton.style.display = "flex";
             restaurantList.style.display = "none";
             restaurantListMobile.style.display = "none";
+            eventList.style.display = "none";
+            eventListMobile.style.display = "none";
 
             // Clear previous results
             restaurantList.innerHTML = '';
@@ -704,6 +753,7 @@
                                     <span class="font-semibold text-[16px] pr-4">${event.name}</span>
                                     <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}</span>
                                 </div>
+                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
                             </div>
                             <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${event.address}</p>
                         </div>
@@ -714,9 +764,12 @@
             }
 
             // ✅ Hide skeleton & show restaurants
-            skeleton.style.display = "none";
+            restaurantSkeleton.style.display = "none";
+            eventSkeleton.style.display = "none";
             restaurantList.style.display = "flex";
             restaurantListMobile.style.display = "flex";
+            eventList.style.display = "flex";
+            eventListMobile.style.display = "flex";
 
             // ✅ Adjust map to fit all markers
             if (!bounds.isEmpty()) {

@@ -172,7 +172,7 @@ def get_restaurant_details(request):
         return JsonResponse({"error": "No details found"}, status=404)
 
     rating = details_response["result"].get("rating", "N/A")
-    image_url = "https://via.placeholder.com/150"
+    image_url = "../static/default.jpg"
 
     if "photos" in details_response["result"]:
         photo_ref = details_response["result"]["photos"][0]["photo_reference"]
@@ -224,11 +224,10 @@ def generate_date_plan(request):
         user = request.user  # Get logged-in user
 
         dietary_restrictions = user.diet_restrictions if user.diet_restrictions else "None"
-        favorite_foods = user.favorite_foods if hasattr(user, "favorite_foods") else "None"
         favorite_cuisines = user.favorite_cuisines if user.favorite_cuisines else "None"
         favorite_interests = user.interests if user.interests else "None"
 
-        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Foods: {favorite_foods}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
+        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
 
         # ✅ Check if OpenAI API key is set correctly
         openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -247,7 +246,6 @@ def generate_date_plan(request):
 
                     Take into account the user's saved preferences:
                     - **Dietary Restrictions:** {dietary_restrictions}
-                    - **Favorite Foods:** {favorite_foods}
                     - **Favorite Cuisines:** {favorite_cuisines}
                     - **Favorite Interests for Activities:** {favorite_interests}
 
@@ -269,12 +267,14 @@ def generate_date_plan(request):
                         - "website": string
                         - "start_time": string
                         - "end_time": string
+                        - "type": string
 
                     **IMPORTANT RULES**:
                     - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
                     - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
                     - The selections must be **realistic, diverse, and match the user's saved preferences**.
                     - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
+                    - **Make Sure** that everything is in the radius of 10 miles or less only.
                     """
                 }
             ],
