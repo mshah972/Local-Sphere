@@ -266,7 +266,7 @@ def generate_date_plan(request):
         print(f"📨 Received Data: {data}")
 
         # ✅ Validate required inputs
-        required_fields = ["location", "date", "time", "attendees", "food"]
+        required_fields = ["location", "date", "time", "attendees", "food", "ocasion", "order"]
         for field in required_fields:
             if not data.get(field):
                 return JsonResponse({"error": f"Missing required field: {field}"}, status=400)
@@ -276,6 +276,8 @@ def generate_date_plan(request):
         time = data["time"]
         attendees = data["attendees"]
         food = data["food"]
+        ocasion = data["ocasion"]  # New field
+        order = data["order"]  # New field
 
         # ✅ Get User Preferences from Database
         user = request.user  # Get logged-in user
@@ -291,7 +293,7 @@ def generate_date_plan(request):
         if not openai_api_key:
             return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
 
-        # ✅ OpenAI API Call with User Preferences
+        # ✅ OpenAI API Call with User Preferences and new fields
         client = openai.OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
             model="gpt-4",
@@ -299,7 +301,9 @@ def generate_date_plan(request):
                 {
                     "role": "user",
                     "content": f"""
-                    Generate a JSON object for a date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
+                    Generate a JSON object for a **{ocasion}** date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
+
+                    The user wants the order of the plan to be: **{order}**.
 
                     Take into account the user's saved preferences:
                     - **Dietary Restrictions:** {dietary_restrictions}
@@ -312,6 +316,8 @@ def generate_date_plan(request):
                     - "guests": integer
                     - "location": string
                     - "cuisine": string
+                    - "ocasion": string
+                    - "order": string
                     - "restaurants": an **array of exactly 3 objects**, each with:
                         - "name": string
                         - "address": string
@@ -335,7 +341,7 @@ def generate_date_plan(request):
                     """
                 }
             ],
-            max_tokens=600,
+            max_tokens=700,
             temperature=0.7,
         )
 

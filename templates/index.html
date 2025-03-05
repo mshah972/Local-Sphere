@@ -1095,56 +1095,6 @@
         greetingElement.textContent = greetingMessage;
     });
 
-    // async function updateLocationBackground() {
-    //     const cityNameElement = document.getElementById("city-name");
-    //     const backgroundImage = document.getElementById("background-image");
-    //     const skeletonLoader = document.getElementById("skeleton-loader");
-    //     const location = document.getElementById("city-name");
-    //
-    //     let cityName = location;
-    //
-    //     if (cityNameElement && cityNameElement.innerText !== "Loading...") {
-    //         cityName = cityNameElement.innerText;
-    //     }
-    //
-    //     console.log("Fetching high-quality image for:", cityName);
-    //
-    //     try {
-    //         const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
-    //         const data = await response.json();
-    //
-    //         if (!data.image_url) throw new Error("No image URL received.");
-    //
-    //         // Preload image before showing it
-    //         const img = new Image();
-    //         img.src = data.image_url;
-    //
-    //         img.onload = function () {
-    //             // Hide skeleton and fade in the image
-    //             skeletonLoader.style.display = "none";
-    //             backgroundImage.src = data.image_url;
-    //             backgroundImage.alt = `${cityName} Skyline`;
-    //             backgroundImage.classList.add("opacity-100");
-    //             console.log("Updated background image:", data.image_url);
-    //         };
-    //     } catch (error) {
-    //         console.error("Error fetching high-quality location image:", error);
-    //
-    //         // 🔹 Fallback: Use Unsplash
-    //         backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
-    //
-    //         backgroundImage.onload = function () {
-    //             skeletonLoader.style.display = "none";
-    //             backgroundImage.classList.add("opacity-100");
-    //         };
-    //     }
-    // }
-    //
-    // // Run function after DOM loads
-    // document.addEventListener("DOMContentLoaded", updateLocationBackground);
-
-
-
     const userDropdownButton = document.getElementById("userDropdownButton");
         const userDropdownMenu = document.getElementById("userDropdownMenu");
 
@@ -1344,9 +1294,14 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+    ///// Script for Event and food 
+
+    document.addEventListener("DOMContentLoaded", function () {
     const activity1 = document.getElementById("activity-1");
     const activity2 = document.getElementById("activity-2");
+    const orderPreference = document.getElementById("order");
+    const planButton = document.getElementById("plan-button");
+    const planButtonMobile = document.getElementById("plan-button-mobile");
 
     function syncDropdowns(changedDropdown, otherDropdown) {
         if (changedDropdown.value === "food") {
@@ -1356,13 +1311,36 @@
         }
     }
 
-    activity1.addEventListener("change", function() {
+    activity1.addEventListener("change", function () {
         syncDropdowns(activity1, activity2);
     });
 
-    activity2.addEventListener("change", function() {
+    activity2.addEventListener("change", function () {
         syncDropdowns(activity2, activity1);
     });
+
+    function saveSelectionsAndRedirect() {
+        // Ensure values are saved before redirect
+        localStorage.setItem("activity1", activity1.value);
+        localStorage.setItem("activity2", activity2.value);
+        localStorage.setItem("orderPreference", orderPreference.value);
+
+        console.log("Saved to localStorage:", {
+            activity1: activity1.value,
+            activity2: activity2.value,
+            orderPreference: orderPreference.value,
+        });
+
+        // Redirect to Sphere AI page
+        window.location.href = "/SphereAi/";
+    }
+
+    if (planButton) {
+        planButton.addEventListener("click", saveSelectionsAndRedirect);
+    }
+    if (planButtonMobile) {
+        planButtonMobile.addEventListener("click", saveSelectionsAndRedirect);
+    }
 });
 
 </script>

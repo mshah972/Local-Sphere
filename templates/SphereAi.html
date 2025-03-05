@@ -538,6 +538,61 @@
                 </div>
             </div>
 
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Ocasion (Optional) </label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
+              <span class="mr-2">
+                <img
+                        class="h-5 w-auto"
+                        src="../static/ocassion.svg"
+                        alt="Peoples Icon"
+                />
+              </span>
+                    <select
+                            id="ocasion"
+                            class="text-[16px] font-normal rounded-md w-full"
+                            required
+                    >
+                        <option disabled selected hidden>Choose Ocasion</option>
+                        <option>Graduation<a/option>
+                        <option>Birthday</option>
+                        <option>Meeting</option>
+                        <option>Retierment</option>
+                        <option>Date</option>
+                        <option>Just for Fun</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-start justify-between w-full mt-6 mb-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Ocasion (Optional) </label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
+              <span class="mr-2">
+                <img
+                        class="h-5 w-auto"
+                        src="../static/preference.svg"
+                        alt="Peoples Icon"
+                />
+              </span>
+                    <select id="order" class="text-[16px] font-normal rounded-md w-full" required>
+                        <option value="Lunch Then Activity">Food Then Event</option>
+                        <option value="Activity Then Lunch">Event Then Food </option>
+                    </select>
+                </div>
+            </div>
+
+
+            
+
+
             <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
                 <button
@@ -800,20 +855,22 @@
 
 
     document.addEventListener("DOMContentLoaded", function () {
-        // Simulated fetched user profile data from the database (Replace with API call)
-        const userProfile = {
-            location: "Chicago, IL",
-            food: "Italian",
-        };
+    // Simulated fetched user profile data from the database (Replace with API call)
+    const userProfile = {
+        location: "Chicago, IL",
+        food: "Italian",
+    };
 
         // Get all form inputs
         const formInputs = {
-            location: document.getElementById("location"),
-            date: document.getElementById("preferred-date"),
-            time: document.getElementById("preferred-time"),
-            attendees: document.getElementById("guests"),
-            food: document.getElementById("food"),
-        };
+        location: document.getElementById("location"),
+        date: document.getElementById("preferred-date"),
+        time: document.getElementById("preferred-time"),
+        attendees: document.getElementById("guests"),
+        food: document.getElementById("food"),
+        ocasion: document.getElementById("ocasion"), // New dropdown
+        order: document.getElementById("order") // New dropdown
+    };
 
         // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
@@ -854,10 +911,10 @@
         }
 
         Object.keys(formInputs).forEach((key) => {
-            formInputs[key].addEventListener("input", function () {
-                updateDisplay(key, this.value);
-            });
+        formInputs[key].addEventListener("input", function () {
+            updateDisplay(key, this.value);
         });
+    });
 
         const dateInput = formInputs.date;
         const today = new Date();
@@ -957,53 +1014,57 @@
         document.getElementById("recreate-btn").addEventListener("click", async function () {
         const apiUrl = "http://localhost:8000/generate-date-plan/";
 
-        // Fetch input values
-        const location = document.getElementById("location").value;
-        const date = document.getElementById("preferred-date").value;
-        const time = document.getElementById("preferred-time").value;
-        const attendees = document.getElementById("guests").value;
-        const food = document.getElementById("food").value;
+        // Fetch input values including the new dropdowns
+        const location = formInputs.location.value;
+        const date = formInputs.date.value;
+        const time = formInputs.time.value;
+        const attendees = formInputs.attendees.value;
+        const food = formInputs.food.value;
+        const ocasion = formInputs.ocasion.value; // New dropdown
+        const order = formInputs.order.value; // New dropdown
 
         console.log("🚀 Sending API Request to:", apiUrl);
-        console.log("📨 Payload:", { location, date, time, attendees, food });
+        console.log("📨 Payload:", { location, date, time, attendees, food, ocasion, order });
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            },
-            body: JSON.stringify({
-                location,
-                date,
-                time,
-                attendees,
-                food
-            }),
-        });
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                },
+                body: JSON.stringify({
+                    location,
+                    date,
+                    time,
+                    attendees,
+                    food,
+                    ocasion,
+                    order
+                }),
+            });
 
-        console.log("✅ Response Status:", response.status);
+            console.log("✅ Response Status:", response.status);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("📩 Received Data:", data);
+
+            // Store response data
+            localStorage.setItem("planData", JSON.stringify(data));
+
+            // Redirect to confirmation page
+            window.location.href = "{% url 'planConfirmation' %}";
+
+        } catch (error) {
+            console.error("❌ Fetch error:", error);
+            alert(`Error creating plan: ${error.message}`);
         }
-
-        const data = await response.json();
-        console.log("📩 Received Data:", data);
-
-        // Store the response data in localStorage
-        localStorage.setItem("planData", JSON.stringify(data));
-
-        // Redirect to the plan confirmation page
-        window.location.href = "{% url 'planConfirmation' %}";
-
-    } catch (error) {
-        console.error("❌ Fetch error:", error);
-        alert(`Error creating plan: ${error.message}`);
-    }
-});
     });
+});
 
     function showLoading() {
     let loadingText = document.getElementById("loadingText");
@@ -1142,6 +1203,40 @@
         });
     });
 
+    ////// Script for pulling event then food //////
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const activity1 = localStorage.getItem("activity1") || "🍽️ Food";
+    const activity2 = localStorage.getItem("activity2") || "🎭 Event";
+    let orderPreference = localStorage.getItem("orderPreference");
+
+    console.log("Retrieved from localStorage:", { activity1, activity2, orderPreference });
+
+    // Update page with retrieved selections
+    document.getElementById("box-activity-1").textContent = activity1;
+    document.getElementById("box-activity-2").textContent = activity2;
+
+    // Convert stored value back if necessary
+    if (orderPreference === "Food Then Event") {
+        orderPreference = "Lunch Then Activity";
+    } else if (orderPreference === "Event Then Food") {
+        orderPreference = "Activity Then Lunch";
+    }
+
+    // Set dropdown value based on stored order
+    const orderDropdown = document.getElementById("order");
+    if (orderDropdown && orderPreference) {
+        orderDropdown.value = orderPreference;
+    }
+
+    // Optional: Clear selections after retrieval
+    setTimeout(() => {
+        localStorage.removeItem("activity1");
+        localStorage.removeItem("activity2");
+        localStorage.removeItem("orderPreference");
+        console.log("Cleared stored activity selections.");
+    }, 2000);
+});
 </script>
 </body>
 </html>
