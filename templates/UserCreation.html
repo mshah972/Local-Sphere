@@ -274,6 +274,7 @@
                         <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
                         <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
                             <select id="occupation" name="occupation" class="w-full focus:outline-none">
+                                <option disabled selected hidden>Select</option>
                                 <option value="Student">Student</option>
                                 <option value="Teacher">Teacher</option>
                                 <option value="Engineer">Engineer</option>
@@ -298,6 +299,7 @@
                         </span>
                         <select id="interestDropdown"
                                 class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
                             <option>Music Concerts</option>
                             <option>Chicago Cubs</option>
                             <option>Basketball</option>
@@ -319,6 +321,7 @@
                         </span>
                         <select id="cuisineDropdown"
                                 class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
                             <option>Italian</option>
                             <option>Mexican</option>
                             <option>American</option>
@@ -339,6 +342,7 @@
                         </span>
                         <select id="dietRestrictionDropdown"
                                 class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
                             <option>Vegan</option>
                             <option>Vegetarian</option>
                             <option>Lactose Intolerance</option>
@@ -412,101 +416,126 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         // Get user input elements
-        const userDescriptionInput = document.getElementById("userDescription");
+        const userDescriptionInput = document.getElementById("biography");
         const cuisineDropdown = document.getElementById("cuisineDropdown");
+        const interestDropdown = document.getElementById("interestDropdown");
 
         // Get display elements
         const userDescriptionDisplay = document.getElementById("userDescriptionDisplay");
-        const userCuisinesDisplay = document.getElementById("selectedCuisines"); // Cuisines displayed as tags
-        const userCuisinesTable = document.getElementById("userCuisines"); // Cuisines in table
-        const cuisinesContainer = document.getElementById("cuisinesContainer"); // Cuisines table wrapper
+        const userCuisinesDisplay = document.getElementById("selectedCuisines");
+        const userCuisinesTable = document.getElementById("userCuisines");
+        const cuisinesContainer = document.getElementById("cuisinesContainer");
+
+        const userInterestsDisplay = document.getElementById("selectedInterest");
+        const userInterestsTable = document.createElement("div");
+        userInterestsTable.id = "userInterests";
+        userInterestsTable.classList.add("space-y-2", "text-center");
+
+        // Insert Interests Container
+        const interestsContainer = document.createElement("div");
+        interestsContainer.id = "interestsContainer";
+        interestsContainer.classList.add("bg-custom-white", "w-full", "p-4", "rounded-3xl", "shadow-lg", "hidden");
+        interestsContainer.innerHTML = `
+        <h2 class="text-center text-lg font-bold mb-2">Interests</h2>
+        <div class="border-t border-black mt-2 mb-4"></div>
+    `;
+        interestsContainer.appendChild(userInterestsTable);
+        cuisinesContainer.parentNode.insertBefore(interestsContainer, cuisinesContainer);
 
         // Function to toggle cuisines table visibility
-        function toggleCuisinesVisibility() {
-            cuisinesContainer.style.display = userCuisinesTable.children.length > 0 ? "block" : "none";
+        function toggleVisibility(container, table) {
+            container.style.display = table.children.length > 0 ? "block" : "none";
         }
 
         // Update description dynamically
-        userDescriptionInput.addEventListener("input", function () {
-            userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
-        });
-
-        // Function to hide selected options in dropdown
-        function updateDropdownOptions() {
-            const selectedCuisines = [...userCuisinesDisplay.children].map(item => item.dataset.cuisine);
-
-            [...cuisineDropdown.options].forEach(option => {
-                if (selectedCuisines.includes(option.value)) {
-                    option.style.display = "none"; // Hide selected options
-                } else {
-                    option.style.display = ""; // Show unselected options
-                }
+        if (userDescriptionInput) {
+            userDescriptionInput.addEventListener("input", function () {
+                userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
             });
         }
 
-        // Function to add cuisines to both the tag section and table
-        function addCuisine(selectedValue) {
+        // Function to hide selected options in dropdown
+        function updateDropdownOptions(dropdown, selectedItems) {
+            [...dropdown.options].forEach(option => {
+                option.style.display = selectedItems.includes(option.value) ? "none" : "";
+            });
+        }
+
+        // Function to add an item to both the tag section and table
+        function addItem(selectedValue, displayContainer, tableContainer, container, dropdown, type) {
             if (!selectedValue) return;
 
             // Check if already selected
-            if ([...userCuisinesDisplay.children].some(item => item.dataset.cuisine === selectedValue)) return;
+            if ([...displayContainer.children].some(item => item.dataset.item === selectedValue)) return;
 
             // Create a new tag below the input
-            const cuisineTag = document.createElement("div");
-            cuisineTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[14px] lg:text-[16px]";
-            cuisineTag.dataset.cuisine = selectedValue; // Set data attribute for easy identification
-            cuisineTag.innerHTML = `
+            const itemTag = document.createElement("div");
+            itemTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            itemTag.dataset.item = selectedValue;
+            itemTag.innerHTML = `
             <span>${selectedValue}</span>
-            <span class="ml-2 cursor-pointer removeCuisine"><img class="w-5 h-auto" src="../static/removeIcon.svg"></span>`;
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
 
             // Append to the list
-            userCuisinesDisplay.appendChild(cuisineTag);
+            displayContainer.appendChild(itemTag);
 
             // Create a table entry
             const tableRow = document.createElement("div");
             tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
-            tableRow.dataset.cuisine = selectedValue; // Set data attribute for easy removal
+            tableRow.dataset.item = selectedValue;
             tableRow.innerText = selectedValue;
 
             // Append to the table
-            userCuisinesTable.appendChild(tableRow);
+            tableContainer.appendChild(tableRow);
 
             // Show the container if it was hidden
-            toggleCuisinesVisibility();
+            toggleVisibility(container, tableContainer);
 
             // Update dropdown to hide selected options
-            updateDropdownOptions();
+            updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
 
-            // Remove cuisine when clicking "✖"
-            cuisineTag.querySelector(".removeCuisine").addEventListener("click", function () {
-                userCuisinesDisplay.removeChild(cuisineTag);
+            // Remove item when clicking "✖"
+            itemTag.querySelector(".removeItem").addEventListener("click", function () {
+                itemTag.remove();
 
                 // Find and remove corresponding table entry
-                [...userCuisinesTable.children].forEach(row => {
-                    if (row.dataset.cuisine === selectedValue) {
-                        userCuisinesTable.removeChild(row);
+                [...tableContainer.children].forEach(row => {
+                    if (row.dataset.item === selectedValue) {
+                        row.remove();
                     }
                 });
 
-                // Hide table if no cuisines remain
-                toggleCuisinesVisibility();
+                // Hide table if no items remain
+                toggleVisibility(container, tableContainer);
 
                 // Show the option again in the dropdown
-                updateDropdownOptions();
+                updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
             });
 
             // Reset dropdown selection
-            cuisineDropdown.selectedIndex = 0;
+            dropdown.selectedIndex = 0;
         }
 
         // Add selected cuisine on dropdown change
-        cuisineDropdown.addEventListener("change", function () {
-            addCuisine(cuisineDropdown.value.trim());
-        });
+        if (cuisineDropdown) {
+            cuisineDropdown.addEventListener("change", function () {
+                addItem(cuisineDropdown.value.trim(), userCuisinesDisplay, userCuisinesTable, cuisinesContainer, cuisineDropdown, "cuisine");
+            });
+        }
 
-        // Hide cuisines table initially if no selections exist
-        toggleCuisinesVisibility();
+        // Add selected interest on dropdown change
+        if (interestDropdown) {
+            interestDropdown.addEventListener("change", function () {
+                addItem(interestDropdown.value.trim(), userInterestsDisplay, userInterestsTable, interestsContainer, interestDropdown, "interest");
+            });
+        }
+
+        // Hide tables initially if no selections exist
+        toggleVisibility(cuisinesContainer, userCuisinesTable);
+        toggleVisibility(interestsContainer, userInterestsTable);
     });
+
+
 
     document.addEventListener("DOMContentLoaded", function () {
         function updateHiddenFields() {

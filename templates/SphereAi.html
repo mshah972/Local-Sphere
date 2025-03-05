@@ -921,17 +921,17 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-    const apiUrl = "http://localhost:8000/generate-date-plan/";
+        const apiUrl = "http://localhost:8000/generate-date-plan/";
 
-    // Fetch input values
-    const location = document.getElementById("location").value;
-    const date = document.getElementById("preferred-date").value;
-    const time = document.getElementById("preferred-time").value;
-    const attendees = document.getElementById("guests").value;
-    const food = document.getElementById("food").value;
+        // Fetch input values
+        const location = document.getElementById("location").value;
+        const date = document.getElementById("preferred-date").value;
+        const time = document.getElementById("preferred-time").value;
+        const attendees = document.getElementById("guests").value;
+        const food = document.getElementById("food").value;
 
-    console.log("🚀 Sending API Request to:", apiUrl);
-    console.log("📨 Payload:", { location, date, time, attendees, food });
+        console.log("🚀 Sending API Request to:", apiUrl);
+        console.log("📨 Payload:", { location, date, time, attendees, food });
 
     try {
         const response = await fetch(apiUrl, {

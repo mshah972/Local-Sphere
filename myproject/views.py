@@ -8,6 +8,8 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
+from PIL import Image, ImageStat
+from io import BytesIO
 ### For Chat ###
 import os
 import openai
@@ -188,12 +190,6 @@ def get_mapbox_api_key(request):
 
     return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
 
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import json
-import openai
-import os
-
 @csrf_exempt
 def generate_date_plan(request):
     print(f"🔍 Received request: {request.method}")
@@ -269,7 +265,10 @@ def generate_date_plan(request):
             temperature=0.7,
         )
 
+
         chat_response = response.choices[0].message.content.strip()
+
+        print(chat_response)
 
         # ✅ Ensure OpenAI response is in valid JSON format
         try:
@@ -318,3 +317,54 @@ def update_user_profile(request):
         return redirect('index')
 
     return render(request, 'UserCreation.html')
+
+@csrf_exempt
+def get_location_image(request):
+    google_api_key = os.getenv("GOOGLE_API_KEY")  # Fetch API Key from .env
+    city = request.GET.get("city", "Chicago")  # Default city
+
+    if not google_api_key:
+        return JsonResponse({"error": "Google API key not found"}, status=500)
+
+    # Fetch Place ID
+    place_search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+    params = {
+        "input": city,
+        "inputtype": "textquery",
+        "fields": "place_id",
+        "key": google_api_key,
+    }
+
+    place_response = requests.get(place_search_url, params=params)
+    place_data = place_response.json()
+
+    if "candidates" not in place_data or not place_data["candidates"]:
+        return JsonResponse({"error": "Place not found"}, status=404)
+
+    place_id = place_data["candidates"][0]["place_id"]
+
+    # Fetch Place Details (Get photos)
+    place_details_url = f"https://maps.googleapis.com/maps/api/place/details/json"
+    details_params = {
+        "place_id": place_id,
+        "fields": "photo",
+        "key": google_api_key,
+    }
+
+    details_response = requests.get(place_details_url, params=details_params)
+    details_data = details_response.json()
+
+    if "result" not in details_data or "photos" not in details_data["result"]:
+        return JsonResponse({"error": "No images found"}, status=404)
+
+    # Get highest quality photo reference
+    photo_references = details_data["result"]["photos"]
+
+    if not photo_references:
+        return JsonResponse({"error": "No images available"}, status=404)
+
+    # Choose the **best** image (first in the list)
+    photo_reference = photo_references[0]["photo_reference"]
+    image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
+
+    return JsonResponse({"image_url": image_url})
