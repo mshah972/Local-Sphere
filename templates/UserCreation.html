@@ -72,7 +72,7 @@
                             <div class="p-4">
                                 <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
                                     <div class="flex-auto">
-                                        <a href="#"
+                                        <a href="{% url 'about' %}"
                                            class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
                                             About Us
                                             <span class="absolute inset-0"></span>
@@ -92,7 +92,7 @@
                                 <div class="relative">
                                     <button id="userDropdownButton" type="button"
                                         class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                        <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
+                                        <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
                                         <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                         <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                             <path id="userArrowPath" fill-rule="evenodd"
@@ -174,7 +174,7 @@
                                     </button>
                                     <div id="mobileCompanyDropdown"
                                          class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                        <a href="#"
+                                        <a href="{% url 'about' %}"
                                            class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
                                             Us</a>
                                     </div>
@@ -206,7 +206,7 @@
                 <div class="relative w-28 h-28 border-4 border-white rounded-full overflow-hidden">
                     <img id="userProfileImage"
                          class="w-full h-full object-cover"
-                         src="../static/defaultProfile.png"
+                         src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
                          alt="Profile Picture">
                 </div>
 
@@ -218,7 +218,7 @@
 
                 <!-- User Bio -->
                 <p id="userDescriptionDisplay" class="text-white text-center text-sm px-6 leading-relaxed mt-4">
-                    Enter your description and it will appear here...
+                    {{ user.biography }}
                 </p>
 
                 <!-- Interests & Cuisines -->
@@ -238,85 +238,131 @@
 
 
         <div class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col h-auto">
-            <div class="flex flex-col items-center justify-center w-full">
-                <!-- Profile Picture Container -->
-                <div class="relative w-32 h-32">
-                    <!-- Profile Image -->
-                    <img id="profileImage"
-                         class="w-full h-full rounded-full border-4 border-black object-cover"
-                         src="../static/defaultProfile.png"
-                         alt="Profile Picture">
-                    <!-- Hidden File Input -->
-                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+            <form id="userForm" action="{% url 'update_user_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="flex flex-col items-center justify-center w-full">
+                    <!-- Profile Picture Container -->
+                    <div class="relative w-32 h-32">
+                        <!-- Profile Image -->
+                        <img id="profileImage"
+                             class="w-full h-full rounded-full border-4 border-black object-cover"
+                             src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                             alt="Profile Picture">
+                        <!-- Hidden File Input -->
+                        <input type="file" id="fileInput" name="picture" class="hidden" accept="image/*">
+                    </div>
+
+                    <!-- Upload Label -->
+                    <label for="fileInput"
+                           class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
+                        Upload Your Profile Picture
+                    </label>
                 </div>
 
-                <!-- Upload Label -->
-                <label for="fileInput"
-                       class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
-                    Upload Your Profile Picture
-                </label>
-            </div>
+                <div class="flex flex-row justify-between items-center w-full mr-5 pt-5">
+                    <div class="flex flex-col items-start justify-between w-full">
+                        <label for="location" class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                            <span class="mr-2">
+                                <img class="h-5 w-auto" src="../static/location.svg">
+                            </span>
+                            <input id="location" type="text" name="location" value="{{ user.location }}" class="w-full focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start justify-between w-full ml-4">
+                        <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                            <select id="occupation" name="occupation" class="w-full focus:outline-none">
+                                <option disabled selected hidden>Select</option>
+                                <option value="Student">Student</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Engineer">Engineer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="flex flex-col items-start justify-between w-full mt-6">
+                    <label for="biography" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (optional)</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <textarea id="biography" type="text" name="biography" placeholder="Write about yourself..." class="w-full focus:outline-none">{{ user.biography|default:'Write something about yourself...' }}</textarea>
+                    </div>
+                </div>
 
-            <div class="flex flex-row justify-between items-center w-full mr-5 pt-5">
-                <div class="flex flex-col items-start justify-between w-full">
-                    <label for="location" class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
+                <div class="flex flex-col items-start justify-between w-full mt-4">
+                    <label for="interestDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">Interests</label>
                     <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
                         <span class="mr-2">
-                            <img class="h-5 w-auto" src="../static/location.svg">
+                           <img class="h-5 w-auto" src="../static/Search2.svg" alt="Search Icon">
                         </span>
-                        <input id="location" type="text" value="Chicago, IL" class="w-full focus:outline-none" readonly>
-                    </div>
-                </div>
-                <div class="flex flex-col items-start justify-between w-full ml-4">
-                    <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                        <select id="occupation" class="w-full focus:outline-none">
-                            <option value="" disabled selected hidden>Select an Occupation</option>
-                            <option value="Student">Student</option>
-                            <option value="Teacher">Teacher</option>
-                            <option value="Engineer">Engineer</option>
-                            <option value="Other">Other</option>
+                        <select id="interestDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option>Music Concerts</option>
+                            <option>Chicago Cubs</option>
+                            <option>Basketball</option>
+                            <option>Football</option>
+                            <option>Soccer</option>
+                            <option>Club Nights</option>
                         </select>
+                        <input type="hidden" id="interests" name="interests">
                     </div>
                 </div>
-            </div>
+                <div id="selectedInterest" class="flex flex-wrap gap-2 mt-1 mb-2 lg:mb-6"></div>
 
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label for="userDescription" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (optional)</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                    <textarea id="userDescription" type="text" placeholder="Write about yourself..." class="w-full focus:outline-none"></textarea>
+
+                <div class="flex flex-col items-start justify-between w-full mt-2">
+                    <label for="cuisineDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">Favorite Food & Cuisines</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                           <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
+                        </span>
+                        <select id="cuisineDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option>Italian</option>
+                            <option>Mexican</option>
+                            <option>American</option>
+                            <option>Chinese</option>
+                            <option>Pizza</option>
+                            <option>Salads</option>
+                        </select>
+                        <input type="hidden" id="favorite_cuisines" name="favorite_cuisines">
+                    </div>
                 </div>
-            </div>
+                <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
 
-
-            <div class="flex flex-col items-start justify-between w-full mt-6">
-                <label for="cuisineDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">Favorite Food & Cuisines</label>
-                <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                    <span class="mr-2">
-                       <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
-                    </span>
-                    <select id="cuisineDropdown"
-                            class="w-full font-normal rounded-md" required>
-                        <option disabled selected hidden>Choose Food</option>
-                        <option>Italian</option>
-                        <option>Mexican</option>
-                        <option>American</option>
-                        <option>Chinese</option>
-                        <option>Pizza</option>
-                        <option>Salads</option>
-                    </select>
+                <div class="flex flex-col items-start justify-between w-full mt-2">
+                    <label for="dietRestrictionDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">Dietary Restrictions</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                           <img class="h-5 w-auto" src="../static/restrictions.svg" alt="Dietary Restrictions Icon">
+                        </span>
+                        <select id="dietRestrictionDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Lactose Intolerance">Lactose Intolerance</option>
+                            <option value="Gluten Intolerance">Gluten Intolerance</option>
+                            <option value="Keto">Ketogenic Diet</option>
+                            <option value="Halal">Kosher and Halal</option>
+                        </select>
+                        <input type="hidden" id="diet_restrictions" name="diet_restrictions">
+                    </div>
                 </div>
-            </div>
-            <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
+                <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
 
-            <!-- Buttons -->
-            <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
-                <a href="{% url 'index' %}" id="recreate-btn"
-                        class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer" type="submit">
-                    Continue
-                </a>
-            </div>
+                <!-- Buttons -->
+                <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
+                    <button type="submit" id="recreate-btn"
+                            class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        Continue
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </main>
@@ -370,100 +416,239 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         // Get user input elements
-        const userDescriptionInput = document.getElementById("userDescription");
+        const userDescriptionInput = document.getElementById("biography");
         const cuisineDropdown = document.getElementById("cuisineDropdown");
+        const interestDropdown = document.getElementById("interestDropdown");
+        const dietRestrictionDropdown = document.getElementById("dietRestrictionDropdown");
 
         // Get display elements
         const userDescriptionDisplay = document.getElementById("userDescriptionDisplay");
-        const userCuisinesDisplay = document.getElementById("selectedCuisines"); // Cuisines displayed as tags
-        const userCuisinesTable = document.getElementById("userCuisines"); // Cuisines in table
-        const cuisinesContainer = document.getElementById("cuisinesContainer"); // Cuisines table wrapper
+        const userCuisinesDisplay = document.getElementById("selectedCuisines");
+        const userCuisinesTable = document.getElementById("userCuisines");
+        const cuisinesContainer = document.getElementById("cuisinesContainer");
 
-        // Function to toggle cuisines table visibility
-        function toggleCuisinesVisibility() {
-            cuisinesContainer.style.display = userCuisinesTable.children.length > 0 ? "block" : "none";
+        const userInterestsDisplay = document.getElementById("selectedInterest");
+        const userInterestsTable = document.createElement("div");
+        userInterestsTable.id = "userInterests";
+        userInterestsTable.classList.add("space-y-2", "text-center");
+
+        // Display container for dietary restriction icons
+        const dietRestrictionsDisplay = document.createElement("div");
+        dietRestrictionsDisplay.id = "dietRestrictionsDisplay";
+        dietRestrictionsDisplay.classList.add("flex", "gap-2", "mt-2");
+
+        const selectedDietRestrictionsDisplay = document.getElementById("selectedDietRestriction");
+        const dietRestrictionsHiddenInput = document.getElementById("diet_restrictions");
+
+
+        // Insert dietary restrictions display below email
+        const userEmailElement = document.querySelector(".font-mulish.text-white.font-light");
+        userEmailElement.parentNode.insertBefore(dietRestrictionsDisplay, userEmailElement.nextSibling);
+
+        // Insert Interests Container
+        const interestsContainer = document.createElement("div");
+        interestsContainer.id = "interestsContainer";
+        interestsContainer.classList.add("bg-custom-white", "w-full", "p-4", "rounded-3xl", "shadow-lg", "hidden");
+        interestsContainer.innerHTML = `
+        <h2 class="text-center text-lg font-bold mb-2">Interests</h2>
+        <div class="border-t border-black mt-2 mb-4"></div>
+    `;
+        interestsContainer.appendChild(userInterestsTable);
+        cuisinesContainer.parentNode.insertBefore(interestsContainer, cuisinesContainer);
+
+        // Function to toggle visibility of elements
+        function toggleVisibility(container, table) {
+            container.style.display = table.children.length > 0 ? "block" : "none";
         }
 
         // Update description dynamically
-        userDescriptionInput.addEventListener("input", function () {
-            userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
-        });
-
-        // Function to hide selected options in dropdown
-        function updateDropdownOptions() {
-            const selectedCuisines = [...userCuisinesDisplay.children].map(item => item.dataset.cuisine);
-
-            [...cuisineDropdown.options].forEach(option => {
-                if (selectedCuisines.includes(option.value)) {
-                    option.style.display = "none"; // Hide selected options
-                } else {
-                    option.style.display = ""; // Show unselected options
-                }
+        if (userDescriptionInput) {
+            userDescriptionInput.addEventListener("input", function () {
+                userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
             });
         }
 
-        // Function to add cuisines to both the tag section and table
-        function addCuisine(selectedValue) {
+        // Function to hide selected options in dropdown
+        function updateDropdownOptions(dropdown, selectedItems) {
+            [...dropdown.options].forEach(option => {
+                option.style.display = selectedItems.includes(option.value) ? "none" : "";
+            });
+        }
+
+        function updateDietRestrictionsField() {
+            const selectedRestrictions = [...selectedDietRestrictionsDisplay.children].map(item => item.dataset.item);
+            dietRestrictionsHiddenInput.value = JSON.stringify(selectedRestrictions);
+            console.log("Diet Restrictions:", dietRestrictionsHiddenInput.value);
+        }
+
+        // Function to add an item to both the tag section and table
+        function addItem(selectedValue, displayContainer, tableContainer, container, dropdown, type) {
             if (!selectedValue) return;
 
             // Check if already selected
-            if ([...userCuisinesDisplay.children].some(item => item.dataset.cuisine === selectedValue)) return;
+            if ([...displayContainer.children].some(item => item.dataset.item === selectedValue)) return;
 
             // Create a new tag below the input
-            const cuisineTag = document.createElement("div");
-            cuisineTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[14px] lg:text-[16px]";
-            cuisineTag.dataset.cuisine = selectedValue; // Set data attribute for easy identification
-            cuisineTag.innerHTML = `
+            const itemTag = document.createElement("div");
+            itemTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            itemTag.dataset.item = selectedValue;
+            itemTag.innerHTML = `
             <span>${selectedValue}</span>
-            <span class="ml-2 cursor-pointer removeCuisine"><img class="w-5 h-auto" src="../static/removeIcon.svg"></span>`;
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
 
             // Append to the list
-            userCuisinesDisplay.appendChild(cuisineTag);
+            displayContainer.appendChild(itemTag);
 
             // Create a table entry
             const tableRow = document.createElement("div");
             tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
-            tableRow.dataset.cuisine = selectedValue; // Set data attribute for easy removal
+            tableRow.dataset.item = selectedValue;
             tableRow.innerText = selectedValue;
 
             // Append to the table
-            userCuisinesTable.appendChild(tableRow);
+            tableContainer.appendChild(tableRow);
 
             // Show the container if it was hidden
-            toggleCuisinesVisibility();
+            toggleVisibility(container, tableContainer);
 
             // Update dropdown to hide selected options
-            updateDropdownOptions();
+            updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
 
-            // Remove cuisine when clicking "✖"
-            cuisineTag.querySelector(".removeCuisine").addEventListener("click", function () {
-                userCuisinesDisplay.removeChild(cuisineTag);
+            // Remove item when clicking "✖"
+            itemTag.querySelector(".removeItem").addEventListener("click", function () {
+                itemTag.remove();
 
                 // Find and remove corresponding table entry
-                [...userCuisinesTable.children].forEach(row => {
-                    if (row.dataset.cuisine === selectedValue) {
-                        userCuisinesTable.removeChild(row);
+                [...tableContainer.children].forEach(row => {
+                    if (row.dataset.item === selectedValue) {
+                        row.remove();
                     }
                 });
 
-                // Hide table if no cuisines remain
-                toggleCuisinesVisibility();
+                // Hide table if no items remain
+                toggleVisibility(container, tableContainer);
 
                 // Show the option again in the dropdown
-                updateDropdownOptions();
+                updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
             });
 
             // Reset dropdown selection
-            cuisineDropdown.selectedIndex = 0;
+            dropdown.selectedIndex = 0;
+        }
+
+        // Function to add diet restriction icons
+        function addDietIcon(selectedValue) {
+            if (!selectedValue) return;
+
+            // Check if already selected
+            if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+            if ([...selectedDietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+
+            // Icon mapping for dietary restrictions
+            const dietIcons = {
+                "Vegan": "../static/vegan.svg",
+                "Vegetarian": "../static/vegetarian.svg",
+                "Lactose Intolerance": "../static/lactose.svg",
+                "Gluten Intolerance": "../static/gluten.svg",
+                "Ketogenic Diet": "../static/keto.svg",
+                "Kosher and Halal": "../static/halal.svg"
+            };
+
+            // Create dietary restriction icon element
+            const dietIcon = document.createElement("img");
+            dietIcon.src = dietIcons[selectedValue] || "../static/diet-icons/default.svg";
+            dietIcon.alt = selectedValue;
+            dietIcon.title = selectedValue;
+            dietIcon.className = "w-8 h-8";
+
+            // Append icon to the display area
+            dietIcon.dataset.item = selectedValue;
+            dietRestrictionsDisplay.appendChild(dietIcon);
+
+            const restrictionTag = document.createElement("div");
+            restrictionTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            restrictionTag.dataset.item = selectedValue;
+            restrictionTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+
+            // Append to the display container
+            selectedDietRestrictionsDisplay.appendChild(restrictionTag);
+
+            updateDietRestrictionsField();
+
+            // Update dropdown to hide selected options
+            updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+
+            // // Remove item when clicking the icon
+            // dietIcon.addEventListener("click", function () {
+            //
+            // });
+
+            restrictionTag.querySelector(".removeItem").addEventListener("click", function () {
+                restrictionTag.remove();
+                updateDietRestrictionsField();
+                dietIcon.remove();
+                updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+            });
+
+            // Reset dropdown selection
+            dietRestrictionDropdown.selectedIndex = 0;
         }
 
         // Add selected cuisine on dropdown change
-        cuisineDropdown.addEventListener("change", function () {
-            addCuisine(cuisineDropdown.value.trim());
-        });
+        if (cuisineDropdown) {
+            cuisineDropdown.addEventListener("change", function () {
+                addItem(cuisineDropdown.value.trim(), userCuisinesDisplay, userCuisinesTable, cuisinesContainer, cuisineDropdown, "cuisine");
+            });
+        }
 
-        // Hide cuisines table initially if no selections exist
-        toggleCuisinesVisibility();
+        // Add selected interest on dropdown change
+        if (interestDropdown) {
+            interestDropdown.addEventListener("change", function () {
+                addItem(interestDropdown.value.trim(), userInterestsDisplay, userInterestsTable, interestsContainer, interestDropdown, "interest");
+            });
+        }
+
+        // Add selected diet restriction on dropdown change
+        if (dietRestrictionDropdown) {
+            dietRestrictionDropdown.addEventListener("change", function () {
+                addDietIcon(dietRestrictionDropdown.value.trim());
+            });
+        }
+
+        // Hide tables initially if no selections exist
+        toggleVisibility(cuisinesContainer, userCuisinesTable);
+        toggleVisibility(interestsContainer, userInterestsTable);
+
+    });
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function updateHiddenFields() {
+            // Convert selected options to an array of values and update hidden fields
+            document.getElementById("interests").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedInterest div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("favorite_cuisines").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedCuisines div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("diet_restrictions").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedDietRestriction div")].map(item => item.dataset.item)
+            );
+
+            console.log("🔹 DEBUG: Hidden Fields Updated Before Submission:");
+            console.log("   - Interests:", document.getElementById("interests").value);
+            console.log("   - Favorite Cuisines:", document.getElementById("favorite_cuisines").value);
+            console.log("   - Diet Restrictions:", document.getElementById("diet_restrictions").value);
+        }
+
+        // Run updateHiddenFields() when form is submitted
+        document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
     });
 
 

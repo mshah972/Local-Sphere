@@ -84,6 +84,36 @@
             margin-right: 12px !important;
             margin-left: 12px !important;
         }
+        .loading-container {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .show {
+            display: block;
+            opacity: 1;
+        }
+
+        .dot {
+            animation: blink 1.5s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
 
     </style>
 </head>
@@ -136,7 +166,7 @@
                         <div class="p-4">
                             <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
                                 <div class="flex-auto">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
                                         About Us
                                         <span class="absolute inset-0"></span>
@@ -156,8 +186,8 @@
                         <div class="relative">
                             <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                <img src="../static/defaultProfile.png" alt="Profile Picture"
-                                     class="w-8 h-8 rounded-full mr-2">
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture"
+                                     class="w-8 h-8 rounded-full object-cover mr-2">
                                 <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                 <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
                                      fill="currentColor" aria-hidden="true">
@@ -240,7 +270,7 @@
                                 </button>
                                 <div id="mobileCompanyDropdown"
                                      class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
                                         Us</a>
                                 </div>
@@ -511,12 +541,16 @@
             <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
                 <button
-                        id="recreate-btn"
-                        class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    id="recreate-btn"
+                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    onclick="showLoading()"
                 >
                     Craft Your Plan
                 </button>
+                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
             </div>
+
+            
             <!--HERE-->
             <div id="response-container" class="mt-4"></div>
             <!--HERE-->
@@ -921,116 +955,65 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-            const apiKey = "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";
-            const apiUrl = "https://api.openai.com/v1/chat/completions";
-            const maxRetries = 3; // Maximum number of retries
-            let retryCount = 0;
+        const apiUrl = "http://localhost:8000/generate-date-plan/";
 
-            const responseContainer = document.getElementById("response-container");
-            responseContainer.textContent = "Loading...";
+        // Fetch input values
+        const location = document.getElementById("location").value;
+        const date = document.getElementById("preferred-date").value;
+        const time = document.getElementById("preferred-time").value;
+        const attendees = document.getElementById("guests").value;
+        const food = document.getElementById("food").value;
 
-            // Fetch input values
-            const location = formInputs.location.value;
-            const date = formInputs.date.value;
-            const time = formInputs.time.value;
-            const attendees = formInputs.attendees.value;
-            const food = formInputs.food.value;
+        console.log("🚀 Sending API Request to:", apiUrl);
+        console.log("📨 Payload:", { location, date, time, attendees, food });
 
-            // Updated prompt to enforce valid JSON output
-            const prompt = `Please provide a date plan in ${location} on ${date} for ${attendees} people.
-              The plan should include a restaurant that serves ${food} cuisine.
-
-              Return ONLY valid JSON in the exact format below. Do NOT include any extra text, explanations, or markdown formatting:
-
-              {
-                "restaurant": {
-                  "name": "Restaurant Name",
-                  "address": "123 Main St, City",
-                  "cuisine": "${food}"
-                }
-              }`;
-
-            async function fetchData() {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${apiKey}`,
-                        },
-                        body: JSON.stringify({
-                            model: "gpt-4",
-                            messages: [
-                                {
-                                    role: "system",
-                                    content: "You are a helpful event planner that provides responses strictly in JSON format.",
-                                },
-                                {role: "user", content: prompt},
-                            ],
-                        }),
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    let message = data.choices[0].message.content.trim(); // Trim any extra spaces
-                    console.log("Raw AI Response:", message);
-
-                    // Extract JSON portion from response
-                    let jsonStartIndex = message.indexOf("{"); // Find where JSON starts
-                    let jsonString = message.substring(jsonStartIndex).trim(); // Extract only the JSON part
-
-                    // Try to parse the extracted JSON
-                    try {
-                        const parsedMessage = JSON.parse(jsonString);
-                        console.log("Parsed JSON:", parsedMessage);
-
-                        let restaurantData = parsedMessage.restaurant || parsedMessage.plan?.restaurant;
-
-                        if (!restaurantData) {
-                            throw new Error("Invalid JSON structure: No restaurant data found");
-                        }
-
-                        // Extract restaurant details
-                        const restaurantName = parsedMessage.restaurant?.name || "Unavailable";
-                        const restaurantAddress = parsedMessage.restaurant?.address || "Unavailable";
-                        const restaurantCuisine = parsedMessage.restaurant?.cuisine || "Unavailable";
-
-                        // Store in localStorage
-                        localStorage.setItem("restaurantName", restaurantName);
-                        localStorage.setItem("restaurantAddress", restaurantAddress);
-                        localStorage.setItem("planCuisine", restaurantCuisine);
-                        localStorage.setItem("planDate", date);
-                        localStorage.setItem("planAttendees", attendees);
-                        localStorage.setItem("location", location);
-
-                        // Redirect to confirmation page
-                        window.location.href = "/planConfirmation/";
-
-                    } catch (parseError) {
-                        console.error("JSON parsing error:", parseError);
-
-                        if (retryCount < maxRetries) {
-                            retryCount++;
-                            console.log(`Retrying... Attempt ${retryCount}`);
-                            await fetchData(); // Retry API call
-                        } else {
-                            console.error("Max retries reached. Could not parse JSON.");
-                            responseContainer.textContent = "Failed to process the response.";
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    responseContainer.textContent = "Failed to fetch response.";
-                }
-            }
-
-            // Initial call to fetchData
-            await fetchData();
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({
+                location,
+                date,
+                time,
+                attendees,
+                food
+            }),
         });
+
+        console.log("✅ Response Status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("📩 Received Data:", data);
+
+        // Store the response data in localStorage
+        localStorage.setItem("planData", JSON.stringify(data));
+
+        // Redirect to the plan confirmation page
+        window.location.href = "{% url 'planConfirmation' %}";
+
+    } catch (error) {
+        console.error("❌ Fetch error:", error);
+        alert(`Error creating plan: ${error.message}`);
+    }
+});
     });
+
+    function showLoading() {
+    let loadingText = document.getElementById("loadingText");
+    loadingText.classList.add("show");
+
+    // Simulate loading process (hide after 3 seconds)
+    setTimeout(() => {
+        loadingText.classList.remove("show");
+    }, 300000);
+}
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 

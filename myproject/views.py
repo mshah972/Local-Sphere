@@ -13,6 +13,19 @@ from django.utils.crypto import get_random_string
 from django.urls import reverse
 from myproject.models import CustomUser  # Ensure CustomUser model is imported correctly
 from django.contrib.auth.hashers import make_password
+from PIL import Image, ImageStat
+from io import BytesIO
+### For Chat ###
+import os
+import openai
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 password_reset_tokens = {}
@@ -182,6 +195,9 @@ def password_reset_complete(request):
 def creation(request):
     return render(request, 'UserCreation.html')
 
+def about(request):
+    return render(request, 'about.html')
+
 def logout_view(request):
     logout(request)  # Logs the user out
     return redirect('index')  # Redirects to the index page
@@ -193,9 +209,12 @@ def get_restaurant_details(request):
     if not restaurant_name or not location:
         return JsonResponse({"error": "Missing required parameters"}, status=400)
 
-    GOOGLE_API_KEY = settings.GOOGLE_API_KEY  # Store in settings.py for security
+    GOOGLE_API_KEY = settings.GOOGLE_API_KEY
 
-    # Step 1: Find restaurant using Google Places Text Search API
+    # Ensure location is valid before making API requests
+    if location.strip() == "":
+        return JsonResponse({"error": "Location cannot be empty"}, status=400)
+
     search_url = f"https://maps.googleapis.com/maps/api/place/textsearch/json?query={restaurant_name}+{location}&key={GOOGLE_API_KEY}"
     search_response = requests.get(search_url).json()
 
@@ -203,19 +222,15 @@ def get_restaurant_details(request):
         return JsonResponse({"error": "No restaurant found"}, status=404)
 
     place_id = search_response["results"][0]["place_id"]
-
-    # Step 2: Get details (rating + photos)
     details_url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,rating,photos&key={GOOGLE_API_KEY}"
     details_response = requests.get(details_url).json()
 
     if "result" not in details_response:
         return JsonResponse({"error": "No details found"}, status=404)
 
-    # Extract rating
     rating = details_response["result"].get("rating", "N/A")
+    image_url = "../static/default.jpg"
 
-    # Extract first image if available
-    image_url = "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     if "photos" in details_response["result"]:
         photo_ref = details_response["result"]["photos"][0]["photo_reference"]
         image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photo_reference={photo_ref}&key={GOOGLE_API_KEY}"
@@ -231,3 +246,221 @@ def get_mapbox_api_key(request):
         return JsonResponse({"error": "Mapbox API Key not found"}, status=500)
 
     return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
+
+@csrf_exempt
+@login_required  # Ensures only logged-in users can generate a plan
+def generate_date_plan(request):
+    print(f"🔍 Received request: {request.method}")
+
+    if request.method == "OPTIONS":
+        return JsonResponse({"message": "CORS preflight successful"}, status=200)
+
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+    try:
+        print("✅ POST request received")
+
+        # ✅ Read and parse request data
+        data = json.loads(request.body)
+        print(f"📨 Received Data: {data}")
+
+        # ✅ Validate required inputs
+        required_fields = ["location", "date", "time", "attendees", "food"]
+        for field in required_fields:
+            if not data.get(field):
+                return JsonResponse({"error": f"Missing required field: {field}"}, status=400)
+
+        location = data["location"]
+        date = data["date"]
+        time = data["time"]
+        attendees = data["attendees"]
+        food = data["food"]
+
+        # ✅ Get User Preferences from Database
+        user = request.user  # Get logged-in user
+
+        dietary_restrictions = user.diet_restrictions if user.diet_restrictions else "None"
+        favorite_cuisines = user.favorite_cuisines if user.favorite_cuisines else "None"
+        favorite_interests = user.interests if user.interests else "None"
+
+        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
+
+        # ✅ Check if OpenAI API key is set correctly
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
+
+        # ✅ OpenAI API Call with User Preferences
+        client = openai.OpenAI(api_key=openai_api_key)
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""
+                    Generate a JSON object for a date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
+
+                    Take into account the user's saved preferences:
+                    - **Dietary Restrictions:** {dietary_restrictions}
+                    - **Favorite Cuisines:** {favorite_cuisines}
+                    - **Favorite Interests for Activities:** {favorite_interests}
+
+                    The JSON should contain:
+                    - "date": string (formatted as YYYY-MM-DD)
+                    - "time": string
+                    - "guests": integer
+                    - "location": string
+                    - "cuisine": string
+                    - "restaurants": an **array of exactly 3 objects**, each with:
+                        - "name": string
+                        - "address": string
+                        - "website": string
+                        - "rating": float
+                        - "reservation_time": string
+                    - "events": an **array of exactly 3 objects**, each with:
+                        - "name": string
+                        - "address": string
+                        - "website": string
+                        - "start_time": string
+                        - "end_time": string
+                        - "type": string
+
+                    **IMPORTANT RULES**:
+                    - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
+                    - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
+                    - The selections must be **realistic, diverse, and match the user's saved preferences**.
+                    - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
+                    - **Make Sure** that everything is in the radius of 10 miles or less only.
+                    """
+                }
+            ],
+            max_tokens=600,
+            temperature=0.7,
+        )
+
+        chat_response = response.choices[0].message.content.strip()
+
+        print(chat_response)
+
+        # ✅ Ensure OpenAI response is in valid JSON format
+        try:
+            plan_data = json.loads(chat_response)
+
+            # ✅ Extra Validation: Ensure OpenAI returns exactly 3 restaurants and 3 events
+            if len(plan_data.get("restaurants", [])) != 3:
+                print("⚠️ OpenAI did not return exactly 3 restaurants. Adjusting output.")
+                plan_data["restaurants"] = plan_data.get("restaurants", [])[:3]
+
+            if len(plan_data.get("events", [])) != 3:
+                print("⚠️ OpenAI did not return exactly 3 events. Adjusting output.")
+                plan_data["events"] = plan_data.get("events", [])[:3]
+
+        except json.JSONDecodeError:
+            print("❌ ERROR: OpenAI response is not valid JSON.")
+            return JsonResponse({"error": "Invalid AI response format"}, status=500)
+
+        return JsonResponse(plan_data, status=200)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON format received"}, status=400)
+
+    except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=500)
+    
+@login_required
+def update_user_profile(request):
+    if request.method == 'POST':
+        user = request.user
+
+        user.location = request.POST.get('location', user.location)
+        user.occupation = request.POST.get('occupation', user.occupation)
+        user.biography = request.POST.get('biography', user.biography)
+
+        # Handle JSON fields safely
+        try:
+            user.interests = json.loads(request.POST.get('interests', '[]'))
+            user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
+            user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
+        except json.JSONDecodeError:
+            user.interests, user.favorite_cuisines, user.diet_restrictions = [], [], []
+
+
+        # Handle profile picture upload
+        profile_picture = request.FILES.get('picture', None)
+
+        # Debugging Statements
+        print("🔹 DEBUG: User Profile Data Before Saving:")
+        print(f"   - User: {user.username} (ID: {user.id})")
+        print(f"   - Location: {user.location}")
+        print(f"   - Occupation: {user.occupation}")
+        print(f"   - Biography: {user.biography}")
+        print(f"   - Interests: {user.interests}")
+        print(f"   - Favorite Cuisines: {user.favorite_cuisines}")
+        print(f"   - Diet Restrictions: {user.diet_restrictions}")
+        print(f"   - Profile Picture Uploaded: {'Yes' if profile_picture else 'No'}")
+
+
+        if profile_picture:
+            user.picture = profile_picture
+
+        # Save user data
+        user.save()
+        print("✅ User profile successfully updated!\n")
+
+        return redirect('index')
+
+    return render(request, 'UserCreation.html')
+
+
+@csrf_exempt
+def get_location_image(request):
+    google_api_key = os.getenv("GOOGLE_API_KEY")  # Fetch API Key from .env
+    city = request.GET.get("city", "Chicago")  # Default city
+
+    if not google_api_key:
+        return JsonResponse({"error": "Google API key not found"}, status=500)
+
+    # Fetch Place ID
+    place_search_url = f"https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+    params = {
+        "input": city,
+        "inputtype": "textquery",
+        "fields": "place_id",
+        "key": google_api_key,
+    }
+
+    place_response = requests.get(place_search_url, params=params)
+    place_data = place_response.json()
+
+    if "candidates" not in place_data or not place_data["candidates"]:
+        return JsonResponse({"error": "Place not found"}, status=404)
+
+    place_id = place_data["candidates"][0]["place_id"]
+
+    # Fetch Place Details (Get photos)
+    place_details_url = f"https://maps.googleapis.com/maps/api/place/details/json"
+    details_params = {
+        "place_id": place_id,
+        "fields": "photo",
+        "key": google_api_key,
+    }
+
+    details_response = requests.get(place_details_url, params=details_params)
+    details_data = details_response.json()
+
+    if "result" not in details_data or "photos" not in details_data["result"]:
+        return JsonResponse({"error": "No images found"}, status=404)
+
+    # Get highest quality photo reference
+    photo_references = details_data["result"]["photos"]
+
+    if not photo_references:
+        return JsonResponse({"error": "No images available"}, status=404)
+
+    # Choose the **best** image (first in the list)
+    photo_reference = photo_references[0]["photo_reference"]
+    image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
+
+    return JsonResponse({"image_url": image_url})

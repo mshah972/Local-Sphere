@@ -3,9 +3,6 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.core.validators import RegexValidator
 
-
-
-
 class CustomUserManager(BaseUserManager):
     """Manager for custom user model with email as username"""
 
@@ -24,7 +21,6 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=100, default="")  # Use Django's built-in first_name
     last_name = models.CharField(max_length=100, default="")   # Use Django's built-in last_name
 
-
     phone_validator = RegexValidator(
         regex=r"^\d{10}$",
         message="Phone number must be exactly 10 digits, with no spaces or special characters."
@@ -32,26 +28,16 @@ class CustomUser(AbstractUser):
     phone = models.CharField(validators=[phone_validator], max_length=10, unique=False, blank=True, null=True)
     email = models.EmailField(unique=True, blank=False, null=False)  # Use EmailField for email validation
 
+    picture = models.ImageField(upload_to="profile_pictures/", blank=True, null=True)  # Stores profile images
+    location = models.CharField(max_length=100, blank=True, null=True)
+    occupation = models.CharField(max_length=100, blank=True, null=True)
+    biography = models.TextField(blank=True, null=True)
 
-
-    PICTURE_CHOICES = [
-        ("1", "Picture 1"),
-        ("2", "Picture 2"),
-    ]
-
-    picture = models.CharField(max_length=1, choices=PICTURE_CHOICES, default="1")  # Now stored as string
-    location = models.CharField(max_length=100, default="Chicago", editable=False)  # Always Chicago
-    FOOD_CHOICES = [
-        ("Chinese", "Chinese"),
-        ("Italian", "Italian"),
-        ("American", "American"),
-        ("Mexican", "Mexican")
-    ]
-    favorite_food = models.CharField(max_length=10, choices=FOOD_CHOICES, default="American")
-    biography = models.CharField(max_length=255, blank=True, null=True)
+    interests = models.JSONField(default=list, blank=True)  # Stores a list of user interests
+    favorite_cuisines = models.JSONField(default=list, blank=True)  # Stores a list of cuisines
+    diet_restrictions = models.JSONField(default=list, blank=True)  # Stores a list of dietary restrictions
 
     objects = CustomUserManager()
-
 
 
 def __str__(self):

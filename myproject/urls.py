@@ -18,7 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, password_reset_confirm
+from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image
+from django.urls import path
+from .views import generate_date_plan
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,14 +33,21 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('planConfirmation/', views.planConfirmation, name='planConfirmation'),
     path('forgot/', views.forgot, name='forgot'),
+    path('about/', views.about, name='about'),
     path('creation/', views.creation, name='creation'),
     path('account/', views.my_account, name='my_account'),
     path('logout/', logout_view, name='logout'),
     path("api/getRestaurantDetails/", get_restaurant_details, name="get_restaurant_details"),
     path("api/getGoogleMapsApiKey/", get_google_maps_api_key, name="get_google_maps_api_key"),
     path('api/getMapboxApiKey/', get_mapbox_api_key, name='get-mapbox-api-key'),
+    path("generate-date-plan/", generate_date_plan, name="generate_date_plan"),
+    path('update-profile/', update_user_profile, name='update_user_profile'),
+    path('api/getLocationImage/', get_location_image, name='get_location_image'),
     path('reset/<str:token>/', views.password_reset_confirm, name='password_reset_confirm'),
     path("resetcomplete/", views.password_reset_complete, name="password_reset_complete"),
 
-
 ]
+
+if settings.DEBUG:  # Only serve media files in development
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Sphere - Your Local Guide</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+
+        /* Google Maps Dropdown Styling */
+        .pac-container {
+            background-color: #004AAD !important; /* Blue background */
+            font-family: "Poppins", sans-serif !important;
+            border-radius: 16px !important; /* Match rounded style */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important; /* Enhanced shadow */
+            padding: 6px 0px !important; /* Remove top/bottom padding */
+            margin-top: 8px !important;
+            width: max-content !important;
+            min-width: 250px !important;
+        }
+
+        /* Style Each Suggestion Item */
+        .pac-item {
+            padding: 14px !important;
+            font-size: 14px !important;
+            font-weight: normal !important;
+            color: white !important; /* White text */
+            border-radius: 12px !important;
+            transition: background-color 0.3s ease-in-out !important;
+            border: none !important; /* Remove default borders */
+            margin: 8px !important; /* Remove unwanted spacing */
+        }
+
+        /* Fix White Gap Between Items */
+        .pac-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; /* Subtle separator */
+        }
+
+        /* Fix the White Border at the Top */
+        .pac-item:first-child {
+            margin-top: 0px !important;
+            padding-top: 12px !important;
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+        }
+
+        /* Last Item Rounded Border */
+        .pac-item:last-child {
+            border-bottom-left-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+        }
+
+        /* Highlighted Suggestion */
+        .pac-item:hover,
+        .pac-item.pac-selected {
+            background-color: #003580 !important; /* Darker blue on hover */
+            color: #fff !important;
+        }
+
+        /* Style the Highlighted Text */
+        .pac-item .pac-item-query {
+            font-weight: 500 !important;
+            font-size: 15px !important;
+            color: #F3EBDE !important;
+        }
+
+        .pac-container::after {
+            margin-right: 12px !important;
+            margin-left: 12px !important;
+        }
+
+        .team-member {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container .card .icon {
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: #2c73df;
+
+        }
+
+        .container .card .icon .fa {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            font-size: 80px;
+
+            color: #fff;
+
+        }
+
+        .container .card .slide {
+
+            width: 300px;
+
+            height: 200px;
+
+            transition: 0.5s;
+
+        }
+
+        .container .card .slide.slide1 {
+
+            position: relative;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 1;
+
+            transition: .7s;
+
+            transform: translateY(100px);
+
+        }
+
+        .container .card:hover .slide.slide1 {
+
+            transform: translateY(0px);
+
+        }
+
+        .container .card .slide.slide2 {
+
+            position: relative;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+            transition: .8s;
+
+            transform: translateY(-100px);
+
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+        }
+
+        .container .card:hover .slide.slide2 {
+
+            transform: translateY(0);
+
+        }
+
+        .container .card .slide.slide2::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 30px;
+
+            height: 4px;
+
+            bottom: 10px;
+
+            left: 50%;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            background: #2c73df;
+
+        }
+
+        .container .card .slide.slide2 .content p {
+
+            margin-bottom: 10px;
+
+            padding: 0;
+
+            text-align: center;
+
+            color: #414141;
+
+        }
+
+        .container .card .slide.slide2 .content h3 {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-size: 24px;
+
+            text-align: center;
+
+            color: #414141;
+
+        }
+
+        .Image img {
+            transform: scale(1.8); /* Increases size by 10% */
+            transition: transform 0.3s ease-in-out;
+        }
+
+    </style>
+</head>
+<body class="bg-custom-white">
+<main role="main" class="flex flex-col mb-10 min-h-screen">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <!-- Explore Button -->
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    Explore
+                </a>
+                <!-- SphereAi -->
+                <a href="{% url 'SphereAi' %}"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    SphereAi
+                </a>
+                <!-- Company Dropdown -->
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="#"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        {% if user.is_authenticated %}
+                        <!-- When Logged In: Show Profile with Dropdown -->
+                        <div class="relative">
+                            <button id="userDropdownButton" type="button"
+                                    class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                     fill="currentColor" aria-hidden="true">
+                                    <path id="userArrowPath" fill-rule="evenodd"
+                                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu"
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                        <div class="flex items-center gap-4">
+                            <!-- Log In Button -->
+                            <a href="{% url 'login' %}"
+                               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                Log in
+                            </a>
+
+                            <!-- "Start Exploring" Button -->
+                            <a href="{% url 'signup' %}"
+                               class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="{% url 'SphereAi' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="{% url 'login' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="#"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- NEW PAGE COPY THIS UP  -->
+
+    <body class="bg-custom-white">
+    <div class="max-w-9xl mx-auto px-6 py-12 mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 font-poppins">
+        <!-- Header Section -->
+        <div class="relative w-full h-30 rounded-xl overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 alt="City View" class="w-full h-full object-cover">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <h1 class="text-white text-3xl font-bold">About Us</h1>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-bold text-gray-900">About Local Sphere</h2>
+            <p class="mt-4 text-gray-700">Welcome to Local Sphere, your go-to AI-powered date planning companion! We take the hassle out of organizing the perfect date by curating personalized experiences tailored to your preferences. Whether it's a romantic dinner, an adventurous outing, or a cozy night in, our smart AI considers your interests, location, and budget to craft unforgettable date ideas. Let us handle the planning while you focus on making memories!</p>
+        </div>
+
+
+        <!-- Team Section -->
+        <div class="mt-12 p-2">
+            <h2 class="text-2xl font-bold text-gray-900 text-center">Our Team</h2>
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Jose.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Jose Nunez
+                                </h3>
+                                <p class="font-mulish font-normal">UI/UX Designer</p>
+                                <p class="font-normal text-sm">I am a Computer Science major and I enjoy playing soccer and
+                                    video games.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Moksh.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Moksh Shah
+                                </h3>
+                                <p class="font-mulish font-normal"> Lead Developer</p>
+                                <p class="font-normal text-sm">I am a Software Engineer and I enjoy Video games.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/favicon.svg" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Kevin
+                                </h3>
+                                <p class="font-mulish font-normal">Project Manager</p>
+                                <p class="font-normal text-sm">I work as a Network Engineer and I like to automate.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Peter.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Peter
+                                </h3>
+                                <p class="font-mulish font-normal">Documentation Manager</p>
+                                <p class="font-normal text-sm">Majoring in Accounting and Computer Science. From Mt. Prospect
+                                    IL.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Daniel.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Daniel
+                                </h3>
+                                <p class="font-mulish font-normal">Presentation Manager</p>
+                                <p class="font-normal text-sm">I am a Software Engineer, I play the piano and guitar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container font-poppins">
+                    <div class="card">
+                        <div class="slide slide1 bg-custom-blue">
+                            <div class="content bg-custom-blue">
+                                <div class="Image">
+                                    <i class="Image" aria-hidden="true">
+                                        <img src="../static/Jeniece.png" alt="Team Logo" class="w-20 h-auto">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slide slide2 bg-white">
+                            <div class="content">
+                                <h3 class="font-semibold text-gray-900">
+                                    Jeniece
+                                </h3>
+                                <p class="font-mulish font-normal">Testing Manager</p>
+                                <p class="font-normal text-sm">I am an Executive Support Analyst & I love cooking!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </body>
+
+    <script>
+
+        // Header script
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButton = document.getElementById("companyButton");
+            const dropdownMenu = document.getElementById("companyDropdownMenu");
+            const dropdownIcon = document.getElementById("dropdownIcon");
+            const arrowPath = document.getElementById("arrowPath");
+
+            toggleButton.addEventListener("click", function () {
+                if (dropdownMenu.classList.contains("hidden")) {
+                    // Show dropdown with animation
+                    dropdownMenu.classList.remove("hidden");
+                    setTimeout(() => {
+                        dropdownMenu.classList.remove("opacity-0", "scale-95");
+                        dropdownMenu.classList.add("opacity-100", "scale-100");
+                    }, 10);
+
+                    // Rotate the arrow up
+                    dropdownIcon.classList.add("rotate-180");
+                } else {
+                    // Hide dropdown with animation
+                    dropdownMenu.classList.remove("opacity-100", "scale-100");
+                    dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                    setTimeout(() => {
+                        dropdownMenu.classList.add("hidden");
+                    }, 300); // Wait for animation to complete before hiding
+
+                    // Rotate the arrow back down
+                    dropdownIcon.classList.remove("rotate-180");
+                }
+            });
+
+            // Hide dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove("opacity-100", "scale-100");
+                    dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                    setTimeout(() => {
+                        dropdownMenu.classList.add("hidden");
+                    }, 300);
+
+                    // Reset arrow to down position
+                    dropdownIcon.classList.remove("rotate-180");
+                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+            const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+            const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+            const mobileArrowPath = document.getElementById("mobileArrowPath");
+
+            mobileDropdownButton.addEventListener("click", function () {
+                if (mobileDropdown.classList.contains("hidden")) {
+                    // Show dropdown with animation
+                    mobileDropdown.classList.remove("hidden");
+                    setTimeout(() => {
+                        mobileDropdown.classList.remove("opacity-0", "scale-95");
+                        mobileDropdown.classList.add("opacity-100", "scale-100");
+                    }, 10);
+
+                    // Rotate the arrow up
+                    mobileDropdownIcon.classList.add("rotate-180");
+                } else {
+                    // Hide dropdown with animation
+                    mobileDropdown.classList.remove("opacity-100", "scale-100");
+                    mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                    setTimeout(() => {
+                        mobileDropdown.classList.add("hidden");
+                    }, 300); // Wait for animation to complete before hiding
+
+                    // Rotate the arrow back down
+                    mobileDropdownIcon.classList.remove("rotate-180");
+                }
+            });
+
+            // Hide dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                    mobileDropdown.classList.remove("opacity-100", "scale-100");
+                    mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                    setTimeout(() => {
+                        mobileDropdown.classList.add("hidden");
+                    }, 300);
+
+                    // Reset arrow to down position
+                    mobileDropdownIcon.classList.remove("rotate-180");
+                }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const mobileMenu = document.getElementById("mobileMenu");
+            const openMobileMenu = document.getElementById("openMobileMenu");
+            const closeMobileMenu = document.getElementById("closeMobileMenu");
+            const mobileBackdrop = document.getElementById("mobileBackdrop");
+
+            // Open mobile menu when clicking the hamburger button
+            openMobileMenu.addEventListener("click", function () {
+                mobileMenu.classList.remove("hidden");
+            });
+
+            // Close mobile menu when clicking the close button
+            closeMobileMenu.addEventListener("click", function () {
+                mobileMenu.classList.add("hidden");
+            });
+
+            // Close mobile menu when clicking outside (on the backdrop)
+            mobileBackdrop.addEventListener("click", function () {
+                mobileMenu.classList.add("hidden");
+            });
+        });
+
+    </script>
+</body>
+</html>

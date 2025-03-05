@@ -84,6 +84,26 @@
             margin-left: 12px !important;
         }
 
+        #city-name {
+            mix-blend-mode: difference;
+        }
+
+        /* Skeleton Loader Animation */
+        @keyframes pulse {
+            0% { background-color: #e0e0e0; }
+            50% { background-color: #f5f5f5; }
+            100% { background-color: #e0e0e0; }
+        }
+
+        .animate-pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Image Fade-in Effect */
+        #background-image {
+            transition: opacity 0.5s ease-in-out;
+        }
+
     </style>
 </head>
 <body class="bg-custom-white">
@@ -135,7 +155,7 @@
                         <div class="p-4">
                             <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
                                 <div class="flex-auto">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
                                         About Us
                                         <span class="absolute inset-0"></span>
@@ -155,7 +175,7 @@
                             <div class="relative">
                                 <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <img src="../static/defaultProfile.png" alt="Profile Picture" class="w-8 h-8 rounded-full mr-2">
+                                    <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
                                     <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                     <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path id="userArrowPath" fill-rule="evenodd"
@@ -237,7 +257,7 @@
                                 </button>
                                 <div id="mobileCompanyDropdown"
                                      class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
                                         Us</a>
                                 </div>
@@ -261,7 +281,9 @@
     <!-- Hero Section -->
     <section class="relative mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 max-w-9xl sm:px-6 lg:px-8 mx-auto overflow-hidden lg:min-h-[75vh] lg:rounded-4xl rounded-4xl">
         <!-- Background Image -->
-        <img src="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chicago Skyline"
+        <div id="skeleton-loader" class="absolute inset-0 bg-gray-200 animate-pulse"></div>
+
+        <img id="background-image" src="" alt=""
              class="absolute inset-0 w-full h-full object-cover"/>
         <div class="absolute inset-0 bg-black/30"></div>
 
@@ -272,7 +294,7 @@
             <h1 class="font-mulish text-2xl md:text-4xl lg:text-6xl font-bold text-center leading-tight mb-8">
                 Craft Your Perfect Day in
                 <br>
-                <span id="city-name" class="font-poppins font-extrabold text-custom-white text-3xl md:text-5xl lg:text-6xl">Loading...</span>
+                <span id="city-name" class="font-poppins font-extrabold text-3xl md:text-5xl lg:text-6xl">Loading...</span>
             </h1>
         </div>
 
@@ -359,10 +381,9 @@
                             Activity 1
                         </label>
                         <div class="flex items-center space-x-2">
-                            <select id="activity-1"
-                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
-                                <option selected>🍽️ Food</option>
-                                <option>🎭 Event</option>
+                            <select id="activity-1" class="activity-dropdown font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option value="food" selected>🍽️ Food</option>
+                                <option value="event">🎭 Event</option>
                             </select>
                         </div>
                         <span class="font-mulish font-light text-[8px]">*Not Included For Demo 1</span>
@@ -376,15 +397,15 @@
                             Activity 2
                         </label>
                         <div class="flex items-center space-x-2">
-                            <select id="activity-2"
-                                    class="font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
-                                <option>🍽️ Food</option>
-                                <option selected>🎭 Event</option>
+                            <select id="activity-2" class="activity-dropdown font-poppins text-normal font-medium rounded-md px-1 py-1 text-black">
+                                <option value="food">🍽️ Food</option>
+                                <option value="event" selected>🎭 Event</option>
                             </select>
                         </div>
                         <span class="font-mulish font-light text-[8px]">*Not Included For Demo 1</span>
                     </div>
                 </div>
+
 
                 <!-- 7) Final Button (e.g., "Plan") -->
                 <div class="flex items-center px-6 py-2">
@@ -888,11 +909,16 @@
                     throw new Error("No city data found.");
                 }
 
+                // Extract city name
                 const cityName = data[0].name;
                 document.getElementById("city-name").innerText = cityName;
                 document.getElementById("location-search").value = cityName;
                 document.getElementById("location-search-mobile").value = cityName;
 
+                console.log("Fetched city name:", cityName);
+
+                // Fetch city background image after getting city name
+                updateLocationBackground(cityName);
             } catch (error) {
                 console.error("City fetch error:", error);
                 document.getElementById("city-name").innerText = "Unknown Location";
@@ -905,8 +931,8 @@
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const { latitude, longitude } = position.coords;
-                        fetchWeather(latitude, longitude);
                         fetchCityName(latitude, longitude);
+                        fetchWeather(latitude, longitude);
                     },
                     (error) => {
                         console.error("Geolocation error:", error);
@@ -918,6 +944,44 @@
             } else {
                 console.error("Geolocation not supported.");
                 document.getElementById("city-name").innerText = "Geolocation Not Supported";
+            }
+        }
+
+        // Function to fetch high-quality background image using Google Maps Place Photo API
+        async function updateLocationBackground(cityName) {
+            const backgroundImage = document.getElementById("background-image");
+            const skeletonLoader = document.getElementById("skeleton-loader");
+
+            console.log("Fetching high-quality image for:", cityName);
+
+            try {
+                const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
+                const data = await response.json();
+
+                if (!data.image_url) throw new Error("No image URL received.");
+
+                // Preload image before showing it
+                const img = new Image();
+                img.src = data.image_url;
+
+                img.onload = function () {
+                    // Hide skeleton and fade in the image
+                    skeletonLoader.style.display = "none";
+                    backgroundImage.src = data.image_url;
+                    backgroundImage.alt = `${cityName} Skyline`;
+                    backgroundImage.classList.add("opacity-100");
+                    console.log("Updated background image:", data.image_url);
+                };
+            } catch (error) {
+                console.error("Error fetching high-quality location image:", error);
+
+                // 🔹 Fallback: Use Unsplash
+                backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
+
+                backgroundImage.onload = function () {
+                    skeletonLoader.style.display = "none";
+                    backgroundImage.classList.add("opacity-100");
+                };
             }
         }
 
@@ -956,7 +1020,7 @@
             return;
         }
 
-        let userPreferredLocation = localStorage.getItem("location") || "Chicago, IL";
+        let userPreferredLocation =  "Fetching Location...";
         input.value = userPreferredLocation; // Set default value
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
@@ -969,9 +1033,6 @@
                 alert("No details available for: " + place.name);
                 return;
             }
-
-            document.getElementById("box-location").textContent = place.name;
-            localStorage.setItem("location", place.name);
         });
 
         google.maps.event.addListener(autocomplete, "place_changed", function () {
@@ -1033,6 +1094,55 @@
         // Update the greeting text dynamically
         greetingElement.textContent = greetingMessage;
     });
+
+    // async function updateLocationBackground() {
+    //     const cityNameElement = document.getElementById("city-name");
+    //     const backgroundImage = document.getElementById("background-image");
+    //     const skeletonLoader = document.getElementById("skeleton-loader");
+    //     const location = document.getElementById("city-name");
+    //
+    //     let cityName = location;
+    //
+    //     if (cityNameElement && cityNameElement.innerText !== "Loading...") {
+    //         cityName = cityNameElement.innerText;
+    //     }
+    //
+    //     console.log("Fetching high-quality image for:", cityName);
+    //
+    //     try {
+    //         const response = await fetch(`/api/getLocationImage/?city=${encodeURIComponent(cityName)}`);
+    //         const data = await response.json();
+    //
+    //         if (!data.image_url) throw new Error("No image URL received.");
+    //
+    //         // Preload image before showing it
+    //         const img = new Image();
+    //         img.src = data.image_url;
+    //
+    //         img.onload = function () {
+    //             // Hide skeleton and fade in the image
+    //             skeletonLoader.style.display = "none";
+    //             backgroundImage.src = data.image_url;
+    //             backgroundImage.alt = `${cityName} Skyline`;
+    //             backgroundImage.classList.add("opacity-100");
+    //             console.log("Updated background image:", data.image_url);
+    //         };
+    //     } catch (error) {
+    //         console.error("Error fetching high-quality location image:", error);
+    //
+    //         // 🔹 Fallback: Use Unsplash
+    //         backgroundImage.src = `https://source.unsplash.com/1600x900/?${cityName},city,skyline`;
+    //
+    //         backgroundImage.onload = function () {
+    //             skeletonLoader.style.display = "none";
+    //             backgroundImage.classList.add("opacity-100");
+    //         };
+    //     }
+    // }
+    //
+    // // Run function after DOM loads
+    // document.addEventListener("DOMContentLoaded", updateLocationBackground);
+
 
 
     const userDropdownButton = document.getElementById("userDropdownButton");
@@ -1233,6 +1343,27 @@
             mobileMenu.classList.add("hidden");
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const activity1 = document.getElementById("activity-1");
+    const activity2 = document.getElementById("activity-2");
+
+    function syncDropdowns(changedDropdown, otherDropdown) {
+        if (changedDropdown.value === "food") {
+            otherDropdown.value = "event";
+        } else {
+            otherDropdown.value = "food";
+        }
+    }
+
+    activity1.addEventListener("change", function() {
+        syncDropdowns(activity1, activity2);
+    });
+
+    activity2.addEventListener("change", function() {
+        syncDropdowns(activity2, activity1);
+    });
+});
 
 </script>
 </body>
