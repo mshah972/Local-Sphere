@@ -45,6 +45,7 @@ urlpatterns = [
     path('api/getLocationImage/', get_location_image, name='get_location_image'),
     path('reset/<str:token>/', views.password_reset_confirm, name='password_reset_confirm'),
     path("resetcomplete/", views.password_reset_complete, name="password_reset_complete"),
+    path('planPage/', views.planPage, name='planPage'),
 
 ]
 

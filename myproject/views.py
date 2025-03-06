@@ -34,6 +34,9 @@ password_reset_tokens = {}
 def index(request):
     return render(request, 'index.html', {"user": request.user})
 
+def planPage(request):
+    return render(request, 'planPage.html')
+
 
 def SphereAi(request):
     if request.user.is_authenticated:
