@@ -1,1 +1,755 @@
-Hello
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Local Sphere - Your Local Guide</title>
+        <link href="{% static 'css/output.css' %}" rel="stylesheet">
+        <link href="../static/css/output.css" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+        <style>
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                background: transparent;
+                bottom: 0;
+                color: transparent;
+                cursor: pointer;
+                height: auto;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: auto;
+            }
+        </style>
+    </head>
+    <body class="bg-custom-white">
+    <main role="main" class="flex flex-col mb-10 min-h-screen">
+        <header class="relative z-50">
+            <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+                 aria-label="header">
+                <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
+                    <span class="sr-only">Local Sphere</span>
+                    <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                </a>
+                <div id="openMobileMenu" class="flex lg:hidden">
+                    <button type="button"
+                            class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                    <!-- Explore Button -->
+                    <a href="#"
+                       class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                        Explore
+                    </a>
+                    <!-- SphereAi -->
+                    <a href="{% url 'SphereAi' %}"
+                       class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                        SphereAi
+                    </a>
+                    <!-- Company Dropdown -->
+                    <div class="relative">
+                        <button id="companyButton" type="button"
+                                class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                                aria-label="false">
+                            Company
+                            <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                                 fill="currentColor" aria-hidden="true">
+                                <path id="arrowPath" fill-rule="evenodd"
+                                      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div id="companyDropdownMenu"
+                             class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                            <div class="p-4">
+                                <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                    <div class="flex-auto">
+                                        <a href="{% url 'about' %}"
+                                           class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                            About Us
+                                            <span class="absolute inset-0"></span>
+                                        </a>
+                                        <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                            Meet the Team Behind Local Sphere.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            {% if user.is_authenticated %}
+                                <!-- When Logged In: Show Profile with Dropdown -->
+                                <div class="relative">
+                                    <button id="userDropdownButton" type="button"
+                                        class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                        <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                        <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path id="userArrowPath" fill-rule="evenodd"
+                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                clip-rule="evenodd"/>
+                                        </svg>
+                                    </button>
+                        
+                                    <!-- Dropdown Menu -->
+                                    <div id="userDropdownMenu"
+                                        class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                        <a href="{% url 'profileEdit' %}"
+                                        class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                            Profile
+                                        </a>
+                                        <a href="{% url 'logout' %}"    
+                                            class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                            Logout
+                                        </a>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                                <div class="flex items-center gap-4">
+                                    <!-- Log In Button -->
+                                    <a href="{% url 'login' %}"
+                                        class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                        Log in
+                                    </a>
+    
+                                    <!-- "Start Exploring" Button -->
+                                    <a href="{% url 'signup' %}"
+                                        class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        
+            <!-- Mobile menu, show/hide based on menu open state. -->
+            <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+                <div class="fixed inset-0 z-10"></div>
+                <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <a href="#" class="-m-1.5 p-1.5">
+                            <span class="sr-only">Local Sphere</span>
+                            <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                        </a>
+                        <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                            <span class="sr-only">Close menu</span>
+                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                 aria-hidden="true" data-slot="icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-6 flow-root">
+                        <div class="-my-6 divide-y divide-gray-500/10">
+                            <div class="space-y-2 py-6">
+                                <a href="#"
+                                   class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                                <a href="{% url 'SphereAi' %}"
+                                   class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                                <a href="{% url 'login' %}"
+                                   class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                    in</a>
+                                <div class="-mx-3">
+                                    <button id="mobileCompanyButton" type="button"
+                                            class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                            aria-controls="disclosure-1" aria-expanded="false">
+                                        Company
+                                        <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                             fill="currentColor" aria-hidden="true" data-slot="icon">
+                                            <path id="mobileArrowPath" fill-rule="evenodd"
+                                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </button>
+                                    <div id="mobileCompanyDropdown"
+                                         class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                        <a href="{% url 'about' %}"
+                                           class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                            Us</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-6">
+                                <div>
+                                    <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                        <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                        <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- END OF HEADER -->
+
+        <div class="relative w-2/3 p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col h-auto">
+            <form id="userForm" action="{% url 'update_user_profile' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="flex flex-col items-center justify-center w-full">
+                    <!-- Profile Picture Container -->
+                    <div class="relative w-32 h-32">
+                        <!-- Profile Image -->
+                        <img id="profileImage"
+                             class="w-full h-full rounded-full border-4 border-black object-cover"
+                             src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                             alt="Profile Picture">
+                        <!-- Hidden File Input -->
+                        <input type="file" id="fileInput" name="picture" class="hidden" accept="image/*">
+                    </div>
+
+                    <!-- Upload Label -->
+                    <label for="fileInput"
+                           class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
+                        Upload Your Profile Picture
+                    </label>
+                </div>
+
+                <div class="flex flex-row justify-between items-center w-full mr-5 pt-5">
+                    <div class="flex flex-col items-start justify-between w-full">
+                        <label for="location" class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                            <span class="mr-2">
+                                <img class="h-5 w-auto" src="../static/location.svg">
+                            </span>
+                            <input id="location" type="text" name="location" value="{{ user.location }}" class="w-full focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start justify-between w-full ml-4">
+                        <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                            <select id="occupation" name="occupation" class="w-full focus:outline-none">
+                                <option disabled selected hidden>Select</option>
+                                <option value="Student">Student</option>
+                                <option value="Teacher">Teacher</option>
+                                <option value="Engineer">Engineer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-start justify-between w-full mt-6">
+                    <label for="biography" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (optional)</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <textarea id="biography" type="text" name="biography" placeholder="Write about yourself..." class="w-full focus:outline-none">{{ user.biography|default:'Write something about yourself...' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-start justify-between w-full mt-4">
+                    <label for="interestDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Interests</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                           <img class="h-5 w-auto" src="../static/Search2.svg" alt="Search Icon">
+                        </span>
+                        <select id="interestDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option>Music Concerts</option>
+                            <option>Chicago Cubs</option>
+                            <option>Basketball</option>
+                            <option>Football</option>
+                            <option>Soccer</option>
+                            <option>Club Nights</option>
+                        </select>
+                        <input type="hidden" id="interests" name="interests">
+                    </div>
+                </div>
+                <div id="selectedInterest" class="flex flex-wrap gap-2 mt-1 mb-2 lg:mb-6"></div>
+
+
+                <div class="flex flex-col items-start justify-between w-full mt-2">
+                    <label for="cuisineDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Favorite Food & Cuisines</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                           <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
+                        </span>
+                        <select id="cuisineDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option>Italian</option>
+                            <option>Mexican</option>
+                            <option>American</option>
+                            <option>Chinese</option>
+                            <option>Pizza</option>
+                            <option>Salads</option>
+                        </select>
+                        <input type="hidden" id="favorite_cuisines" name="favorite_cuisines">
+                    </div>
+                </div>
+                <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
+
+                <div class="flex flex-col items-start justify-between w-full mt-2">
+                    <label for="dietRestrictionDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Dietary Restrictions</label>
+                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                        <span class="mr-2">
+                           <img class="h-5 w-auto" src="../static/restrictions.svg" alt="Dietary Restrictions Icon">
+                        </span>
+                        <select id="dietRestrictionDropdown"
+                                class="w-full font-normal rounded-md">
+                            <option disabled selected hidden>Select</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Lactose Intolerance">Lactose Intolerance</option>
+                            <option value="Gluten Intolerance">Gluten Intolerance</option>
+                            <option value="Keto">Ketogenic Diet</option>
+                            <option value="Halal">Kosher and Halal</option>
+                        </select>
+                        <input type="hidden" id="diet_restrictions" name="diet_restrictions">
+                    </div>
+                </div>
+                <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
+
+                <!-- Buttons -->
+                <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
+                    <button type="submit" id="recreate-btn"
+                            class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        Update Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+</main>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Simulated user authentication - Replace with actual authentication check
+        const userLoggedIn = true; // Change to false to simulate logged-out state
+        const userFirstName = "John"; // Replace with actual first name
+        const userLastName = "Doe"; // Replace with actual last name
+
+        const exploreLink = document.getElementById("explore-link");
+        const loginButton = document.getElementById("login-button");
+
+        const mobileExploreLink = document.getElementById("mobile-explore-link");
+        const mobileLoginButton = document.getElementById("mobile-login-button");
+
+        if (userLoggedIn) {
+            // Change 'Explore' to 'My Account' with First and Last Name
+            exploreLink.textContent = `${userFirstName} ${userLastName}`;
+            exploreLink.href = "/my-account"; // Update with actual account page URL
+            exploreLink.classList.add("cursor-pointer", "hover:font-extrabold");
+
+            mobileExploreLink.textContent = `${userFirstName} ${userLastName}`;
+            mobileExploreLink.href = "/my-account"; // Update with actual account page URL
+
+            // Remove Login Button (Desktop & Mobile)
+            if (loginButton) loginButton.remove();
+            if (mobileLoginButton) mobileLoginButton.remove();
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("fileInput");
+        const profileImage = document.getElementById("profileImage");
+        const userProfileImage = document.getElementById("userProfileImage");
+
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profileImage.src = e.target.result;
+                    userProfileImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get user input elements
+        const userDescriptionInput = document.getElementById("biography");
+        const cuisineDropdown = document.getElementById("cuisineDropdown");
+        const interestDropdown = document.getElementById("interestDropdown");
+        const dietRestrictionDropdown = document.getElementById("dietRestrictionDropdown");
+
+        // Get display elements
+        const userDescriptionDisplay = document.getElementById("userDescriptionDisplay");
+        const userCuisinesDisplay = document.getElementById("selectedCuisines");
+        const userCuisinesTable = document.getElementById("userCuisines");
+        const cuisinesContainer = document.getElementById("cuisinesContainer");
+
+        const userInterestsDisplay = document.getElementById("selectedInterest");
+        const userInterestsTable = document.createElement("div");
+        userInterestsTable.id = "userInterests";
+        userInterestsTable.classList.add("space-y-2", "text-center");
+
+        // Display container for dietary restriction icons
+        const dietRestrictionsDisplay = document.createElement("div");
+        dietRestrictionsDisplay.id = "dietRestrictionsDisplay";
+        dietRestrictionsDisplay.classList.add("flex", "gap-2", "mt-2");
+
+        const selectedDietRestrictionsDisplay = document.getElementById("selectedDietRestriction");
+        const dietRestrictionsHiddenInput = document.getElementById("diet_restrictions");
+
+
+        // Insert dietary restrictions display below email
+        const userEmailElement = document.querySelector(".font-mulish.text-white.font-light");
+        userEmailElement.parentNode.insertBefore(dietRestrictionsDisplay, userEmailElement.nextSibling);
+
+        // Insert Interests Container
+        const interestsContainer = document.createElement("div");
+        interestsContainer.id = "interestsContainer";
+        interestsContainer.classList.add("bg-custom-white", "w-full", "p-4", "rounded-3xl", "shadow-lg", "hidden");
+        interestsContainer.innerHTML = `
+        <h2 class="text-center text-lg font-bold mb-2">Interests</h2>
+        <div class="border-t border-black mt-2 mb-4"></div>
+    `;
+        interestsContainer.appendChild(userInterestsTable);
+        cuisinesContainer.parentNode.insertBefore(interestsContainer, cuisinesContainer);
+
+        // Function to toggle visibility of elements
+        function toggleVisibility(container, table) {
+            container.style.display = table.children.length > 0 ? "block" : "none";
+        }
+
+        // Update description dynamically
+        if (userDescriptionInput) {
+            userDescriptionInput.addEventListener("input", function () {
+                userDescriptionDisplay.textContent = this.value.trim() || "Enter your description and it will appear here...";
+            });
+        }
+
+        // Function to hide selected options in dropdown
+        function updateDropdownOptions(dropdown, selectedItems) {
+            [...dropdown.options].forEach(option => {
+                option.style.display = selectedItems.includes(option.value) ? "none" : "";
+            });
+        }
+
+        function updateDietRestrictionsField() {
+            const selectedRestrictions = [...selectedDietRestrictionsDisplay.children].map(item => item.dataset.item);
+            dietRestrictionsHiddenInput.value = JSON.stringify(selectedRestrictions);
+            console.log("Diet Restrictions:", dietRestrictionsHiddenInput.value);
+        }
+
+        // Function to add an item to both the tag section and table
+        function addItem(selectedValue, displayContainer, tableContainer, container, dropdown, type) {
+            if (!selectedValue) return;
+
+            // Check if already selected
+            if ([...displayContainer.children].some(item => item.dataset.item === selectedValue)) return;
+
+            // Create a new tag below the input
+            const itemTag = document.createElement("div");
+            itemTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            itemTag.dataset.item = selectedValue;
+            itemTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+
+            // Append to the list
+            displayContainer.appendChild(itemTag);
+
+            // Create a table entry
+            const tableRow = document.createElement("div");
+            tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
+            tableRow.dataset.item = selectedValue;
+            tableRow.innerText = selectedValue;
+
+            // Append to the table
+            tableContainer.appendChild(tableRow);
+
+            // Show the container if it was hidden
+            toggleVisibility(container, tableContainer);
+
+            // Update dropdown to hide selected options
+            updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
+
+            // Remove item when clicking "✖"
+            itemTag.querySelector(".removeItem").addEventListener("click", function () {
+                itemTag.remove();
+
+                // Find and remove corresponding table entry
+                [...tableContainer.children].forEach(row => {
+                    if (row.dataset.item === selectedValue) {
+                        row.remove();
+                    }
+                });
+
+                // Hide table if no items remain
+                toggleVisibility(container, tableContainer);
+
+                // Show the option again in the dropdown
+                updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
+            });
+
+            // Reset dropdown selection
+            dropdown.selectedIndex = 0;
+        }
+
+        // Function to add diet restriction icons
+        function addDietIcon(selectedValue) {
+            if (!selectedValue) return;
+
+            // Check if already selected
+            if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+            if ([...selectedDietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+
+            // Icon mapping for dietary restrictions
+            const dietIcons = {
+                "Vegan": "../static/vegan.svg",
+                "Vegetarian": "../static/vegetarian.svg",
+                "Lactose Intolerance": "../static/lactose.svg",
+                "Gluten Intolerance": "../static/gluten.svg",
+                "Ketogenic Diet": "../static/keto.svg",
+                "Kosher and Halal": "../static/halal.svg"
+            };
+
+            // Create dietary restriction icon element
+            const dietIcon = document.createElement("img");
+            dietIcon.src = dietIcons[selectedValue] || "../static/diet-icons/default.svg";
+            dietIcon.alt = selectedValue;
+            dietIcon.title = selectedValue;
+            dietIcon.className = "w-8 h-8";
+
+            // Append icon to the display area
+            dietIcon.dataset.item = selectedValue;
+            dietRestrictionsDisplay.appendChild(dietIcon);
+
+            const restrictionTag = document.createElement("div");
+            restrictionTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            restrictionTag.dataset.item = selectedValue;
+            restrictionTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+
+            // Append to the display container
+            selectedDietRestrictionsDisplay.appendChild(restrictionTag);
+
+            updateDietRestrictionsField();
+
+            // Update dropdown to hide selected options
+            updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+
+            // // Remove item when clicking the icon
+            // dietIcon.addEventListener("click", function () {
+            //
+            // });
+
+            restrictionTag.querySelector(".removeItem").addEventListener("click", function () {
+                restrictionTag.remove();
+                updateDietRestrictionsField();
+                dietIcon.remove();
+                updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+            });
+
+            // Reset dropdown selection
+            dietRestrictionDropdown.selectedIndex = 0;
+        }
+
+        // Add selected cuisine on dropdown change
+        if (cuisineDropdown) {
+            cuisineDropdown.addEventListener("change", function () {
+                addItem(cuisineDropdown.value.trim(), userCuisinesDisplay, userCuisinesTable, cuisinesContainer, cuisineDropdown, "cuisine");
+            });
+        }
+
+        // Add selected interest on dropdown change
+        if (interestDropdown) {
+            interestDropdown.addEventListener("change", function () {
+                addItem(interestDropdown.value.trim(), userInterestsDisplay, userInterestsTable, interestsContainer, interestDropdown, "interest");
+            });
+        }
+
+        // Add selected diet restriction on dropdown change
+        if (dietRestrictionDropdown) {
+            dietRestrictionDropdown.addEventListener("change", function () {
+                addDietIcon(dietRestrictionDropdown.value.trim());
+            });
+        }
+
+        // Hide tables initially if no selections exist
+        toggleVisibility(cuisinesContainer, userCuisinesTable);
+        toggleVisibility(interestsContainer, userInterestsTable);
+
+    });
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function updateHiddenFields() {
+            // Convert selected options to an array of values and update hidden fields
+            document.getElementById("interests").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedInterest div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("favorite_cuisines").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedCuisines div")].map(item => item.dataset.item)
+            );
+
+            document.getElementById("diet_restrictions").value = JSON.stringify(
+                [...document.querySelectorAll("#selectedDietRestriction div")].map(item => item.dataset.item)
+            );
+
+            console.log("🔹 DEBUG: Hidden Fields Updated Before Submission:");
+            console.log("   - Interests:", document.getElementById("interests").value);
+            console.log("   - Favorite Cuisines:", document.getElementById("favorite_cuisines").value);
+            console.log("   - Diet Restrictions:", document.getElementById("diet_restrictions").value);
+        }
+
+        // Run updateHiddenFields() when form is submitted
+        document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
+    });
+
+
+    ////////////////////////////////////// Header Script /////////////////////////////////////
+
+
+    const userDropdownButton = document.getElementById("userDropdownButton");
+        const userDropdownMenu = document.getElementById("userDropdownMenu");
+
+        userDropdownButton.addEventListener("click", function () {
+            userDropdownMenu.classList.toggle("hidden");
+        });
+
+        // Close dropdown if clicking outside
+        document.addEventListener("click", function (event) {
+            if (!userDropdownButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.add("hidden");
+            }
+        });
+    
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("companyButton");
+        const dropdownMenu = document.getElementById("companyDropdownMenu");
+        const dropdownIcon = document.getElementById("dropdownIcon");
+        const arrowPath = document.getElementById("arrowPath");
+
+        toggleButton.addEventListener("click", function () {
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+        const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+        const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+        const mobileArrowPath = document.getElementById("mobileArrowPath");
+
+        mobileDropdownButton.addEventListener("click", function () {
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMobileMenu = document.getElementById("openMobileMenu");
+        const closeMobileMenu = document.getElementById("closeMobileMenu");
+        const mobileBackdrop = document.getElementById("mobileBackdrop");
+
+        // Open mobile menu when clicking the hamburger button
+        openMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("hidden");
+        });
+
+        // Close mobile menu when clicking the close button
+        closeMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+
+        // Close mobile menu when clicking outside (on the backdrop)
+        mobileBackdrop.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+    });
+</script>
+
+</body>
+</html>
