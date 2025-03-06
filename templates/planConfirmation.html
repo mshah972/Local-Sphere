@@ -673,9 +673,9 @@
         // 🔹 Load and display the plan
         async function loadPlan(planData) {
             document.getElementById('location').textContent = planData.location;
-            document.getElementById('plan-details').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.date}`;
+            document.getElementById('plan-details').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.ocasion} • ${planData.date}`;
             document.getElementById('location-mobile').textContent = planData.location;
-            document.getElementById('plan-details-mobile').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.date}`;
+            document.getElementById('plan-details-mobile').textContent = `${planData.guests} Peoples • ${planData.time} • ${planData.ocasion} • ${planData.date}`;
 
             const bounds = new mapboxgl.LngLatBounds();
             const restaurantList = document.getElementById('restaurant-list');
