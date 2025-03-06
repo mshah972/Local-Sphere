@@ -288,16 +288,45 @@
         </div>
     </header>
     
-    <div class="min-h-screen w-2/3 bg-white rounded-3xl shadow-xl overflow-hidden mx-6 justify-center items-center">
-        <div class="h-32 rounded-t-3xl overflow-hidden">
+    <section class="relative flex flex-col justify-start mx-5 md:mx-10 lg:mx-15 max-w-9xl h-[80vh] sm:px-6 lg:px-8 mx-auto overflow-visible lg:rounded-4xl rounded-4xl">
+        <!-- Background Image Header -->
+        <div class="relative w-full h-[30vh] overflow-hidden rounded-t-3xl">
             <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                 alt="Top Image" class="w-full h-full object-cover">
+                 alt="Header Image" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/30"></div>
         </div>
-        <div class="p-6">
-            <p>Your content goes here...</p>
+    
+        <!-- Overlapping Centered & Lowered Card -->
+        <div class="absolute left-1/2 top-[26vh] bg-custom-blue w-3/4 md:w-2/3 p-6 rounded-xl shadow-lg">
+            <div class="flex items-center space-x-4">
+                <img src="https://via.placeholder.com/80" alt="Profile Image" class="w-16 h-16 rounded-full border-4 border-white">
+                <div>
+                    <h2 class="text-white text-xl font-bold">John Doe</h2>
+                    <p class="text-white text-sm">@johndoe</p>
+                </div>
+            </div>
+            <div class="flex justify-between mt-4 text-white">
+                <div>
+                    <p class="text-sm">Plans You’ve Created</p>
+                    <p class="text-lg font-bold">10</p>
+                </div>
+                <div>
+                    <p class="text-sm">Contributions</p>
+                    <p class="text-lg font-bold">2</p>
+                </div>
+                <div>
+                    <p class="text-sm">Hours Saved</p>
+                    <p class="text-lg font-bold">24</p>
+                </div>
+            </div>
         </div>
-    </div>
-
+    
+        <!-- Bottom Content Div -->
+        <div class="mt-48 p-6 bg-white shadow-lg rounded-b-3xl">
+            <h1 class="text-2xl font-bold text-gray-800">Your Plans</h1>
+            <p class="text-gray-600 mt-2">This is where your content starts below the overlapping section.</p>
+        </div>
+    </section>
 
 <script>
     ///////// Header SCRIPT //////////
