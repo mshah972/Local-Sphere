@@ -36,6 +36,8 @@ def index(request):
 
 def planPage(request):
     return render(request, 'planPage.html')
+def profileEdit(request):
+    return render(request, 'profileEdit.html')
 
 
 def SphereAi(request):

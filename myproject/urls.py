@@ -46,6 +46,7 @@ urlpatterns = [
     path('reset/<str:token>/', views.password_reset_confirm, name='password_reset_confirm'),
     path("resetcomplete/", views.password_reset_complete, name="password_reset_complete"),
     path('planPage/', views.planPage, name='planPage'),
+    path('profileEdit/', views.profileEdit, name='profileEdit'),
 
 ]
 
