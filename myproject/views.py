@@ -193,8 +193,17 @@ def password_reset_confirm(request, token):
 
 
 def password_reset_complete(request):
-    messages.success(request, "Password reset successfully.")
-    return render(request, "login.html")
+    user = request.user
+    interest = user.interests
+    print("\nhello")
+    print(user.username)
+    print(str(len(interest)))
+    print(user.location)
+
+    for string in interest:
+        print(string+"\n")
+        print(user.username+"\n")
+    return render(request, "password_reset_complete.html")
 
 def creation(request):
     return render(request, 'UserCreation.html')
@@ -378,7 +387,7 @@ def generate_date_plan(request):
     except Exception as e:
         print(f"❌ ERROR: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)
-    
+
 @login_required
 def update_user_profile(request):
     if request.method == 'POST':
@@ -387,12 +396,16 @@ def update_user_profile(request):
         user.location = request.POST.get('location', user.location)
         user.occupation = request.POST.get('occupation', user.occupation)
         user.biography = request.POST.get('biography', user.biography)
-
         # Handle JSON fields safely
         try:
-            user.interests = json.loads(request.POST.get('interests', '[]'))
-            user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
-            user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
+            interests = request.POST.get("interests")
+            if interests:
+                interests = json.loads(interests)  # Convert JSON string to a Python list
+                user = request.user
+                user.interests = interests  # Directly store the list in JSONField
+                user.save()
+                user.favorite_cuisines = json.loads(request.POST.get('favorite_cuisines', '[]'))
+                user.diet_restrictions = json.loads(request.POST.get('diet_restrictions', '[]'))
         except json.JSONDecodeError:
             user.interests, user.favorite_cuisines, user.diet_restrictions = [], [], []
 

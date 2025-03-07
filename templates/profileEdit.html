@@ -337,7 +337,10 @@
                     <label for="interestDropdown" class="text-gray-400 text-sm font-mulish">Interests</label>
                     <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
                         <img class="h-5 w-auto mr-2" src="../static/Search2.svg" alt="Search Icon">
+                        <input type="hidden" id="interestsInput" name="interests">
+
                         <select id="interestDropdown" class="w-full font-normal rounded-md">
+
                             <option disabled selected hidden>Select</option>
                             <option>Music Concerts</option>
                             <option>Chicago Cubs</option>
@@ -364,6 +367,8 @@
                     <label for="cuisineDropdown" class="text-gray-400 text-sm font-mulish">Favorite Food & Cuisines</label>
                     <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
                         <img class="h-5 w-auto mr-2" src="../static/foodIcon.svg" alt="Food Icon">
+                        <input type="hidden" id="favorite_cuisinesInput" name="favorite_cuisines">
+
                         <select id="cuisineDropdown" class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
                             <option>Italian</option>
@@ -392,6 +397,8 @@
                     <label for="dietRestrictionDropdown" class="text-gray-400 text-sm font-mulish">Dietary Restrictions</label>
                     <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
                         <img class="h-5 w-auto mr-2" src="../static/restrictions.svg" alt="Dietary Restrictions Icon">
+                        <input type="hidden" id="diet_restrictionsInput" name="diet_restrictions">
+
                         <select id="dietRestrictionDropdown" class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
                             <option value="Vegan">Vegan</option>
@@ -891,6 +898,29 @@ document.addEventListener("DOMContentLoaded", function () {
             mobileMenu.classList.add("hidden");
         });
     });
+    document.getElementById("userForm").addEventListener("submit", function () {
+    let interests = [];
+    document.querySelectorAll("#selectedInterest div").forEach(div => {
+        interests.push(div.getAttribute("data-item"));
+    });
+    document.getElementById("interestsInput").value = JSON.stringify(interests);
+});
+    document.getElementById("userForm").addEventListener("submit", function () {
+    let favorite_cuisines = [];
+    document.querySelectorAll("#selectedCuisines div").forEach(div => {
+        favorite_cuisines.push(div.getAttribute("data-item"));
+    });
+    document.getElementById("favorite_cuisinesInput").value = JSON.stringify(favorite_cuisines);
+});
+    document.getElementById("userForm").addEventListener("submit", function () {
+    let diet_restrictions = [];
+    document.querySelectorAll("#selectedDietRestriction div").forEach(div => {
+        diet_restrictions.push(div.getAttribute("data-item"));
+    });
+    document.getElementById("diet_restrictionsInput").value = JSON.stringify(diet_restrictions);
+});
+
+
 </script>
 
 </body>
