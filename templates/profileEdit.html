@@ -199,44 +199,118 @@
             </div>
         </header>
 
-        <!-- END OF HEADER -->
-        <div class="flex justify-center items-center min-h-screen">
-        <div class="relative w-2/3 p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col h-auto">
+    <!-- NEW PAGE COPY THIS UP  -->
+    <div class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0">
+        <div class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl">
+            <!-- Background Image -->
+            <img src="../static/userCreationBack.png" 
+                 alt="User Background" 
+                 class="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-50">
+    
+            <div class="relative flex flex-col items-center w-full">
+                <!-- Profile Image -->
+                <div class="relative w-28 h-28 border-4 border-white rounded-full overflow-hidden">
+                    <img id="userProfileImage"
+                         class="w-full h-full object-cover"
+                         src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                         alt="Profile Picture">
+                </div>
+    
+                <!-- User Name (Dynamic) -->
+                <h3 id="previewFullName" class="text-white font-extrabold text-3xl mt-4">
+                    {{ user.first_name }} {{ user.last_name }}
+                </h3>
+                
+                <!-- User Email (Dynamic) -->
+                <p id="previewEmail" class="font-mulish text-white font-light text-sm mt-1">
+                    {{ user.email }}
+                </p>
+    
+                <!-- User Bio -->
+                <p id="userDescriptionDisplay" class="text-white text-center text-sm px-6 leading-relaxed mt-4">
+                    {{ user.biography }}
+                </p>
+    
+                <!-- Interests & Cuisines -->
+                <div class="flex flex-row w-full justify-center gap-6 mt-8 mb-4 px-2">
+                    <!-- Interests -->
+                    <div id="interestsContainer" class="bg-custom-white w-full p-4 rounded-3xl shadow-lg hidden">
+                        <h2 class="text-center text-lg font-bold mb-2">Interests</h2>
+                        <div class="border-t border-black mt-2 mb-4"></div>
+                        <div id="userInterests" class="space-y-2 text-center"></div>
+                    </div>
+    
+                    <!-- Cuisines -->
+                    <div id="cuisinesContainer" class="bg-custom-white w-full p-4 rounded-3xl shadow-lg hidden">
+                        <h2 class="text-center text-lg font-bold mb-2">Cuisines & Foods</h2>
+                        <div class="border-t border-black mt-2 mb-4"></div>
+                        <div id="userCuisines" class="space-y-2 text-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Edit  -->
+
+
+        <div class="relative w-full lg:w-4/6 p-8 bg-white rounded-3xl lg:mr-10 lg:ml-5 flex flex-col h-auto shadow-md">
             <form id="userForm" action="{% url 'update_user_profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-
+        
+                <!-- Profile Picture Section -->
                 <div class="flex flex-col items-center justify-center w-full">
-                    <!-- Profile Picture Container -->
                     <div class="relative w-32 h-32">
-                        <!-- Profile Image -->
                         <img id="profileImage"
                              class="w-full h-full rounded-full border-4 border-black object-cover"
                              src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
                              alt="Profile Picture">
-                        <!-- Hidden File Input -->
                         <input type="file" id="fileInput" name="picture" class="hidden" accept="image/*">
                     </div>
-
-                    <!-- Upload Label -->
-                    <label for="fileInput"
-                           class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
+                    <label for="fileInput" class="mt-3 text-center cursor-pointer font-mulish text-black text-[14px] font-semibold">
                         Upload Your Profile Picture
                     </label>
                 </div>
-
-                <div class="flex flex-row justify-between items-center w-full mr-5 pt-5">
-                    <div class="flex flex-col items-start justify-between w-full">
-                        <label for="location" class="font-mulish text-gray-400 text-[12px] font-normal">Preferred Location</label>
-                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                            <span class="mr-2">
-                                <img class="h-5 w-auto" src="../static/location.svg">
-                            </span>
-                            <input id="location" type="text" name="location" value="{{ user.location }}" class="w-full focus:outline-none">
+        
+                <!-- First and Last Name Fields -->
+                <div class="flex justify-between space-x-4 mt-6 mb-4">
+                    <div class="w-1/2">
+                        <label for="first_name" class="block text-gray-500 text-sm">First Name</label>
+                        <input type="text" id="first_name" name="first_name" 
+                               class="w-full border border-gray-300 rounded-lg p-2" 
+                               value="{{ user.first_name }}" 
+                               oninput="updateFullName()">
+                    </div>
+                    <div class="w-1/2">
+                        <label for="last_name" class="block text-gray-500 text-sm">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" 
+                               class="w-full border border-gray-300 rounded-lg p-2" 
+                               value="{{ user.last_name }}" 
+                               oninput="updateFullName()">
+                    </div>
+                </div>
+        
+                <!-- Email Field -->
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-500 text-sm">Email</label>
+                    <input type="email" id="email" name="email" 
+                           class="w-full border border-gray-300 rounded-lg p-2" 
+                           value="{{ user.email }}" 
+                           oninput="syncPreview('previewEmail', this.value)">
+                </div>
+        
+                <!-- Location & Occupation -->
+                <div class="flex flex-row justify-between items-center w-full pt-5">
+                    <div class="w-1/2">
+                        <label for="location" class="text-gray-400 text-sm font-mulish">Preferred Location</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2">
+                            <img class="h-5 w-auto mr-2" src="../static/location.svg">
+                            <input id="location" type="text" name="location" 
+                                   value="{{ user.location }}" class="w-full focus:outline-none">
                         </div>
                     </div>
-                    <div class="flex flex-col items-start justify-between w-full ml-4">
-                        <label for="occupation" class="font-mulish text-gray-400 text-[12px] font-normal">Occupation (optional)</label>
-                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
+                    <div class="w-1/2 ml-4">
+                        <label for="occupation" class="text-gray-400 text-sm font-mulish">Occupation (optional)</label>
+                        <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2">
                             <select id="occupation" name="occupation" class="w-full focus:outline-none">
                                 <option disabled selected hidden>Select</option>
                                 <option value="Student">Student</option>
@@ -247,22 +321,23 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="flex flex-col items-start justify-between w-full mt-6">
-                    <label for="biography" class="font-mulish text-gray-400 text-[12px] font-normal">Short Description (optional)</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                        <textarea id="biography" type="text" name="biography" placeholder="Write about yourself..." class="w-full focus:outline-none">{{ user.biography|default:'Write something about yourself...' }}</textarea>
+        
+                <!-- Biography -->
+                <div class="flex flex-col mt-6">
+                    <label for="biography" class="text-gray-400 text-sm font-mulish">Short Description (optional)</label>
+                    <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2">
+                        <textarea id="biography" name="biography" 
+                                  class="w-full focus:outline-none" 
+                                  placeholder="Write about yourself...">{{ user.biography|default:'Write something about yourself...' }}</textarea>
                     </div>
                 </div>
-
-                <div class="flex flex-col items-start justify-between w-full mt-4">
-                    <label for="interestDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Interests</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                        <span class="mr-2">
-                           <img class="h-5 w-auto" src="../static/Search2.svg" alt="Search Icon">
-                        </span>
-                        <select id="interestDropdown"
-                                class="w-full font-normal rounded-md">
+        
+                <!-- Interests -->
+                <div class="flex flex-col mt-4">
+                    <label for="interestDropdown" class="text-gray-400 text-sm font-mulish">Interests</label>
+                    <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
+                        <img class="h-5 w-auto mr-2" src="../static/Search2.svg" alt="Search Icon">
+                        <select id="interestDropdown" class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
                             <option>Music Concerts</option>
                             <option>Chicago Cubs</option>
@@ -271,20 +346,16 @@
                             <option>Soccer</option>
                             <option>Club Nights</option>
                         </select>
-                        <input type="hidden" id="interests" name="interests">
                     </div>
+                    <div id="selectedInterest" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
-                <div id="selectedInterest" class="flex flex-wrap gap-2 mt-1 mb-2 lg:mb-6"></div>
-
-
-                <div class="flex flex-col items-start justify-between w-full mt-2">
-                    <label for="cuisineDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Favorite Food & Cuisines</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                        <span class="mr-2">
-                           <img class="h-5 w-auto" src="../static/foodIcon.svg" alt="Peoples Icon">
-                        </span>
-                        <select id="cuisineDropdown"
-                                class="w-full font-normal rounded-md">
+        
+                <!-- Favorite Cuisines -->
+                <div class="flex flex-col mt-4">
+                    <label for="cuisineDropdown" class="text-gray-400 text-sm font-mulish">Favorite Food & Cuisines</label>
+                    <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
+                        <img class="h-5 w-auto mr-2" src="../static/foodIcon.svg" alt="Food Icon">
+                        <select id="cuisineDropdown" class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
                             <option>Italian</option>
                             <option>Mexican</option>
@@ -293,19 +364,16 @@
                             <option>Pizza</option>
                             <option>Salads</option>
                         </select>
-                        <input type="hidden" id="favorite_cuisines" name="favorite_cuisines">
                     </div>
+                    <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
-                <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
-
-                <div class="flex flex-col items-start justify-between w-full mt-2">
-                    <label for="dietRestrictionDropdown" class="font-mulish text-gray-400 text-[12px] font-normal">New Dietary Restrictions</label>
-                    <div class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[12px] md:text-[14px] lg:text-[16px] font-normal">
-                        <span class="mr-2">
-                           <img class="h-5 w-auto" src="../static/restrictions.svg" alt="Dietary Restrictions Icon">
-                        </span>
-                        <select id="dietRestrictionDropdown"
-                                class="w-full font-normal rounded-md">
+        
+                <!-- Dietary Restrictions -->
+                <div class="flex flex-col mt-4">
+                    <label for="dietRestrictionDropdown" class="text-gray-400 text-sm font-mulish">Dietary Restrictions</label>
+                    <div class="border border-gray-300 rounded-2xl mt-1 px-3 py-2 flex items-center">
+                        <img class="h-5 w-auto mr-2" src="../static/restrictions.svg" alt="Dietary Restrictions Icon">
+                        <select id="dietRestrictionDropdown" class="w-full font-normal rounded-md">
                             <option disabled selected hidden>Select</option>
                             <option value="Vegan">Vegan</option>
                             <option value="Vegetarian">Vegetarian</option>
@@ -314,56 +382,100 @@
                             <option value="Keto">Ketogenic Diet</option>
                             <option value="Halal">Kosher and Halal</option>
                         </select>
-                        <input type="hidden" id="diet_restrictions" name="diet_restrictions">
                     </div>
+                    <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2"></div>
                 </div>
-                <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6"></div>
-
-                <!-- Buttons -->
-                <div class="mt-6 lg:pt-auto lg:mt-auto flex flex-col gap-4 pt-4">
+        
+                <!-- Submit Button -->
+                <div class="mt-6 flex flex-col gap-4">
                     <button type="submit" id="recreate-btn"
-                            class="bottom-15 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                            class="w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
                         Update Profile
                     </button>
                 </div>
             </form>
         </div>
-        </div>
 </main>
 <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Simulated user authentication - Replace with actual authentication check
-        const userLoggedIn = true; // Change to false to simulate logged-out state
-        const userFirstName = "John"; // Replace with actual first name
-        const userLastName = "Doe"; // Replace with actual last name
+document.addEventListener("DOMContentLoaded", function () {
+    // Simulated user authentication - Replace with actual authentication check
+    const userLoggedIn = true; // Change to false to simulate logged-out state
+    const userFirstName = "John"; // Replace with actual first name
+    const userLastName = "Doe"; // Replace with actual last name
 
-        const exploreLink = document.getElementById("explore-link");
-        const loginButton = document.getElementById("login-button");
+    const exploreLink = document.getElementById("explore-link");
+    const loginButton = document.getElementById("login-button");
 
-        const mobileExploreLink = document.getElementById("mobile-explore-link");
-        const mobileLoginButton = document.getElementById("mobile-login-button");
+    const mobileExploreLink = document.getElementById("mobile-explore-link");
+    const mobileLoginButton = document.getElementById("mobile-login-button");
 
-        if (userLoggedIn) {
-            // Change 'Explore' to 'My Account' with First and Last Name
+    if (userLoggedIn) {
+        // Change 'Explore' to 'My Account' with First and Last Name
+        if (exploreLink) {
             exploreLink.textContent = `${userFirstName} ${userLastName}`;
             exploreLink.href = "/my-account"; // Update with actual account page URL
             exploreLink.classList.add("cursor-pointer", "hover:font-extrabold");
+        }
 
+        if (mobileExploreLink) {
             mobileExploreLink.textContent = `${userFirstName} ${userLastName}`;
             mobileExploreLink.href = "/my-account"; // Update with actual account page URL
-
-            // Remove Login Button (Desktop & Mobile)
-            if (loginButton) loginButton.remove();
-            if (mobileLoginButton) mobileLoginButton.remove();
         }
-    });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const fileInput = document.getElementById("fileInput");
-        const profileImage = document.getElementById("profileImage");
-        const userProfileImage = document.getElementById("userProfileImage");
+        // Remove Login Button (Desktop & Mobile)
+        if (loginButton) loginButton.remove();
+        if (mobileLoginButton) mobileLoginButton.remove();
+    }
 
+    // **Sync Preview Updates**
+    function syncPreview(targetId, value) {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            targetElement.textContent = value.trim() || " ";
+        }
+    }
+
+    // **Get Form Input Fields**
+    const firstNameInput = document.getElementById("first_name");
+    const lastNameInput = document.getElementById("last_name");
+    const emailInput = document.getElementById("email");
+
+    // **Get Preview Elements**
+    const previewFullName = document.getElementById("previewFullName");
+    const previewEmail = document.getElementById("previewEmail");
+
+    // **Initialize preview with current values**
+    function updateFullName() {
+        if (previewFullName && firstNameInput && lastNameInput) {
+            previewFullName.textContent = `${firstNameInput.value} ${lastNameInput.value}`.trim();
+        }
+    }
+
+    if (previewEmail && emailInput) {
+        previewEmail.textContent = emailInput.value;
+    }
+
+    // **Attach event listeners for real-time updates**
+    if (firstNameInput) firstNameInput.addEventListener("input", updateFullName);
+    if (lastNameInput) lastNameInput.addEventListener("input", updateFullName);
+    if (emailInput && previewEmail) {
+        emailInput.addEventListener("input", function () {
+            previewEmail.textContent = emailInput.value;
+        });
+    }
+
+    // **Run updateFullName once at the start**
+    updateFullName();
+});
+
+// **Profile Image Update (Preview)**
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("fileInput");
+    const profileImage = document.getElementById("profileImage");
+    const userProfileImage = document.getElementById("userProfileImage");
+
+    if (fileInput && profileImage && userProfileImage) {
         fileInput.addEventListener("change", function () {
             const file = fileInput.files[0];
 
@@ -376,9 +488,10 @@
                 reader.readAsDataURL(file);
             }
         });
-    });
+    }
+});
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
         // Get user input elements
         const userDescriptionInput = document.getElementById("biography");
         const cuisineDropdown = document.getElementById("cuisineDropdown");
@@ -614,7 +727,6 @@
         // Run updateHiddenFields() when form is submitted
         document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
     });
-
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
