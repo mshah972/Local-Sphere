@@ -200,7 +200,7 @@
         </header>
 
         <!-- END OF HEADER -->
-
+        <div class="flex justify-center items-center min-h-screen">
         <div class="relative w-2/3 p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col h-auto">
             <form id="userForm" action="{% url 'update_user_profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -327,6 +327,7 @@
                     </button>
                 </div>
             </form>
+        </div>
         </div>
 </main>
 <script>
