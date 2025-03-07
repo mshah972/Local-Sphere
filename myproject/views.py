@@ -36,8 +36,7 @@ def index(request):
 
 def planPage(request):
     return render(request, 'planPage.html')
-def profileEdit(request):
-    return render(request, 'profileEdit.html')
+
 
 
 def SphereAi(request):
@@ -475,3 +474,31 @@ def get_location_image(request):
     image_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
 
     return JsonResponse({"image_url": image_url})
+
+@login_required
+def profileEdit(request):
+    user = request.user  # Get the logged-in user
+
+    # Ensure JSON fields are properly loaded as lists
+    def parse_json_field(field):
+        if isinstance(field, str):  # Only load if it's a string
+            try:
+                return json.loads(field)
+            except json.JSONDecodeError:
+                return []  # Return empty list if decoding fails
+        elif isinstance(field, list):  # If already a list, return as-is
+            return field
+        return []  # Default to empty list
+
+    interests = parse_json_field(user.interests)
+    favorite_cuisines = parse_json_field(user.favorite_cuisines)
+    diet_restrictions = parse_json_field(user.diet_restrictions)
+
+    context = {
+        "user": user,
+        "interests": interests,
+        "favorite_cuisines": favorite_cuisines,
+        "diet_restrictions": diet_restrictions,
+    }
+    
+    return render(request, 'profileEdit.html', context)

@@ -347,8 +347,17 @@
                             <option>Club Nights</option>
                         </select>
                     </div>
-                    <div id="selectedInterest" class="flex flex-wrap gap-2 mt-2"></div>
-                </div>
+                    <div id="selectedInterest" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6">
+                        {% for interest in interests %}
+                            <div class="border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-sm"
+                                 data-item="{{ interest }}">
+                                <span>{{ interest }}</span>
+                                <span class="ml-2 cursor-pointer removeItem">
+                                    <img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove">
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
         
                 <!-- Favorite Cuisines -->
                 <div class="flex flex-col mt-4">
@@ -365,7 +374,17 @@
                             <option>Salads</option>
                         </select>
                     </div>
-                    <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2"></div>
+                    <div id="selectedCuisines" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6">
+                        {% for cuisine in favorite_cuisines %}
+                            <div class="border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-sm"
+                                 data-item="{{ cuisine }}">
+                                <span>{{ cuisine }}</span>
+                                <span class="ml-2 cursor-pointer removeItem">
+                                    <img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove">
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
         
                 <!-- Dietary Restrictions -->
@@ -383,7 +402,17 @@
                             <option value="Halal">Kosher and Halal</option>
                         </select>
                     </div>
-                    <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2"></div>
+                    <div id="selectedDietRestriction" class="flex flex-wrap gap-2 mt-2 mb-2 lg:mb-6">
+                        {% for restriction in diet_restrictions %}
+                            <div class="border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-sm"
+                                 data-item="{{ restriction }}">
+                                <span>{{ restriction }}</span>
+                                <span class="ml-2 cursor-pointer removeItem">
+                                    <img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove">
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
         
                 <!-- Submit Button -->
