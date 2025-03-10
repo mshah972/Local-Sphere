@@ -515,3 +515,7 @@ def profileEdit(request):
     }
     
     return render(request, 'profileEdit.html', context)
+
+@login_required()
+def profilePage(request):
+    return render(request, 'profilePage.html')

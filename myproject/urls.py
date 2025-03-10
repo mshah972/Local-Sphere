@@ -47,8 +47,7 @@ urlpatterns = [
     path("test", views.password_reset_complete, name="password_reset_complete"),
     path('planPage/', views.planPage, name='planPage'),
     path('profileEdit/', views.profileEdit, name='profileEdit'),
-
-
+    path('profilePage/', views.profilePage, name='profilePage'),
 ]
 
 if settings.DEBUG:  # Only serve media files in development

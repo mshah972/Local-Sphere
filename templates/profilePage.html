@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Sphere - Your Local Guide</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <style>
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="bg-custom-white">
+<main role="main" class="flex flex-col mb-10 min-h-screen">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <!-- Explore Button -->
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    Explore
+                </a>
+                <!-- SphereAi -->
+                <a href="{% url 'SphereAi' %}"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    SphereAi
+                </a>
+                <!-- Company Dropdown -->
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="{% url 'about' %}"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        {% if user.is_authenticated %}
+                        <!-- When Logged In: Show Profile with Dropdown -->
+                        <div class="relative">
+                            <button id="userDropdownButton" type="button"
+                                    class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                     fill="currentColor" aria-hidden="true">
+                                    <path id="userArrowPath" fill-rule="evenodd"
+                                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu"
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                <a href="{% url 'profileEdit' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Profile
+                                </a>
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                        <div class="flex items-center gap-4">
+                            <!-- Log In Button -->
+                            <a href="{% url 'login' %}"
+                               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                Log in
+                            </a>
+
+                            <!-- "Start Exploring" Button -->
+                            <a href="{% url 'signup' %}"
+                               class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="{% url 'SphereAi' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="{% url 'login' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="{% url 'about' %}"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="min-h-fit p-6">
+        <!-- Profile Header -->
+        <div class="relative flex flex-col items-center font-poppins rounded-3xl bg-gray-100 pb-10">
+            <div class="relative w-full">
+                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1544&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                     alt="Cover Photo" class="w-full h-36 object-cover rounded-t-3xl">
+            </div>
+
+            <div class="relative -mt-10 bg-custom-blue text-white p-6 rounded-b-3xl lg:rounded-4xl shadow-lg w-full lg:w-[95%]">
+                <div class="flex">
+                    <!-- Profile Image -->
+                    <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                         alt="Profile" class=" w-[80px] h-[80px] lg:w-[120px] lg:h-auto rounded-full border-4 border-[#F3EBDE]">
+                    <div class="ml-4 flex flex-col">
+                        <h2 class="text-2xl font-bold">{{ user.first_name }} {{ user.last_name }}</h2>
+                        <p class="font-mulish text-sm opacity-80">@{{ user.username }}</p>
+                        <!-- Stats -->
+                        <div class="flex-row mt-4 justify-start text-center hidden lg:flex">
+                            <div class="flex flex-col items-start">
+                                <p class="font-mulish text-sm lg:text-[15px] opacity-80">Plans You've Created</p>
+                                <p class="text-lg lg:text-[20px] font-bold">10</p>
+                            </div>
+                            <div class="flex flex-col items-start ml-15">
+                                <p class="font-mulish text-sm lg:text-[15px] opacity-80">Contributions</p>
+                                <p class="text-lg lg:text-[20px] font-bold">2</p>
+                            </div>
+                            <div class="flex flex-col items-start ml-15">
+                                <p class="font-mulish text-sm lg:text-[15px] opacity-80">Hours Saved</p>
+                                <p class="text-lg lg:text-[20px] font-bold">24</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile -->
+                    <a href="{% url 'profileEdit' %}"
+                       class="ml-auto px-3 py-2 h-fit border text-custom-white text-[12px] lg:text-sm rounded-lg flex items-center font-medium hover:bg-custom-white hover:text-black top-0">
+                        Edit Profile
+                    </a>
+                </div>
+
+                <!-- Mobile View Only -->
+                <div class="flex flex-row mt-4 justify-start text-center lg:hidden">
+                    <div class="flex flex-col items-start">
+                        <p class="font-mulish text-sm lg:text-[15px] opacity-80">Plans You've Created</p>
+                        <p class="text-lg lg:text-[20px] font-bold">10</p>
+                    </div>
+                    <div class="flex flex-col items-start ml-15">
+                        <p class="font-mulish text-sm lg:text-[15px] opacity-80">Contributions</p>
+                        <p class="text-lg lg:text-[20px] font-bold">2</p>
+                    </div>
+                    <div class="flex flex-col items-start ml-15">
+                        <p class="font-mulish text-sm lg:text-[15px] opacity-80">Hours Saved</p>
+                        <p class="text-lg lg:text-[20px] font-bold">24</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plans Section -->
+            <div class="relative w-full p-6 lg:p-10">
+                <h3 class="text-lg lg:text-xl font-semibold">Your Plans</h3>
+                <!-- Plan Card -->
+                <div class="w-full overflow-x-auto snap-x mt-4 snap-mandatory">
+                    <ul role="list" class="flex flex-row gap-6 font-poppins whitespace-nowrap">
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         id="heart">
+                                        <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         id="heart">
+                                        <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         id="heart">
+                                        <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         id="heart">
+                                        <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Favorite Plans -->
+            <div class="relative w-full p-6 lg:p-10">
+                <h3 class="text-lg font-semibold">Favorite Plans</h3>
+                <!-- Plan Card -->
+                <div class="w-full overflow-x-auto snap-x mt-4 snap-mandatory">
+                    <ul role="list" class="flex flex-row gap-6 font-poppins whitespace-nowrap">
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="Heart" x="0" y="0" version="1.1" viewBox="0 0 29 29">
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="Heart" x="0" y="0" version="1.1" viewBox="0 0 29 29">
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="Heart" x="0" y="0" version="1.1" viewBox="0 0 29 29">
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit">
+                            <div class="relative font-poppins bg-gray-100 rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                                <div class="w-full h-[150px]">
+                                    <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                         alt="${restaurant.name}"
+                                         class="w-full h-full object-cover rounded-t-3xl">
+                                </div>
+                                <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer">
+                                    <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="Heart" x="0" y="0" version="1.1" viewBox="0 0 29 29">
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                        <path d="m14.854 6.083-.354.353-.354-.354a6.5 6.5 0 0 0-9.192 9.192l.354.354L14.5 24.82l9.192-9.192.354-.354a6.5 6.5 0 0 0-9.192-9.191z" fill="#004aad" class="color000000 svgShape"></path>
+                                    </svg>
+                                </button>
+                                <div class="flex flex-col items-center justify-between p-4 h-full">
+                                    <div class="flex flex-col w-full">
+                                        <div class="flex flex-row justify-between items-center w-full pr-2">
+                                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                            <span class="font-semibold text-custom-blue text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">2
+                                            People</p>
+                                        <p class="font-mulish font-light text-gray-600 text-[10px] lg:text-[14px]">
+                                            $$$</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+</main>
+<script>
+
+    ////////////////////////////////////// Header Script /////////////////////////////////////
+
+
+    const userDropdownButton = document.getElementById("userDropdownButton");
+    const userDropdownMenu = document.getElementById("userDropdownMenu");
+
+    userDropdownButton.addEventListener("click", function () {
+        userDropdownMenu.classList.toggle("hidden");
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener("click", function (event) {
+        if (!userDropdownButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+            userDropdownMenu.classList.add("hidden");
+        }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("companyButton");
+        const dropdownMenu = document.getElementById("companyDropdownMenu");
+        const dropdownIcon = document.getElementById("dropdownIcon");
+        const arrowPath = document.getElementById("arrowPath");
+
+        toggleButton.addEventListener("click", function () {
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!toggleButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileDropdownButton = document.getElementById("mobileCompanyButton");
+        const mobileDropdown = document.getElementById("mobileCompanyDropdown");
+        const mobileDropdownIcon = document.getElementById("mobileDropdownIcon");
+        const mobileArrowPath = document.getElementById("mobileArrowPath");
+
+        mobileDropdownButton.addEventListener("click", function () {
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
+
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
+
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!mobileDropdownButton.contains(event.target) && !mobileDropdown.contains(event.target)) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
+
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
+
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMobileMenu = document.getElementById("openMobileMenu");
+        const closeMobileMenu = document.getElementById("closeMobileMenu");
+        const mobileBackdrop = document.getElementById("mobileBackdrop");
+
+        // Open mobile menu when clicking the hamburger button
+        openMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("hidden");
+        });
+
+        // Close mobile menu when clicking the close button
+        closeMobileMenu.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+
+        // Close mobile menu when clicking outside (on the backdrop)
+        mobileBackdrop.addEventListener("click", function () {
+            mobileMenu.classList.add("hidden");
+        });
+    });
+    document.getElementById("userForm").addEventListener("submit", function () {
+        let interests = [];
+        document.querySelectorAll("#selectedInterest div").forEach(div => {
+            interests.push(div.getAttribute("data-item"));
+        });
+        document.getElementById("interestsInput").value = JSON.stringify(interests);
+    });
+    document.getElementById("userForm").addEventListener("submit", function () {
+        let favorite_cuisines = [];
+        document.querySelectorAll("#selectedCuisines div").forEach(div => {
+            favorite_cuisines.push(div.getAttribute("data-item"));
+        });
+        document.getElementById("favorite_cuisinesInput").value = JSON.stringify(favorite_cuisines);
+    });
+    document.getElementById("userForm").addEventListener("submit", function () {
+        let diet_restrictions = [];
+        document.querySelectorAll("#selectedDietRestriction div").forEach(div => {
+            diet_restrictions.push(div.getAttribute("data-item"));
+        });
+        document.getElementById("diet_restrictionsInput").value = JSON.stringify(diet_restrictions);
+    });
+
+
+</script>
+
+</body>
+</html>
