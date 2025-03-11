@@ -247,8 +247,8 @@
             </div>
         </header>
 
-    <div class="@container flex w-full mx-auto flex-row font-poppins hidden 2xl:inline-flex">
-        <!-- Sidebar with Map -->
+        <div class="@container flex w-full mx-auto flex-row font-poppins">       
+             <!-- Sidebar with Map -->
         <div class="relative w-3/4 pl-20">
             <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
         </div>
@@ -696,10 +696,10 @@
             // ✅ Show skeleton loader before loading
             restaurantSkeleton.style.display = "flex";
             eventSkeleton.style.display = "flex";
-            restaurantList.style.display = "none";
-            restaurantListMobile.style.display = "none";
-            eventList.style.display = "none";
-            eventListMobile.style.display = "none";
+            restaurantList.style.display = "flex";
+            restaurantListMobile.style.display = "flex";
+            eventList.style.display = "flex";
+            eventListMobile.style.display = "flex";
 
             // Clear previous results
             restaurantList.innerHTML = '';
