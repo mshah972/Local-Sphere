@@ -444,6 +444,11 @@
                             <p class="text-gray-500 text-sm">Loading available times...</p>
                         </div>
                     </div>
+                    <div class="mt-4">
+                        <button id="reserve-button" class="hidden bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition">
+                            Reserve on Yelp
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -480,8 +485,8 @@
                     </div>
                     <!-- Event Booking Card -->
                     <div class="relative mt-4 rounded-3xl w-full flex flex-col bg-white shadow-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-900">Available Booking Times</h3>
-                        <p class="text-gray-600 text-sm mb-4">Reserve a table at this restaurant</p>
+                        <h3 class="text-xl font-semibold text-gray-900">Available Tickets</h3>
+                        <p class="text-gray-600 text-sm mb-4">Purchase your tickets below</p>
 
                         <!-- Booking Time Slots -->
                         <div id="event-tickets" class="flex flex-wrap gap-3">
@@ -526,6 +531,55 @@
             .setPopup(new mapboxgl.Popup().setText(loc.popupText))
             .addTo(map);
     });
+
+    async function fetchRestaurantBooking() {
+        const restaurantName = "Pasta Bowl"; // Change this to the actual restaurant
+
+        console.log("🔍 Fetching reservation link for:", restaurantName);
+
+        const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
+        const data = await response.json();
+
+        console.log("📜 API Response:", data);
+
+        const bookingContainer = document.getElementById("booking-times");
+        const reserveButton = document.getElementById("reserve-button");
+        const loadingText = document.getElementById("loading-text");
+
+        // Remove loading text
+        if (loadingText) {
+            loadingText.remove();
+        }
+
+        // Clear existing content
+        bookingContainer.innerHTML = "";
+
+        if (data.error) {
+            console.error("🚨 API Error:", data.error);
+            bookingContainer.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+            return;
+        }
+
+        if (!data.booking_url) {
+            console.warn("⚠️ No reservation link available for:", restaurantName);
+            bookingContainer.innerHTML = `<p class="text-gray-500 text-sm">This restaurant does not support online reservations.</p>`;
+            return;
+        }
+
+        // Debugging
+        console.log("✅ Showing 'Reserve on Yelp' button with URL:", data.booking_url);
+
+        // Update button properties
+        reserveButton.classList.remove("hidden", "opacity-0");
+        reserveButton.innerText = "Reserve on Yelp";
+        reserveButton.className = "bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition";
+        reserveButton.onclick = () => window.open(data.booking_url, "_blank");
+
+        bookingContainer.appendChild(reserveButton);
+    }
+
+    // Call function for debugging
+    fetchRestaurantBooking();
 
     ///////// Header SCRIPT //////////
 

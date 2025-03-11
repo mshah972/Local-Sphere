@@ -33,6 +33,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 MAPBOX_ACCESS_TOKEN = os.getenv("MAPBOX_ACCESS_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+YELP_API_KEY = os.getenv("YELP_API_KEY")
 
 if not MAPBOX_ACCESS_TOKEN:
     print("❌ ERROR: Mapbox API Key not found! Check .env file.")
