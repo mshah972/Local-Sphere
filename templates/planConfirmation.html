@@ -65,6 +65,9 @@
                 background-position: -100% 0;
             }
         }
+        .selected-button {
+    background-color: #00ff00 !important; /* Green color */
+}
 
     </style>
 </head>
@@ -244,8 +247,8 @@
             </div>
         </header>
 
-    <div class="@container flex w-full mx-auto flex-row font-poppins hidden 2xl:inline-flex">
-        <!-- Sidebar with Map -->
+        <div class="@container flex w-full mx-auto flex-row font-poppins">       
+             <!-- Sidebar with Map -->
         <div class="relative w-3/4 pl-20">
             <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
         </div>
@@ -693,10 +696,10 @@
             // ✅ Show skeleton loader before loading
             restaurantSkeleton.style.display = "flex";
             eventSkeleton.style.display = "flex";
-            restaurantList.style.display = "none";
-            restaurantListMobile.style.display = "none";
-            eventList.style.display = "none";
-            eventListMobile.style.display = "none";
+            restaurantList.style.display = "flex";
+            restaurantListMobile.style.display = "flex";
+            eventList.style.display = "flex";
+            eventListMobile.style.display = "flex";
 
             // Clear previous results
             restaurantList.innerHTML = '';
@@ -709,28 +712,28 @@
                 const details = await getRestaurantDetails(restaurant.name, restaurant.address);
 
                 restaurantList.innerHTML += `
-                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                        <div class="w-full h-25">
-                            <img src="${details.imageUrl}"
-                                 alt="${restaurant.name}"
-                                 class="w-full h-full object-cover rounded-t-3xl">
-                        </div>
-                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                        </button>
-                        <div class="flex flex-col items-start justify-between p-4 h-full">
-                            <div class="flex flex-col w-full">
-                                <div class="flex flex-row justify-between items-center w-full pr-2">
-                                    <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
-                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}</span>
-                                </div>
-                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
+                <div class="restaurant-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                    <div class="w-full h-25">
+                        <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
+                    </div>
+                    <button class="restaurant-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                    <div class="flex flex-col items-start justify-between p-4 h-full">
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between items-center w-full pr-2">
+                                <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
+                                <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
+                                    <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                </span>
                             </div>
-                            <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                            <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
                         </div>
-                    </div>`;
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                    </div>
+                </div>`;
 
                 await addMarker(map, restaurant.address, restaurant.name, bounds);
                 await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
@@ -740,22 +743,24 @@
                 const details = await getRestaurantDetails(event.name, event.address);
 
                 eventList.innerHTML += `
-                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                    <div class="event-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                         <div class="w-full h-25">
                             <img src="${details.imageUrl}"
-                                 alt="${event.name}"
-                                 class="w-full h-full object-cover rounded-t-3xl">
+                                alt="${event.name}"
+                                class="w-full h-full object-cover rounded-t-3xl">
                         </div>
-                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
+                        <button class="event-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
                         </button>
                         <div class="flex flex-col items-start justify-between p-4 h-full">
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-start w-full pr-2">
                                     <span class="font-semibold text-[16px] pr-4">${event.name}</span>
-                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}</span>
+                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
+                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                    </span>
                                 </div>
                                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
                             </div>
@@ -794,6 +799,131 @@
         console.error("❌ Error initializing page:", error);
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const restaurantList = document.getElementById('restaurant-list');
+    const eventList = document.getElementById('event-list');
+
+    function toggleButtonColor(event, type) {
+        const button = event.target.closest("button"); // Ensure the button is clicked
+        if (!button) return;
+
+        // Determine if it's a restaurant or event button
+        const selector = type === "restaurant" ? ".restaurant-button" : ".event-button";
+
+        // Remove green from all buttons of the same type
+        document.querySelectorAll(selector).forEach((btn) => {
+            btn.classList.remove("selected-button");
+        });
+
+        // Add green to the clicked button
+        button.classList.add("selected-button");
+    }
+
+    // Event listener for Restaurant Card Buttons
+    restaurantList.addEventListener("click", function (event) {
+        toggleButtonColor(event, "restaurant");
+    });
+
+    // Event listener for Event Card Buttons
+    eventList.addEventListener("click", function (event) {
+        toggleButtonColor(event, "event");
+    });
+
+});
+
+// // Saving Card to DB SCRIPT ///////////////////////////////////
+// document.addEventListener("DOMContentLoaded", function () {
+//     const saveButton = document.getElementById("save-btn"); // Desktop Save Button
+//     const saveButtonMobile = document.getElementById("save-btn-mobile"); // Mobile Save Button
+
+//     function getSelectedData(type) {
+//         const selectedButton = document.querySelector(`.${type}.selected-button`);
+//         if (!selectedButton) return null;
+
+//         // Find the nearest event or restaurant card container
+//         const card = selectedButton.closest(".restaurant-card, .event-card");
+//         if (!card) return null;
+
+//         return {
+//             name: card.querySelector(".event-name, .restaurant-name").innerText,
+//             address: card.querySelector(".event-address, .restaurant-address").innerText,
+//             website: card.querySelector(".event-website, .restaurant-website")?.innerText || "",
+//             rating: card.querySelector(".restaurant-rating")?.innerText || "",
+//             start_time: card.querySelector(".event-start-time")?.innerText || "Choose Time",
+//             end_time: card.querySelector(".event-end-time")?.innerText || "Choose Time",
+//             type: card.querySelector(".event-type")?.innerText || "",
+//             reservation_time: card.querySelector(".restaurant-reservation-time")?.innerText || "Choose Time",
+//         };
+//     }
+
+//     async function saveSelection() {
+//         const selectedRestaurant = getSelectedData("restaurant-button");
+//         const selectedEvent = getSelectedData("event-button");
+
+//         if (!selectedRestaurant && !selectedEvent) {
+//             alert("Please select a restaurant and an event before saving.");
+//             return;
+//         }
+
+//         // Get additional details (date, time, guests, location, cuisine, etc.)
+//         const planDetails = JSON.parse(localStorage.getItem("planData"));
+
+//         const selectedData = {
+//             date: planDetails.date,
+//             time: planDetails.time,
+//             guests: planDetails.guests,
+//             location: planDetails.location,
+//             cuisine: planDetails.cuisine,
+//             occasion: planDetails.ocasion, // Correcting the typo from "ocasion" to "occasion"
+//             order: planDetails.order,
+//             restaurant: selectedRestaurant,
+//             event: selectedEvent,
+//         };
+
+//         console.log("Saving selection:", selectedData); // Debugging
+
+//         try {
+//             const response = await fetch("/api/save-selection/", {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                     "X-CSRFToken": getCookie("csrftoken"), // CSRF token for Django
+//                 },
+//                 body: JSON.stringify(selectedData),
+//             });
+
+//             const result = await response.json();
+//             if (response.ok) {
+//                 alert("Selection saved successfully!");
+//             } else {
+//                 alert(`Error saving selection: ${result.error}`);
+//             }
+//         } catch (error) {
+//             console.error("Failed to save selection:", error);
+//             alert("Failed to save selection.");
+//         }
+//     }
+
+//     // Attach event listeners
+//     saveButton.addEventListener("click", saveSelection);
+//     saveButtonMobile.addEventListener("click", saveSelection);
+
+//     // Function to get CSRF token from cookies (needed for Django)
+//     function getCookie(name) {
+//         let cookieValue = null;
+//         if (document.cookie && document.cookie !== "") {
+//             const cookies = document.cookie.split(";");
+//             for (let i = 0; i < cookies.length; i++) {
+//                 const cookie = cookies[i].trim();
+//                 if (cookie.startsWith(name + "=")) {
+//                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                     break;
+//                 }
+//             }
+//         }
+//         return cookieValue;
+//     }
+// });
 </script>
 </body>
 </html>

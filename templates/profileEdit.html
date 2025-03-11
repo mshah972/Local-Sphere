@@ -205,7 +205,7 @@
             <!-- Background Image -->
             <img src="../static/userCreationBack.png" 
                  alt="User Background" 
-                 class="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-50">
+                 class="absolute inset-0 w-full h-full object-cover rounded-2xl">
     
             <div class="relative flex flex-col items-center w-full">
                 <!-- Profile Image -->
@@ -527,6 +527,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// **Add Interests, Cuisines, and Dietary Restrictions**
+
 document.addEventListener("DOMContentLoaded", function () {
         // Get user input elements
         const userDescriptionInput = document.getElementById("biography");
@@ -651,63 +653,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Function to add diet restriction icons
         function addDietIcon(selectedValue) {
-            if (!selectedValue) return;
+    if (!selectedValue) return;
 
-            // Check if already selected
-            if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
-            if ([...selectedDietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+    // Check if already selected
+    if ([...dietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
+    if ([...selectedDietRestrictionsDisplay.children].some(item => item.dataset.item === selectedValue)) return;
 
-            // Icon mapping for dietary restrictions
-            const dietIcons = {
-                "Vegan": "../static/vegan.svg",
-                "Vegetarian": "../static/vegetarian.svg",
-                "Lactose Intolerance": "../static/lactose.svg",
-                "Gluten Intolerance": "../static/gluten.svg",
-                "Ketogenic Diet": "../static/keto.svg",
-                "Kosher and Halal": "../static/halal.svg"
-            };
+    // Icon mapping for dietary restrictions
+    const dietIcons = {
+        "Vegan": "../static/vegan.svg",
+        "Vegetarian": "../static/vegetarian.svg",
+        "Lactose Intolerance": "../static/lactose.svg",
+        "Gluten Intolerance": "../static/gluten.svg",
+        "Ketogenic Diet": "../static/keto.svg",
+        "Kosher and Halal": "../static/halal.svg"
+    };
 
-            // Create dietary restriction icon element
-            const dietIcon = document.createElement("img");
-            dietIcon.src = dietIcons[selectedValue] || "../static/diet-icons/default.svg";
-            dietIcon.alt = selectedValue;
-            dietIcon.title = selectedValue;
-            dietIcon.className = "w-8 h-8";
+    // Create dietary restriction icon element
+    const dietIcon = document.createElement("img");
+    dietIcon.src = dietIcons[selectedValue] || "../static/diet-icons/default.svg";
+    dietIcon.alt = selectedValue;
+    dietIcon.title = selectedValue;
+    dietIcon.className = "w-8 h-8";
 
-            // Append icon to the display area
-            dietIcon.dataset.item = selectedValue;
-            dietRestrictionsDisplay.appendChild(dietIcon);
+    // Append icon to the display area
+    dietIcon.dataset.item = selectedValue;
+    dietRestrictionsDisplay.appendChild(dietIcon);
 
-            const restrictionTag = document.createElement("div");
-            restrictionTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
-            restrictionTag.dataset.item = selectedValue;
-            restrictionTag.innerHTML = `
-            <span>${selectedValue}</span>
-            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+    const restrictionTag = document.createElement("div");
+    restrictionTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+    restrictionTag.dataset.item = selectedValue;
+    restrictionTag.innerHTML = `
+        <span>${selectedValue}</span>
+        <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
 
-            // Append to the display container
-            selectedDietRestrictionsDisplay.appendChild(restrictionTag);
+    // Append to the display container
+    selectedDietRestrictionsDisplay.appendChild(restrictionTag);
 
-            updateDietRestrictionsField();
+    // Attach event listener for removing the item
+    restrictionTag.querySelector(".removeItem").addEventListener("click", function () {
+        restrictionTag.remove();
+        dietIcon.remove();
+        updateDietRestrictionsField();
+        restoreDropdownOption(selectedValue);
+    });
 
-            // Update dropdown to hide selected options
-            updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
+    updateDietRestrictionsField();
+    updateDropdownOptions(dietRestrictionDropdown, [...selectedDietRestrictionsDisplay.children].map(item => item.dataset.item));
 
-            // // Remove item when clicking the icon
-            // dietIcon.addEventListener("click", function () {
-            //
-            // });
-
-            restrictionTag.querySelector(".removeItem").addEventListener("click", function () {
-                restrictionTag.remove();
-                updateDietRestrictionsField();
-                dietIcon.remove();
-                updateDropdownOptions(dietRestrictionDropdown, [...dietRestrictionsDisplay.children].map(item => item.dataset.item));
-            });
-
-            // Reset dropdown selection
-            dietRestrictionDropdown.selectedIndex = 0;
-        }
+    // Reset dropdown selection
+    dietRestrictionDropdown.selectedIndex = 0;
+}
 
         // Add selected cuisine on dropdown change
         if (cuisineDropdown) {
@@ -740,29 +736,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     document.addEventListener("DOMContentLoaded", function () {
-        function updateHiddenFields() {
-            // Convert selected options to an array of values and update hidden fields
-            document.getElementById("interests").value = JSON.stringify(
-                [...document.querySelectorAll("#selectedInterest div")].map(item => item.dataset.item)
-            );
+    // Attach remove listeners for pre-populated items
+    function attachRemoveListeners() {
+        document.querySelectorAll(".removeItem").forEach((removeBtn) => {
+            removeBtn.addEventListener("click", function () {
+                const itemTag = this.closest("div");
+                if (itemTag) {
+                    const selectedValue = itemTag.dataset.item;
+                    itemTag.remove();
+                    
+                    // Restore option in dropdown
+                    restoreDropdownOption(selectedValue);
 
-            document.getElementById("favorite_cuisines").value = JSON.stringify(
-                [...document.querySelectorAll("#selectedCuisines div")].map(item => item.dataset.item)
-            );
+                    // Update hidden fields
+                    updateHiddenFields();
+                }
+            });
+        });
+    }
 
-            document.getElementById("diet_restrictions").value = JSON.stringify(
-                [...document.querySelectorAll("#selectedDietRestriction div")].map(item => item.dataset.item)
-            );
+    function restoreDropdownOption(value) {
+        document.querySelectorAll("select").forEach((dropdown) => {
+            [...dropdown.options].forEach(option => {
+                if (option.value === value) {
+                    option.style.display = "";
+                }
+            });
+        });
+    }
 
-            console.log("🔹 DEBUG: Hidden Fields Updated Before Submission:");
-            console.log("   - Interests:", document.getElementById("interests").value);
-            console.log("   - Favorite Cuisines:", document.getElementById("favorite_cuisines").value);
-            console.log("   - Diet Restrictions:", document.getElementById("diet_restrictions").value);
-        }
+    function updateHiddenFields() {
+        document.getElementById("interestsInput").value = JSON.stringify(
+            [...document.querySelectorAll("#selectedInterest div")].map(item => item.dataset.item)
+        );
 
-        // Run updateHiddenFields() when form is submitted
-        document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
+        document.getElementById("favorite_cuisinesInput").value = JSON.stringify(
+            [...document.querySelectorAll("#selectedCuisines div")].map(item => item.dataset.item)
+        );
+
+        document.getElementById("diet_restrictionsInput").value = JSON.stringify(
+            [...document.querySelectorAll("#selectedDietRestriction div")].map(item => item.dataset.item)
+        );
+
+        console.log("🔹 Updated Fields:");
+        console.log("   - Interests:", document.getElementById("interestsInput").value);
+        console.log("   - Favorite Cuisines:", document.getElementById("favorite_cuisinesInput").value);
+        console.log("   - Diet Restrictions:", document.getElementById("diet_restrictionsInput").value);
+    }
+
+    // Ensure pre-populated items have remove functionality
+    attachRemoveListeners();
+
+    // Ensure the left side dropdowns update both left-side selections
+    document.getElementById("interestDropdown").addEventListener("change", function () {
+        addItem(this.value.trim(), document.getElementById("selectedInterest"), document.getElementById("userInterests"), this, "interest");
+        attachRemoveListeners();
     });
+
+    document.getElementById("cuisineDropdown").addEventListener("change", function () {
+        addItem(this.value.trim(), document.getElementById("selectedCuisines"), document.getElementById("userCuisines"), this, "cuisine");
+        attachRemoveListeners();
+    });
+
+    document.getElementById("dietRestrictionDropdown").addEventListener("change", function () {
+        addDietIcon(this.value.trim());
+        attachRemoveListeners();
+    });
+
+    // Ensure form submission captures all updated selections
+    document.getElementById("userForm").addEventListener("submit", updateHiddenFields);
+});
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
