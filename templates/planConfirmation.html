@@ -830,6 +830,100 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+// // Saving Card to DB SCRIPT ///////////////////////////////////
+// document.addEventListener("DOMContentLoaded", function () {
+//     const saveButton = document.getElementById("save-btn"); // Desktop Save Button
+//     const saveButtonMobile = document.getElementById("save-btn-mobile"); // Mobile Save Button
+
+//     function getSelectedData(type) {
+//         const selectedButton = document.querySelector(`.${type}.selected-button`);
+//         if (!selectedButton) return null;
+
+//         // Find the nearest event or restaurant card container
+//         const card = selectedButton.closest(".restaurant-card, .event-card");
+//         if (!card) return null;
+
+//         return {
+//             name: card.querySelector(".event-name, .restaurant-name").innerText,
+//             address: card.querySelector(".event-address, .restaurant-address").innerText,
+//             website: card.querySelector(".event-website, .restaurant-website")?.innerText || "",
+//             rating: card.querySelector(".restaurant-rating")?.innerText || "",
+//             start_time: card.querySelector(".event-start-time")?.innerText || "Choose Time",
+//             end_time: card.querySelector(".event-end-time")?.innerText || "Choose Time",
+//             type: card.querySelector(".event-type")?.innerText || "",
+//             reservation_time: card.querySelector(".restaurant-reservation-time")?.innerText || "Choose Time",
+//         };
+//     }
+
+//     async function saveSelection() {
+//         const selectedRestaurant = getSelectedData("restaurant-button");
+//         const selectedEvent = getSelectedData("event-button");
+
+//         if (!selectedRestaurant && !selectedEvent) {
+//             alert("Please select a restaurant and an event before saving.");
+//             return;
+//         }
+
+//         // Get additional details (date, time, guests, location, cuisine, etc.)
+//         const planDetails = JSON.parse(localStorage.getItem("planData"));
+
+//         const selectedData = {
+//             date: planDetails.date,
+//             time: planDetails.time,
+//             guests: planDetails.guests,
+//             location: planDetails.location,
+//             cuisine: planDetails.cuisine,
+//             occasion: planDetails.ocasion, // Correcting the typo from "ocasion" to "occasion"
+//             order: planDetails.order,
+//             restaurant: selectedRestaurant,
+//             event: selectedEvent,
+//         };
+
+//         console.log("Saving selection:", selectedData); // Debugging
+
+//         try {
+//             const response = await fetch("/api/save-selection/", {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                     "X-CSRFToken": getCookie("csrftoken"), // CSRF token for Django
+//                 },
+//                 body: JSON.stringify(selectedData),
+//             });
+
+//             const result = await response.json();
+//             if (response.ok) {
+//                 alert("Selection saved successfully!");
+//             } else {
+//                 alert(`Error saving selection: ${result.error}`);
+//             }
+//         } catch (error) {
+//             console.error("Failed to save selection:", error);
+//             alert("Failed to save selection.");
+//         }
+//     }
+
+//     // Attach event listeners
+//     saveButton.addEventListener("click", saveSelection);
+//     saveButtonMobile.addEventListener("click", saveSelection);
+
+//     // Function to get CSRF token from cookies (needed for Django)
+//     function getCookie(name) {
+//         let cookieValue = null;
+//         if (document.cookie && document.cookie !== "") {
+//             const cookies = document.cookie.split(";");
+//             for (let i = 0; i < cookies.length; i++) {
+//                 const cookie = cookies[i].trim();
+//                 if (cookie.startsWith(name + "=")) {
+//                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                     break;
+//                 }
+//             }
+//         }
+//         return cookieValue;
+//     }
+// });
 </script>
 </body>
 </html>
