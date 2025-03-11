@@ -49,6 +49,8 @@ urlpatterns = [
     path('profileEdit/', views.profileEdit, name='profileEdit'),
     path('profilePage/', views.profilePage, name='profilePage'),
     path("api/restaurant-booking/", get_restaurant_booking, name="restaurant-booking"),
+    path("api/save-selection/", views.save_plan_selection, name="save-plan-selection"),
+
 ]
 
 if settings.DEBUG:  # Only serve media files in development

@@ -22,7 +22,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from dotenv import load_dotenv
-
+from myproject.models import planConfirmation  # Ensure CustomUser model is imported correctly
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -137,6 +137,36 @@ def my_account(request):
 def planConfirmation(request):
     return render(request, 'planConfirmation.html')
 
+def save_plan_selection(request):
+    print("hello")
+
+    if request.method == "POST":
+        print("hello")
+        if not request.user.is_authenticated:
+            return JsonResponse({"error": "User not authenticated"}, status=401)
+
+        try:
+            data = json.loads(request.body)
+
+            plan = PlanConfirmation.objects.create(
+                user=request.user,  # Associate plan with logged-in user
+                date=data.get("date"),
+                restaurant_name=data["restaurant"].get("name"),
+                restaurant_address=data["restaurant"].get("address"),
+                restaurant_website=data["restaurant"].get("website"),
+                restaurant_rating=data["restaurant"].get("rating"),
+                event_name=data["event"].get("name"),
+                event_address=data["event"].get("address"),
+                event_start_time=data["event"].get("start_time"),
+                event_end_time=data["event"].get("end_time"),
+                event_type=data["event"].get("type"),
+            )
+            return JsonResponse({"message": "Plan saved successfully", "plan_id": plan.id}, status=201)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 def forgot(request):
     if request.method == 'POST':
