@@ -65,8 +65,8 @@
                 background-position: -100% 0;
             }
         }
-        .selected-card {
-    border: 2px solid #00ff00 !important; /* Green outline */
+        .selected-button {
+    background-color: #00ff00 !important; /* Green color */
 }
 
     </style>
@@ -716,7 +716,7 @@
                     <div class="w-full h-25">
                         <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
                     </div>
-                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                    <button class="restaurant-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
@@ -749,7 +749,7 @@
                                 alt="${event.name}"
                                 class="w-full h-full object-cover rounded-t-3xl">
                         </div>
-                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                        <button class="event-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
@@ -803,33 +803,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const restaurantList = document.getElementById('restaurant-list');
     const eventList = document.getElementById('event-list');
 
-    // Event listener for Restaurant Cards
+    function toggleButtonColor(event, type) {
+        const button = event.target.closest("button"); // Ensure the button is clicked
+        if (!button) return;
+
+        // Determine if it's a restaurant or event button
+        const selector = type === "restaurant" ? ".restaurant-button" : ".event-button";
+
+        // Remove green from all buttons of the same type
+        document.querySelectorAll(selector).forEach((btn) => {
+            btn.classList.remove("selected-button");
+        });
+
+        // Add green to the clicked button
+        button.classList.add("selected-button");
+    }
+
+    // Event listener for Restaurant Card Buttons
     restaurantList.addEventListener("click", function (event) {
-        let card = event.target.closest(".restaurant-card"); // Ensure the click is inside a restaurant card
-        if (!card) return;
-
-        // Remove selection from all other restaurant cards
-        document.querySelectorAll(".restaurant-card").forEach((c) => {
-            c.classList.remove("selected-card");
-        });
-
-        // Add green outline to clicked restaurant card
-        card.classList.add("selected-card");
+        toggleButtonColor(event, "restaurant");
     });
 
-    // Event listener for Event Cards
+    // Event listener for Event Card Buttons
     eventList.addEventListener("click", function (event) {
-        let card = event.target.closest(".event-card"); // Ensure the click is inside an event card
-        if (!card) return;
-
-        // Remove selection from all other event cards
-        document.querySelectorAll(".event-card").forEach((c) => {
-            c.classList.remove("selected-card");
-        });
-
-        // Add green outline to clicked event card
-        card.classList.add("selected-card");
+        toggleButtonColor(event, "event");
     });
+
 });
 </script>
 </body>
