@@ -65,6 +65,9 @@
                 background-position: -100% 0;
             }
         }
+        .selected-card {
+    border: 2px solid #00ff00 !important; /* Green outline */
+}
 
     </style>
 </head>
@@ -709,28 +712,28 @@
                 const details = await getRestaurantDetails(restaurant.name, restaurant.address);
 
                 restaurantList.innerHTML += `
-                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                        <div class="w-full h-25">
-                            <img src="${details.imageUrl}"
-                                 alt="${restaurant.name}"
-                                 class="w-full h-full object-cover rounded-t-3xl">
-                        </div>
-                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                        </button>
-                        <div class="flex flex-col items-start justify-between p-4 h-full">
-                            <div class="flex flex-col w-full">
-                                <div class="flex flex-row justify-between items-center w-full pr-2">
-                                    <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
-                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}</span>
-                                </div>
-                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
+                <div class="restaurant-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                    <div class="w-full h-25">
+                        <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
+                    </div>
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                    <div class="flex flex-col items-start justify-between p-4 h-full">
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between items-center w-full pr-2">
+                                <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
+                                <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
+                                    <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                </span>
                             </div>
-                            <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                            <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
                         </div>
-                    </div>`;
+                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                    </div>
+                </div>`;
 
                 await addMarker(map, restaurant.address, restaurant.name, bounds);
                 await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
@@ -740,22 +743,24 @@
                 const details = await getRestaurantDetails(event.name, event.address);
 
                 eventList.innerHTML += `
-                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                    <div class="event-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                         <div class="w-full h-25">
                             <img src="${details.imageUrl}"
-                                 alt="${event.name}"
-                                 class="w-full h-full object-cover rounded-t-3xl">
+                                alt="${event.name}"
+                                class="w-full h-full object-cover rounded-t-3xl">
                         </div>
                         <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md ">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
                         </button>
                         <div class="flex flex-col items-start justify-between p-4 h-full">
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-start w-full pr-2">
                                     <span class="font-semibold text-[16px] pr-4">${event.name}</span>
-                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center"><img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}</span>
+                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
+                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                    </span>
                                 </div>
                                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
                             </div>
@@ -793,6 +798,38 @@
     } catch (error) {
         console.error("❌ Error initializing page:", error);
     }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const restaurantList = document.getElementById('restaurant-list');
+    const eventList = document.getElementById('event-list');
+
+    // Event listener for Restaurant Cards
+    restaurantList.addEventListener("click", function (event) {
+        let card = event.target.closest(".restaurant-card"); // Ensure the click is inside a restaurant card
+        if (!card) return;
+
+        // Remove selection from all other restaurant cards
+        document.querySelectorAll(".restaurant-card").forEach((c) => {
+            c.classList.remove("selected-card");
+        });
+
+        // Add green outline to clicked restaurant card
+        card.classList.add("selected-card");
+    });
+
+    // Event listener for Event Cards
+    eventList.addEventListener("click", function (event) {
+        let card = event.target.closest(".event-card"); // Ensure the click is inside an event card
+        if (!card) return;
+
+        // Remove selection from all other event cards
+        document.querySelectorAll(".event-card").forEach((c) => {
+            c.classList.remove("selected-card");
+        });
+
+        // Add green outline to clicked event card
+        card.classList.add("selected-card");
+    });
 });
 </script>
 </body>
