@@ -519,3 +519,61 @@ def profileEdit(request):
 @login_required()
 def profilePage(request):
     return render(request, 'profilePage.html')
+
+@login_required()
+def get_restaurant_booking(request):
+    """Fetch restaurant reservation link from Yelp API instead of booking times"""
+
+    restaurant_name = request.GET.get("name")  # Get restaurant name from request
+    location = request.GET.get("location", "Chicago")  # Default to Chicago
+
+    if not restaurant_name:
+        print("🚨 ERROR: Restaurant name is missing in request")
+        return JsonResponse({"error": "Restaurant name is required"}, status=400)
+
+    # Yelp API Endpoint to get business details
+    url = f"https://api.yelp.com/v3/businesses/search?term={restaurant_name}&location={location}&limit=1"
+
+    headers = {
+        "Authorization": f"Bearer {settings.YELP_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    try:
+        # Fetch restaurant data from Yelp
+        print(f"🔍 Fetching Yelp business ID for restaurant: {restaurant_name} in {location}")
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        # Debug: Print Yelp API response
+        print(f"📜 Yelp Search API Response: {data}")
+
+        # Extract restaurant ID
+        businesses = data.get("businesses", [])
+        if not businesses:
+            print(f"❌ No restaurant found on Yelp for: {restaurant_name}")
+            return JsonResponse({"error": "No restaurant found on Yelp"}, status=404)
+
+        restaurant_info = businesses[0]
+        restaurant_id = restaurant_info["id"]
+        print(f"✅ Found Yelp Business ID for {restaurant_name}: {restaurant_id}")
+
+        # Fetch full business details to get reservation link
+        details_url = f"https://api.yelp.com/v3/businesses/{restaurant_id}"
+        details_response = requests.get(details_url, headers=headers)
+        details_data = details_response.json()
+
+        print(f"📜 Yelp Business Details Response: {details_data}")
+
+        # Extract Yelp reservation link if available
+        reservation_url = details_data.get("url")  # Yelp restaurant page URL
+        if not reservation_url:
+            print(f"⚠️ No reservation link available for {restaurant_name}")
+            return JsonResponse({"restaurant": restaurant_name, "booking_url": None})
+
+        print(f"✅ Reservation URL for {restaurant_name}: {reservation_url}")
+        return JsonResponse({"restaurant": restaurant_name, "booking_url": reservation_url})
+
+    except requests.RequestException as e:
+        print(f"🚨 Yelp API Request Failed: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=500)

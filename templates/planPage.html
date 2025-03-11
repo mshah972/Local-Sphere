@@ -8,6 +8,8 @@
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     <link href="../static/css/output.css" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
     <style>
         input[type="date"]::-webkit-calendar-picker-indicator {
             background: transparent;
@@ -110,7 +112,14 @@
             animation-delay: 0.6s;
         }
 
-    
+        .vertical-line {
+            width: 2px;
+            background-color: black;
+            position: absolute;
+            left: 25px;
+            top: 50px;
+            bottom: -50px;
+        }
 
     </style>
 </head>
@@ -198,7 +207,7 @@
                             <!-- Dropdown Menu -->
                             <div id="userDropdownMenu"
                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
-                                <a href="{% url 'profileEdit' %}"
+                                <a href="{% url 'profilePage' %}"
                                 class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
                                     Profile
                                 </a>
@@ -292,48 +301,203 @@
             </div>
         </div>
     </header>
-    
-    <section class="relative flex flex-col justify-start mx-5 md:mx-10 lg:mx-15 max-w-9xl h-[80vh] sm:px-6 lg:px-8 mx-auto overflow-visible lg:rounded-4xl rounded-4xl">
-        <!-- Background Image Header -->
-        <div class="relative w-full h-[30vh] overflow-hidden rounded-t-3xl">
-            <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-                 alt="Header Image" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/30"></div>
-        </div>
-    
-        <!-- Overlapping Centered & Lowered Card -->
-        <div class="absolute left-1/2 top-[26vh] bg-custom-blue w-3/4 md:w-2/3 p-6 rounded-xl shadow-lg">
-            <div class="flex items-center space-x-4">
-                <img src="https://via.placeholder.com/80" alt="Profile Image" class="w-16 h-16 rounded-full border-4 border-white">
-                <div>
-                    <h2 class="text-white text-xl font-bold">John Doe</h2>
-                    <p class="text-white text-sm">@johndoe</p>
+
+    <div class="@container w-full mx-auto flex-row font-poppins hidden 2xl:inline-flex">
+        <!-- Main Content -->
+        <div class="relative w-screen rounded-3xl mr-5 ml-15 flex flex-col">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                <div class="relative w-full h-[250px] rounded-3xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1515963665762-77ef90e624fa?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="absolute top-4 right-4 flex gap-3">
+                        <button class="bg-white p-2 rounded-full shadow-md">
+                            <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="heart">
+                                <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z" fill="#000000" class="color000000 svgShape"></path>
+                            </svg>
+                        </button>
+                        <button class="bg-white p-2 rounded-full shadow-md">
+                            <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="settings">
+                                <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" fill="#000000" class="color000000 svgShape"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-white p-4">
+                        <h2 class="text-3xl font-bold">Birthday Party</h2>
+                        <p class="font-mulish flex items-center space-x-2 pt-2">
+                            📅 Feb 12th · 📍 Chicago · 👥 6 People
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="flex justify-between mt-4 text-white">
-                <div>
-                    <p class="text-sm">Plans You’ve Created</p>
-                    <p class="text-lg font-bold">10</p>
+
+            <div class="relative mt-8 rounded-3xl w-full flex flex-row overflow-hidden">
+                <div class="flex flex-col items-center ml-2">
+                    <div class="m-2 ml-2 mt-4 bg-custom-blue p-2 rounded-full shadow-md w-10 h-auto">
+                        <img class="w-6 h-full object-cover" src="../static/restIcon.svg" alt="">
+                    </div>
+                    <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
                 </div>
-                <div>
-                    <p class="text-sm">Contributions</p>
-                    <p class="text-lg font-bold">2</p>
+
+                <div class="p-4 mt-10">
+                    <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
+                        <div class="w-full h-[150px]">
+                            <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 alt="${restaurant.name}"
+                                 class="w-full h-full object-cover rounded-t-3xl">
+                        </div>
+                        <div class="flex flex-col items-center justify-between p-4 h-full">
+                            <div class="flex flex-col w-full">
+                                <div class="flex flex-row justify-between items-center w-full pr-2">
+                                    <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                    <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
+                                    People</p>
+                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">
+                                    $$$</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- OpenTable Booking Card -->
+                    <div class="relative mt-6 rounded-3xl w-full flex flex-col bg-white shadow-lg p-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Available Booking Times</h3>
+                        <p class="text-gray-600 text-sm mb-4">Reserve a table at this restaurant</p>
+
+                        <!-- Booking Time Slots -->
+                        <div id="booking-times" class="flex flex-wrap gap-3">
+                            <p class="text-gray-500 text-sm">Loading available times...</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button id="reserve-button" class="hidden bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition">
+                            Reserve on Yelp
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-sm">Hours Saved</p>
-                    <p class="text-lg font-bold">24</p>
+            </div>
+
+
+            <div class="relative mt-8 rounded-3xl w-full flex flex-row overflow-hidden">
+                <div class="flex flex-col items-center ml-2">
+                    <div class="m-2 ml-2 mt-4 bg-custom-blue p-2 rounded-full shadow-md w-10 h-auto">
+                        <img class="w-6 h-full object-cover" src="../static/ticket.svg" alt="">
+                    </div>
+                    <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
+                </div>
+
+                <div class="p-4 mt-10">
+                    <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
+                        <div class="w-full h-[150px]">
+                            <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 alt="${restaurant.name}"
+                                 class="w-full h-full object-cover rounded-t-3xl">
+                        </div>
+                        <div class="flex flex-col items-center justify-between p-4 h-full">
+                            <div class="flex flex-col w-full">
+                                <div class="flex flex-row justify-between items-center w-full pr-2">
+                                    <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                    <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
+                                    People</p>
+                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">
+                                    $$$</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    
-        <!-- Bottom Content Div -->
-        <div class="mt-48 p-6 bg-white shadow-lg rounded-b-3xl">
-            <h1 class="text-2xl font-bold text-gray-800">Your Plans</h1>
-            <p class="text-gray-600 mt-2">This is where your content starts below the overlapping section.</p>
+
+        <!-- Sidebar with Map -->
+        <div class="relative w-3/4 pr-20">
+            <div id="map" class="w-full h-full rounded-3xl shadow-lg"></div>
         </div>
-    </section>
+
+    </div>
 
 <script>
+
+    mapboxgl.accessToken = "pk.eyJ1IjoibXNoYWg3NiIsImEiOiJjbTdmZ2dvenAwb2JpMm1weDdtZmR5ZDB6In0.JMxS2qZo-c8JqWcOYfME3A";
+
+    const map = new mapboxgl.Map({
+        container: 'map', // ID of the div
+        style: 'mapbox://styles/mapbox/light-v10', // Map style
+        center: [-87.6298, 41.8781], // Chicago coordinates
+        zoom: 12,
+    });
+    
+    // Add Markers for Event Locations
+    const locations = [
+        { lng: -87.6300, lat: 41.8820, icon: "🎟", popupText: "Tickets Booking Location" },
+        { lng: -87.6200, lat: 41.8700, icon: "🍽️", popupText: "Restaurant Reservation" }
+    ];
+
+    locations.forEach((loc) => {
+        const markerDiv = document.createElement("div");
+        markerDiv.className = "marker bg-black text-white text-lg flex items-center justify-center rounded-full w-8 h-8";
+        markerDiv.innerHTML = loc.icon;
+
+        new mapboxgl.Marker(markerDiv)
+            .setLngLat([loc.lng, loc.lat])
+            .setPopup(new mapboxgl.Popup().setText(loc.popupText))
+            .addTo(map);
+    });
+
+    async function fetchRestaurantBooking() {
+        const restaurantName = "Pasta Bowl"; // Change this to the actual restaurant
+
+        console.log("🔍 Fetching reservation link for:", restaurantName);
+
+        const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
+        const data = await response.json();
+
+        console.log("📜 API Response:", data);
+
+        const bookingContainer = document.getElementById("booking-times");
+        const reserveButton = document.getElementById("reserve-button");
+        const loadingText = document.getElementById("loading-text");
+
+        // Remove loading text
+        if (loadingText) {
+            loadingText.remove();
+        }
+
+        // Clear existing content
+        bookingContainer.innerHTML = "";
+
+        if (data.error) {
+            console.error("🚨 API Error:", data.error);
+            bookingContainer.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+            return;
+        }
+
+        if (!data.booking_url) {
+            console.warn("⚠️ No reservation link available for:", restaurantName);
+            bookingContainer.innerHTML = `<p class="text-gray-500 text-sm">This restaurant does not support online reservations.</p>`;
+            return;
+        }
+
+        // Debugging
+        console.log("✅ Showing 'Reserve on Yelp' button with URL:", data.booking_url);
+
+        // Update button properties
+        reserveButton.classList.remove("hidden", "opacity-0");
+        reserveButton.innerText = "Reserve on Yelp";
+        reserveButton.className = "bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition";
+        reserveButton.onclick = () => window.open(data.booking_url, "_blank");
+
+        bookingContainer.appendChild(reserveButton);
+    }
+
+    // Call function for debugging
+    fetchRestaurantBooking();
+
     ///////// Header SCRIPT //////////
 
     // Header script
