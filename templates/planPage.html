@@ -372,7 +372,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button id="reserve-button" class="hidden bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition">
+                        <button id="reserve-button" class="hidden bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition cursor-pointer">
                             Reserve on Yelp
                         </button>
                     </div>
@@ -489,7 +489,7 @@
         // Update button properties
         reserveButton.classList.remove("hidden", "opacity-0");
         reserveButton.innerText = "Reserve on Yelp";
-        reserveButton.className = "bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition";
+        reserveButton.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
         reserveButton.onclick = () => window.open(data.booking_url, "_blank");
 
         bookingContainer.appendChild(reserveButton);
