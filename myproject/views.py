@@ -51,6 +51,22 @@ def SphereAi(request):
 
     return render(request, 'SphereAi.html')
 
+@login_required
+def SphereAi(request):
+    user = request.user
+
+    # Fetch user preferences from the database
+    favorite_foods = ", ".join(user.favorite_cuisines) if user.favorite_cuisines else "None"
+    dietary_restrictions = ", ".join(user.diet_restrictions) if user.diet_restrictions else "None"
+    interests = ", ".join(user.interests) if user.interests else "None"
+
+    context = {
+        "favorite_foods": favorite_foods,
+        "dietary_restrictions": dietary_restrictions,
+        "interests": interests,
+    }
+    return render(request, "SphereAi.html", context)
+
 
 def signup(request):
     print("Request method:", request.method)  # Debugging
@@ -205,6 +221,7 @@ def forgot(request):
         return redirect('forgot')
 
     return render(request, 'forgot.html')
+
 def password_reset_confirm(request, token):
     email = password_reset_tokens.get(token)
     if not email:
@@ -595,9 +612,6 @@ def get_restaurant_booking(request):
         response = requests.get(url, headers=headers)
         data = response.json()
 
-        # Debug: Print Yelp API response
-        print(f"📜 Yelp Search API Response: {data}")
-
         # Extract restaurant ID
         businesses = data.get("businesses", [])
         if not businesses:
@@ -613,8 +627,6 @@ def get_restaurant_booking(request):
         details_response = requests.get(details_url, headers=headers)
         details_data = details_response.json()
 
-        print(f"📜 Yelp Business Details Response: {details_data}")
-
         # Extract Yelp reservation link if available
         reservation_url = details_data.get("url")  # Yelp restaurant page URL
         if not reservation_url:
@@ -626,4 +638,37 @@ def get_restaurant_booking(request):
 
     except requests.RequestException as e:
         print(f"🚨 Yelp API Request Failed: {str(e)}")
+        return JsonResponse({"error": str(e)}, status=500)
+
+@login_required
+def get_user_plans(request):
+    """Retrieve all saved plans for the authenticated user"""
+    try:
+        # ✅ Fetch all plans for the logged-in user
+        user_plans = PlanConfirmation.objects.filter(user=request.user).order_by("-id")
+
+        # ✅ Convert QuerySet to JSON-friendly format
+        plans_data = [
+            {
+                "id": plan.id,
+                "date": plan.date,
+                "time": plan.time,
+                "guests": plan.guests,
+                "occasion": plan.occasion,
+                "restaurant": {
+                    "name": plan.restaurant_name,
+                    "address": plan.restaurant_address,
+                },
+                "event": {
+                    "name": plan.event_name,
+                    "address": plan.event_address,
+                },
+            }
+            for plan in user_plans
+        ]
+
+        # ✅ Return JSON response
+        return JsonResponse({"plans": plans_data}, status=200)
+
+    except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)

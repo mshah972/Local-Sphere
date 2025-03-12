@@ -247,218 +247,230 @@
             </div>
         </header>
 
-        <div class="@container flex w-full mx-auto flex-row font-poppins">       
+        <div class="@container lg:flex w-full mx-auto flex-row font-poppins hidden">
              <!-- Sidebar with Map -->
-        <div class="relative w-3/4 pl-20">
-            <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
+            <div class="relative w-3/4 pl-20">
+                <div id="map" class="w-full h-[85vh] rounded-3xl"></div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="relative w-screen p-6 bg-white rounded-3xl mr-15 ml-5 flex flex-col">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                    <div>
+                        <h1 class="text-3xl font-bold" id="location">Loading...</h1>
+                        <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details">Fetching plan
+                            details...</p>
+                    </div>
+                    <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
+                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
+                            <path fill="#004aad"
+                                  d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
+                                  class="color134563 svgShape"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Restaurant Recommendations -->
+                <h2 class="mt-4 mb-2 text-xl font-medium">Recommended Restaurants</h2>
+                <div class="overflow-visible">
+                    <div id="restaurant-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <!-- Skeleton Card (Matches the real card) -->
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="restaurant-list" class="flex flex-row justify-start w-full gap-6 p-2">
+                        <!-- Content dynamically loads here -->
+                    </div>
+                </div>
+
+
+                <!-- Event Recommendations -->
+                <h2 class="mt-6 mb-2 text-xl font-medium">Recommended Events</h2>
+                <div class="overflow-visible">
+                    <div id="event-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <!-- Skeleton Card (Matches the real card) -->
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                        <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
+                            <!-- Skeleton Image -->
+                            <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+
+                            <!-- Skeleton Content -->
+                            <div class="p-4">
+                                <!-- Rating + Icon -->
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="skeleton-text h-5 w-12"></div>
+                                    <div class="skeleton-icon w-6 h-6"></div>
+                                </div>
+                                <!-- Title -->
+                                <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
+                                <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="event-list" class="flex flex-row justify-start w-full gap-6 p-2">
+                        <!-- Content dynamically loads here -->
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-auto flex flex-col gap-4 pb-2 pt-4">
+                    <button id="recreate-btn"
+                            class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        🔄 Recreate Plan
+                    </button>
+                    <button id="save-btn"
+                            class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        💾 Save Plan
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="relative w-screen p-6 bg-white rounded-3xl mr-15 ml-5 flex flex-col">
-            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
-                <div>
-                    <h1 class="text-3xl font-bold" id="location">Loading...</h1>
-                    <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details">Fetching plan
-                        details...</p>
+        <div class="flex mx-auto flex-col mr-5 ml-5 font-poppins 2xl:hidden">
+            <!-- Main Content -->
+            <div class="@container relative bg-white rounded-3xl flex flex-col p-4">
+                <div class="relative w-full">
+                    <div id="map-mobile" class="w-full h-[30vh] rounded-3xl mx-auto"></div>
                 </div>
-                <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
-                    <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
-                        <path fill="#004aad"
-                              d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
-                              class="color134563 svgShape"></path>
-                    </svg>
-                </button>
-            </div>
 
-            <!-- Restaurant Recommendations -->
-            <h2 class="mt-4 mb-2 text-xl font-medium">Recommended Restaurants</h2>
-            <div class="overflow-visible">
-                <div id="restaurant-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <!-- Skeleton Card (Matches the real card) -->
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
-
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
+                <div class="flex justify-between items-center mt-6 p-2 pb-4 border-b border-gray-200">
+                    <div>
+                        <h1 class="text-2xl font-bold" id="location-mobile">Loading...</h1>
+                        <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details-mobile">Fetching
+                            plan details...</p>
                     </div>
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
+                    <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
+                            <path fill="#004aad"
+                                  d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
+                                  class="color134563 svgShape"></path>
+                        </svg>
+                    </button>
+                </div>
 
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
+                <!-- Restaurant Recommendations -->
+                <h2 class="mt-4 p-2 text-lg font-medium">Recommended Restaurants</h2>
+                <div class="w-full overflow-x-auto snap-x snap-mandatory px-4">
+                    <!-- Skeleton Loader (Initially Visible) -->
+                    <div id="restaurant-skeleton-mobile" class="flex flex-nowrap gap-4 w-full">
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
                     </div>
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
 
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
+                    <div id="restaurant-list-mobile" class="flex flex-nowrap gap-4 w-max">
+                        <!-- Content dynamically loads here -->
                     </div>
                 </div>
 
 
-                <div id="restaurant-list" class="flex flex-row justify-start w-full gap-6 p-2">
-                    <!-- Content dynamically loads here -->
-                </div>
-            </div>
-
-
-            <!-- Event Recommendations -->
-            <h2 class="mt-6 mb-2 text-xl font-medium">Recommended Events</h2>
-            <div class="overflow-visible">
-                <div id="event-skeleton" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <!-- Skeleton Card (Matches the real card) -->
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
-
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
+                <!-- Event Recommendations -->
+                <h2 class="mt-6 p-2 text-lg font-medium">Recommended Events</h2>
+                <div class="w-full overflow-x-auto snap-x snap-mandatory px-4">
+                    <div id="event-skeleton-mobile" class="flex flex-nowrap gap-4 w-full">
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
+                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-full h-40"></div>
                     </div>
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
-
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
-                    </div>
-                    <div class="skeleton-card rounded-3xl bg-gray-100 w-full border border-gray-200 shadow-sm overflow-hidden">
-                        <!-- Skeleton Image -->
-                        <div class="skeleton-img w-full h-32 md:h-40 rounded-t-3xl"></div>
-
-                        <!-- Skeleton Content -->
-                        <div class="p-4">
-                            <!-- Rating + Icon -->
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="skeleton-text h-5 w-12"></div>
-                                <div class="skeleton-icon w-6 h-6"></div>
-                            </div>
-                            <!-- Title -->
-                            <div class="skeleton-text h-4 w-1/3 mb-2"></div> <!-- Cuisine -->
-                            <div class="skeleton-text h-3 w-2/3"></div> <!-- Address -->
-                        </div>
+                    <div id="event-list-mobile" class="flex flex-nowrap gap-6 w-max">
+                        <!-- Content dynamically loads here -->
                     </div>
                 </div>
 
-                <div id="event-list" class="flex flex-row justify-start w-full gap-6 p-2">
-                    <!-- Content dynamically loads here -->
+                <!-- Buttons -->
+                <div class="flex flex-col gap-4 p-2 mt-4 mb-4 pb-2 pt-4">
+                    <button id="recreate-btn-mobile"
+                            class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        🔄 Recreate Plan
+                    </button>
+                    <button id="save-btn-mobile"
+                            class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
+                        💾 Save Plan
+                    </button>
                 </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="mt-auto flex flex-col gap-4 pb-2 pt-4">
-                <button id="recreate-btn"
-                        class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    🔄 Recreate Plan
-                </button>
-                <button id="save-btn"
-                        class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    💾 Save Plan
-                </button>
             </div>
         </div>
-    </div>
-
-    <div class="flex mx-auto flex-col mr-5 ml-5 font-poppins 2xl:hidden">
-        <!-- Main Content -->
-        <div class="@container relative bg-white rounded-3xl flex flex-col p-4">
-            <div class="relative w-full">
-                <div id="map-mobile" class="w-full h-[30vh] rounded-3xl mx-auto"></div>
-            </div>
-
-            <div class="flex justify-between items-center mt-6 p-2 pb-4 border-b border-gray-200">
-                <div>
-                    <h1 class="text-2xl font-bold" id="location-mobile">Loading...</h1>
-                    <p class="font-mulish font-light text-gray-500 text-sm pt-2" id="plan-details-mobile">Fetching
-                        plan details...</p>
-                </div>
-                <button class="text-gray-500 text-xl border rounded-full p-2 justify-center cursor-pointer hover:bg-custom-white ">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" id="Favorite">
-                        <path fill="#004aad"
-                              d="m32 52.9-.8-.7C13 37.4 8.1 32.2 8.1 23.7c0-7 5.7-12.6 12.6-12.6 5.8 0 9.1 3.3 11.3 5.8 2.2-2.5 5.5-5.8 11.3-5.8 7 0 12.6 5.7 12.6 12.6 0 8.5-4.9 13.7-23.1 28.5l-.8.7zM20.7 13.7c-5.5 0-10 4.5-10 10 0 7.3 4.6 12.1 21.3 25.8C48.7 35.8 53.3 31 53.3 23.7c0-5.5-4.5-10-10-10-5 0-7.7 3-9.8 5.4L32 20.8l-1.5-1.7c-2.1-2.4-4.8-5.4-9.8-5.4z"
-                              class="color134563 svgShape"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Restaurant Recommendations -->
-            <h2 class="mt-4 mb-2 p-2 text-lg font-medium">Recommended Restaurants</h2>
-            <div class="@container w-full overflow-x-auto snap-x snap-mandatory snap-center">
-                <div id="restaurant-list-mobile" class="flex flex-nowrap gap-6">
-                    <!-- Content dynamically loads here -->
-                </div>
-            </div>
-
-
-            <!-- Event Recommendations -->
-            <h2 class="mt-6 mb-2 p-2 text-lg font-medium">Recommended Events</h2>
-            <div class="@container w-full overflow-x-auto snap-x snap-mandatory">
-                <div id="event-list-mobile" class="flex flex-nowrap gap-6">
-                    <!-- Content dynamically loads here -->
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex flex-col gap-4 p-2 mt-4 mb-4 pb-2 pt-4">
-                <button id="recreate-btn-mobile"
-                        class="bottom-15 left-0 w-full p-3 bg-gray-200 text-gray-700 rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    🔄 Recreate Plan
-                </button>
-                <button id="save-btn-mobile"
-                        class="bottom-0 right-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer">
-                    💾 Save Plan
-                </button>
-            </div>
-        </div>
-    </div>
-</main>
+    </main>
 
 <script>
 
@@ -691,15 +703,20 @@
             const eventListMobile = document.getElementById('event-list-mobile');
             const restaurantSkeleton = document.getElementById("restaurant-skeleton");
             const eventSkeleton = document.getElementById('event-skeleton');
+            const restaurantSkeletonMobile = document.getElementById('restaurant-skeleton-mobile');
+            const eventSkeletonMobile = document.getElementById('event-skeleton-mobile');
+
 
 
             // ✅ Show skeleton loader before loading
             restaurantSkeleton.style.display = "flex";
             eventSkeleton.style.display = "flex";
-            restaurantList.style.display = "flex";
-            restaurantListMobile.style.display = "flex";
-            eventList.style.display = "flex";
-            eventListMobile.style.display = "flex";
+            restaurantSkeletonMobile.style.display = "flex";
+            eventSkeletonMobile.style.display = "flex";
+            restaurantList.style.display = "none";
+            restaurantListMobile.style.display = "none";
+            eventList.style.display = "none";
+            eventListMobile.style.display = "none";
 
             // Clear previous results
             restaurantList.innerHTML = '';
@@ -712,28 +729,55 @@
                 const details = await getRestaurantDetails(restaurant.name, restaurant.address);
 
                 restaurantList.innerHTML += `
-                <div class="restaurant-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
-                    <div class="w-full h-25">
-                        <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
-                    </div>
-                    <button class="restaurant-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </button>
-                    <div class="flex flex-col items-start justify-between p-4 h-full">
-                        <div class="flex flex-col w-full">
-                            <div class="flex flex-row justify-between items-center w-full pr-2">
-                                <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
-                                <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
-                                    <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                    <div class="restaurant-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
+                        <div class="w-full h-25">
+                            <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
+                        </div>
+                        <button class="restaurant-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </button>
+                        <div class="flex flex-col items-start justify-between p-4 h-full">
+                            <div class="flex flex-col w-full">
+                                <div class="flex flex-row justify-between items-center w-full pr-2">
+                                    <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
+                                    <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
+                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                    </span>
+                                </div>
+                                <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
+                            </div>
+                            <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
+                        </div>
+                    </div>`;
+
+                restaurantListMobile.innerHTML += `
+                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full md:w-[85vw] flex flex-row border border-gray-200 hover:bg-custom-white overflow-hidden snap-center shadow-lg m-4">
+                        <!-- Restaurant Image -->
+                         <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
+                        <!-- Restaurant Details -->
+                        <div class="flex flex-col justify-between p-4 w-full">
+                                <div class="flex justify-between items-start w-full">
+                                    <span class="font-semibold text-md">${restaurant.name}</span>
+                                </div>
+                                <p class="font-semibold text-custom-blue text-sm pt-1">${planData.cuisine}</p>
+                            <div class="flex flex-row justify-between items-end w-full mt-4">
+                                <p class="font-mulish font-light text-gray-600 text-[12px] mr-4">${restaurant.address}</p>
+                                <span class="font-semibold text-md flex flex-row items-center mr-2">
+                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${details.rating}
                                 </span>
                             </div>
-                            <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
                         </div>
-                        <p class="font-mulish font-light text-gray-600 text-[10px] pt-1">${restaurant.address}</p>
-                    </div>
-                </div>`;
+
+                        <!-- Selection Button -->
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </button>
+                    </div>`;
+
 
                 await addMarker(map, restaurant.address, restaurant.name, bounds);
                 await addMarker(mapMobile, restaurant.address, restaurant.name, bounds);
@@ -768,6 +812,32 @@
                         </div>
                     </div>`;
 
+                eventListMobile.innerHTML += `
+                    <div class="relative font-poppins bg-gray-100 rounded-3xl w-full md:w-[85vw] flex flex-row border border-gray-200 hover:bg-custom-white overflow-hidden snap-center shadow-lg m-4">
+                        <!-- Restaurant Image -->
+                         <img src="${details.imageUrl}" alt="${event.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
+                        <!-- Restaurant Details -->
+                        <div class="flex flex-col justify-between p-4 w-full">
+                                <div class="flex justify-between items-start w-full">
+                                    <span class="font-semibold text-md">${event.name}</span>
+                                </div>
+                                <p class="font-semibold text-custom-blue text-sm pt-1">${event.type}</p>
+                            <div class="flex flex-row justify-between items-end w-full mt-4">
+                                <p class="font-mulish font-light text-gray-600 text-[12px] mr-4">${event.address}</p>
+                                <span class="font-semibold text-md flex flex-row items-center mr-2">
+                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${details.rating}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Selection Button -->
+                        <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </button>
+                    </div>`;
+
                 await addMarker(map, event.address, event.name, bounds);
                 await addMarker(mapMobile, event.address, event.name, bounds);
             }
@@ -775,6 +845,8 @@
             // ✅ Hide skeleton & show restaurants
             restaurantSkeleton.style.display = "none";
             eventSkeleton.style.display = "none";
+            restaurantSkeletonMobile.style.display = "none";
+            eventSkeletonMobile.style.display = "none";
             restaurantList.style.display = "flex";
             restaurantListMobile.style.display = "flex";
             eventList.style.display = "flex";
@@ -1006,6 +1078,91 @@ document.addEventListener("DOMContentLoaded", function () {
 //         return cookieValue;
 //     }
 // });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const recreateButton = document.getElementById("recreate-btn");
+    const recreateButtonMobile = document.getElementById("recreate-btn-mobile");
+
+    async function recreatePlan() {
+        console.log("🔄 Recreating Plan...");
+
+        const storedPlanData = JSON.parse(localStorage.getItem("planData"));
+        if (!storedPlanData) {
+            alert("⚠️ No previous plan data found.");
+            return;
+        }
+
+        const csrfToken = getCookie("csrftoken");
+        if (!csrfToken) {
+            console.error("❌ CSRF Token Missing!");
+            alert("CSRF token missing. Please refresh and try again.");
+            return;
+        }
+        const requestData = {
+                location: storedPlanData.location,
+                date: storedPlanData.date,
+                time: storedPlanData.time,
+                attendees: storedPlanData.guests, 
+                food: storedPlanData.cuisine,
+                ocasion: storedPlanData.ocasion,
+                order: storedPlanData.order,
+            };
+
+        console.log("📨 Sending Data to API:", JSON.stringify(requestData, null, 2));
+
+        try {
+            recreateButton.textContent = "🔄 Generating New Plan...";
+            recreateButton.disabled = true;
+
+            const response = await fetch("/generate-date-plan/", { 
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            const newPlanData = await response.json();
+            console.log("✅ API Response:", newPlanData);
+
+            if (!response.ok) {
+                console.error("❌ API Error:", newPlanData);
+                alert(`API Error: ${newPlanData.error || "Unknown error"}`);
+                return;
+            }
+
+            // ✅ Save new plan and reload page
+            localStorage.setItem("planData", JSON.stringify(newPlanData));
+            window.location.reload();
+
+        } catch (error) {
+            console.error("❌ Failed to recreate plan:", error);
+            alert("An error occurred while recreating the plan.");
+        } finally {
+            recreateButton.textContent = "🔄 Recreate Plan";
+            recreateButton.disabled = false;
+        }
+    }
+
+    recreateButton.addEventListener("click", recreatePlan);
+    recreateButtonMobile.addEventListener("click", recreatePlan);
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
 </body>
 </html>

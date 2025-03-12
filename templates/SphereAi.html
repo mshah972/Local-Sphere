@@ -313,6 +313,9 @@
                 <div
                         class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
+                <h2 class="text-gray-800 font-semibold text-lg">
+                    Current Event Selection:
+                </h2>
                     <h3
                             class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
                     >
@@ -354,6 +357,7 @@
                         >Waiting For User Selection...</span
                         >
                     </h3>
+                    
 
                     <h3
                             class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
@@ -365,6 +369,21 @@
                         >Waiting For User Selection...</span
                         >
                     </h3>
+                    <!-- Occasion Display -->
+<h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
+    <span class="mr-2">
+        <img class="h-5 w-auto" src="../static/ocassion.svg" />
+    </span>
+    <span id="box-ocasion" class="text-md">Waiting For User Selection...</span>
+</h3>
+
+<!-- Order Display -->
+<h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
+    <span class="mr-2">
+        <img class="h-5 w-auto" src="../static/preference.svg" />
+    </span>
+    <span id="box-order" class="text-md">Waiting For User Selection...</span>
+</h3>
                 </div>
 
                 <!-- 🔽 Arrow -->
@@ -389,9 +408,41 @@
                         class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
                     <h2 class="text-gray-800 font-semibold text-lg">
-                        Fetched User Data
+                        Profile: 
                     </h2>
 
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Restrictions & Preferences
+                    </h2>
+                    <!-- Dietary Restrictions -->
+                    <h3
+                    class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                    <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/restrictions.svg" />
+                    </span>
+                    <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
+                    </h3>
+                    <!-- Favorite Foods -->
+                        <h3
+                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                        <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                        </span>
+                        <span id="user-fav-foods-box" class="text-md">Loading...</span>
+                    </h3>
+                        <!-- Interests -->
+                        <h3
+                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                        <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/search.svg" />
+                        </span>
+                        <span id="user-interests-box" class="text-md">Loading...</span>
+                    </h3>
+
+<!-- WHYY???? -->
                     <h3
                             class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
@@ -400,7 +451,7 @@
                 </span>
                         <span id="user-fav-foods" class="text-md">Mexican</span>
                     </h3>
-
+<!-- THIS BREAKS IT???? -->
                     <h3
                             class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
                     >
@@ -1240,6 +1291,62 @@
         localStorage.removeItem("orderPreference");
         console.log("Cleared stored activity selections.");
     }, 2000);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch user data from Django template variables
+    const favoriteFoods = "{{ favorite_foods }}";
+    const dietaryRestrictions = "{{ dietary_restrictions }}";
+    const interests = "{{ interests }}";
+
+    // Update left-side UI dynamically
+    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
+    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
+    document.getElementById("user-interests-box").textContent = interests || "Not Set";
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get references to form inputs
+    const formInputs = {
+        ocasion: document.getElementById("ocasion"),
+        order: document.getElementById("order")
+    };
+
+    // Get references to the left-side display boxes
+    const displayElements = {
+        boxOcasion: document.getElementById("box-ocasion"),
+        boxOrder: document.getElementById("box-order")
+    };
+
+    // Function to update the left-side display
+    function updateDisplay(field, value) {
+        if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`]) {
+            displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`].textContent = value || "Not Set";
+        }
+    }
+
+    // Add event listeners to update the left side when inputs change
+    Object.keys(formInputs).forEach((key) => {
+        formInputs[key].addEventListener("change", function () {
+            updateDisplay(key, this.value);
+        });
+    });
+
+    // Set default values if they exist in localStorage
+    const savedOcasion = localStorage.getItem("ocasion") || "Not Set";
+    const savedOrder = localStorage.getItem("order") || "Not Set";
+
+    updateDisplay("ocasion", savedOcasion);
+    updateDisplay("order", savedOrder);
+
+    // Save to localStorage on change
+    formInputs.ocasion.addEventListener("change", function () {
+        localStorage.setItem("ocasion", this.value);
+    });
+
+    formInputs.order.addEventListener("change", function () {
+        localStorage.setItem("order", this.value);
+    });
 });
 </script>
 </body>
