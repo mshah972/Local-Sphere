@@ -576,6 +576,7 @@
 
             data.plans.forEach(plan => {
                 const planCard = `
+
                 <a href="/plan/${plan.id}/">
                     <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit text-white hover:text-custom-blue cursor-pointer shadow-lg mt-2">
                         <div class="relative font-poppins bg-custom-blue rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between overflow-hidden hover:bg-custom-white">
@@ -608,6 +609,7 @@
                         </div>
                     </li>
                 </a>
+
             `;
                 planContainer.innerHTML += planCard;
             });
