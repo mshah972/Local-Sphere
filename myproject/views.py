@@ -158,48 +158,41 @@ def planConfirmation(request):
     return render(request, 'planConfirmation.html')
 
 def save_plan_selection(request):
-    print("hello")
-
     if request.method == "POST":
-        print("hello")
         if not request.user.is_authenticated:
             return JsonResponse({"error": "User not authenticated"}, status=401)
 
         try:
             data = json.loads(request.body)
-            time_pattern = re.compile(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
-            time = data.get("time")
-            if not time or not time_pattern.match(time):
-                time = None
+            title = data.get("title")  # Ensure the title is retrieved
 
-            guests = data.get("guests")
-            if not isinstance(guests, int) or guests < 1:
-                guests = None
-            restaurant_name = data.get("restaurant", {}).get("name")  # ✅ Fixed
-            print(restaurant_name)
+            if not title:
+                return JsonResponse({"error": "Title is required for saving a plan."}, status=400)
+
             plan = PlanConfirmation.objects.create(
-                user=request.user,  # Associate plan with logged-in user
+                user=request.user,
+                title=title,  # ✅ Save the title
                 date=data.get("date"),
-                restaurant_name=restaurant_name,  # Prevent KeyError
+                time=data.get("time"),
+                guests=data.get("guests"),
+                occasion=data.get("occasion"),
+                order=data.get("order"),
+                restaurant_name=data.get("restaurant", {}).get("name"),
                 restaurant_address=data.get("restaurant", {}).get("address"),
                 restaurant_longitude=data.get("restaurant", {}).get("longitude"),
                 restaurant_latitude=data.get("restaurant", {}).get("latitude"),
-
                 event_name=data.get("event", {}).get("name"),
                 event_address=data.get("event", {}).get("address"),
                 event_longitude=data.get("event", {}).get("longitude"),
                 event_latitude=data.get("event", {}).get("latitude"),
-
-                time=time,
-                occasion=data.get("occasion"),
-                guests=guests
             )
+
             return JsonResponse({
                 "message": "Plan saved successfully",
+                "title": plan.title,  # ✅ Include title in response
                 "plan_id": plan.id,
-                "redirect_url": "/profilePage/"  # Include redirect URL
+                "redirect_url": "/profilePage/"
             }, status=201)
-
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -330,24 +323,14 @@ def get_mapbox_api_key(request):
     return JsonResponse({"mapboxApiKey": settings.MAPBOX_ACCESS_TOKEN})
 
 @csrf_exempt
-@login_required  # Ensures only logged-in users can generate a plan
+@login_required
 def generate_date_plan(request):
-    print(f"🔍 Received request: {request.method}")
-
-    if request.method == "OPTIONS":
-        return JsonResponse({"message": "CORS preflight successful"}, status=200)
-
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
     try:
-        print("✅ POST request received")
-
-        # ✅ Read and parse request data
         data = json.loads(request.body)
-        print(f"📨 Received Data: {data}")
 
-        # ✅ Validate required inputs
         required_fields = ["location", "date", "time", "attendees", "food", "ocasion", "order"]
         for field in required_fields:
             if not data.get(field):
@@ -358,24 +341,18 @@ def generate_date_plan(request):
         time = data["time"]
         attendees = data["attendees"]
         food = data["food"]
-        ocasion = data["ocasion"]  # New field
-        order = data["order"]  # New field
+        ocasion = data["ocasion"]
+        order = data["order"]
 
-        # ✅ Get User Preferences from Database
-        user = request.user  # Get logged-in user
-
+        user = request.user
         dietary_restrictions = user.diet_restrictions if user.diet_restrictions else "None"
         favorite_cuisines = user.favorite_cuisines if user.favorite_cuisines else "None"
         favorite_interests = user.interests if user.interests else "None"
 
-        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
-
-        # ✅ Check if OpenAI API key is set correctly
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
             return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
 
-        # ✅ OpenAI API Call with User Preferences and new fields
         client = openai.OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
             model="gpt-4",
@@ -393,8 +370,9 @@ def generate_date_plan(request):
                     - **Favorite Interests for Activities:** {favorite_interests}
 
                     The JSON should contain:
-                    - "date": string (formatted as YYYY-MM-DD)
-                    - "time": string
+                    - **"title"**: A **fun and creative** title for the date plan that describes the experience
+                    - "date": string (YYYY-MM-DD)
+                    - "time": string (HH:MM)
                     - "guests": integer
                     - "location": string
                     - "cuisine": string
@@ -418,8 +396,6 @@ def generate_date_plan(request):
                     - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
                     - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
                     - The selections must be **realistic, diverse, and match the user's saved preferences**.
-                    - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
-                    - **Make Sure** that everything is in the radius of 10 miles or less only.
                     """
                 }
             ],
@@ -429,32 +405,20 @@ def generate_date_plan(request):
 
         chat_response = response.choices[0].message.content.strip()
 
-        print(chat_response)
-
-        # ✅ Ensure OpenAI response is in valid JSON format
         try:
             plan_data = json.loads(chat_response)
 
-            # ✅ Extra Validation: Ensure OpenAI returns exactly 3 restaurants and 3 events
             if len(plan_data.get("restaurants", [])) != 3:
-                print("⚠️ OpenAI did not return exactly 3 restaurants. Adjusting output.")
                 plan_data["restaurants"] = plan_data.get("restaurants", [])[:3]
-
             if len(plan_data.get("events", [])) != 3:
-                print("⚠️ OpenAI did not return exactly 3 events. Adjusting output.")
                 plan_data["events"] = plan_data.get("events", [])[:3]
 
+            return JsonResponse(plan_data, status=200)
+
         except json.JSONDecodeError:
-            print("❌ ERROR: OpenAI response is not valid JSON.")
             return JsonResponse({"error": "Invalid AI response format"}, status=500)
 
-        return JsonResponse(plan_data, status=200)
-
-    except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON format received"}, status=400)
-
     except Exception as e:
-        print(f"❌ ERROR: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)
 
 @login_required
@@ -585,19 +549,19 @@ def profileEdit(request):
 
     return render(request, 'profileEdit.html', context)
 
-@login_required()
+@login_required
 def profilePage(request):
     plans = PlanConfirmation.objects.filter(user=request.user).values(
-        "id", "date", "time", "guests", "occasion", "order",
+        "id", "title", "date", "time", "guests", "occasion", "order",
         "restaurant_name", "restaurant_address",
         "event_name", "event_address", "restaurant_latitude", "restaurant_longitude",
         "event_latitude", "event_longitude"
     )
     plans_list = list(plans)
 
-    # Print the formatted JSON to the console
-    print(json.dumps(plans_list, indent=4, default=str))
-    return render(request, 'profilePage.html')
+    print(json.dumps(plans_list, indent=4, default=str))  # Debugging
+
+    return render(request, 'profilePage.html', {"plans": plans_list})
 
 @login_required()
 def get_restaurant_booking(request):

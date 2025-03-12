@@ -9,6 +9,7 @@ from django.db import models
 class PlanConfirmation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Link to CustomUser
 
+    title = models.CharField(max_length=255, blank=True, null=True)
     favorite = models.BooleanField(default=False)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
@@ -29,7 +30,7 @@ class PlanConfirmation(models.Model):
 
 
     def __str__(self):
-        return f"Plan for {self.date} at {self.time} - {self.location}"
+        return f"Plan: {self.title or 'Untitled Plan'} - Plan for {self.date} at {self.time} - {self.location}"
 
 class CustomUserManager(BaseUserManager):
     """Manager for custom user model with email as username"""
