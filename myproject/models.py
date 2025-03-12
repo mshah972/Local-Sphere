@@ -9,6 +9,7 @@ from django.db import models
 class PlanConfirmation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Link to CustomUser
 
+    favorite = models.BooleanField(default=False)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
     guests = models.IntegerField(null=True, blank=True)
