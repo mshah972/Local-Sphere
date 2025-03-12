@@ -613,3 +613,36 @@ def get_restaurant_booking(request):
     except requests.RequestException as e:
         print(f"🚨 Yelp API Request Failed: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)
+
+@login_required
+def get_user_plans(request):
+    """Retrieve all saved plans for the authenticated user"""
+    try:
+        # ✅ Fetch all plans for the logged-in user
+        user_plans = PlanConfirmation.objects.filter(user=request.user).order_by("-id")
+
+        # ✅ Convert QuerySet to JSON-friendly format
+        plans_data = [
+            {
+                "id": plan.id,
+                "date": plan.date,
+                "time": plan.time,
+                "guests": plan.guests,
+                "occasion": plan.occasion,
+                "restaurant": {
+                    "name": plan.restaurant_name,
+                    "address": plan.restaurant_address,
+                },
+                "event": {
+                    "name": plan.event_name,
+                    "address": plan.event_address,
+                },
+            }
+            for plan in user_plans
+        ]
+
+        # ✅ Return JSON response
+        return JsonResponse({"plans": plans_data}, status=200)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
