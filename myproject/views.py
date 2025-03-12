@@ -204,6 +204,7 @@ def forgot(request):
         return redirect('forgot')
 
     return render(request, 'forgot.html')
+
 def password_reset_confirm(request, token):
     email = password_reset_tokens.get(token)
     if not email:
@@ -585,9 +586,6 @@ def get_restaurant_booking(request):
         response = requests.get(url, headers=headers)
         data = response.json()
 
-        # Debug: Print Yelp API response
-        print(f"📜 Yelp Search API Response: {data}")
-
         # Extract restaurant ID
         businesses = data.get("businesses", [])
         if not businesses:
@@ -602,8 +600,6 @@ def get_restaurant_booking(request):
         details_url = f"https://api.yelp.com/v3/businesses/{restaurant_id}"
         details_response = requests.get(details_url, headers=headers)
         details_data = details_response.json()
-
-        print(f"📜 Yelp Business Details Response: {details_data}")
 
         # Extract Yelp reservation link if available
         reservation_url = details_data.get("url")  # Yelp restaurant page URL
