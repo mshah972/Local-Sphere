@@ -383,12 +383,9 @@
                     <!-- Footer Buttons -->
                     <div class="mt-6 flex justify-between items-center">
                         <!-- Delete Plan Button -->
-                        <button
-                                class="text-red-500 flex items-center space-x-2 hover:text-red-600 cursor-pointer"
-                                onclick="deletePlan()">
+                        <button class="text-red-500 flex items-center space-x-2 hover:text-red-600 cursor-pointer" onclick="deletePlan()">
                             🗑️ Delete Plan
                         </button>
-
 
                         <!-- Save Plan Button -->
                         <button class="bg-custom-blue text-white flex items-center px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition cursor-pointer">
@@ -455,7 +452,7 @@
                     <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
                 </div>
 
-                <div class="p-4 mt-10">
+                <div class="p-4 mt-10 w-full">
                     <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
                         <div class="w-full h-[150px]">
                             <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -465,15 +462,15 @@
                         <div class="flex flex-col items-center justify-between p-4 h-full">
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-center w-full pr-2">
-                                    <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                    <span id="event-name" class="font-semibold text-[14px] lg:text-[20px] pr-4">Loading...</span>
                                     <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
                                 </div>
                             </div>
                             <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
                                 <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
                                     People</p>
-                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">
-                                    $$$</p>
+                                <p id="event-address" class="font-mulish font-light text-[10px] lg:text-[14px]">
+                                    Fetching event details...</p>
                             </div>
                         </div>
                     </div>
@@ -492,34 +489,110 @@
 
     mapboxgl.accessToken = "pk.eyJ1IjoibXNoYWg3NiIsImEiOiJjbTdmZ2dvenAwb2JpMm1weDdtZmR5ZDB6In0.JMxS2qZo-c8JqWcOYfME3A";
 
-    const map = new mapboxgl.Map({
-        container: 'map', // ID of the div
-        style: 'mapbox://styles/mapbox/light-v10', // Map style
-        center: [-87.6298, 41.8781], // Chicago coordinates
-        zoom: 12,
-    });
-    
-    // Add Markers for Event Locations
-    const locations = [
-        { lng: -87.6300, lat: 41.8820, icon: "🎟", popupText: "Tickets Booking Location" },
-        { lng: -87.6200, lat: 41.8700, icon: "🍽️", popupText: "Restaurant Reservation" }
-    ];
+    async function loadMapWithPlanDetails() {
+        try {
+            // Ensure the map container exists
+            const mapContainer = document.getElementById("map");
+            if (!mapContainer) {
+                console.error("❌ Map container (#map) not found.");
+                return;
+            }
 
-    locations.forEach((loc) => {
-        const markerDiv = document.createElement("div");
-        markerDiv.className = "marker bg-black text-white text-lg flex items-center justify-center rounded-full w-8 h-8";
-        markerDiv.innerHTML = loc.icon;
+            const planId = window.location.pathname.split("/").filter(Boolean).pop();
+            if (!planId) {
+                console.error("❌ Plan ID not found in URL.");
+                return;
+            }
 
-        new mapboxgl.Marker(markerDiv)
-            .setLngLat([loc.lng, loc.lat])
-            .setPopup(new mapboxgl.Popup().setText(loc.popupText))
-            .addTo(map);
-    });
+            console.log(`🔍 Fetching plan details for ID: ${planId}`);
+
+            // Fetch plan details
+            const response = await fetch(`/api/plan/${planId}/`);
+            const data = await response.json();
+
+            if (data.error) {
+                console.error("❌ Error fetching plan:", data.error);
+                return;
+            }
+
+            console.log("✅ Plan Data:", data);
+
+            // Ensure latitude and longitude values are numbers
+            const restaurantLat = parseFloat(data.restaurant.longitude);
+            const restaurantLng = parseFloat(data.restaurant.latitude);
+            const eventLat = parseFloat(data.event.longitude);
+            const eventLng = parseFloat(data.event.latitude);
+
+            if (isNaN(restaurantLat) || isNaN(restaurantLng) || isNaN(eventLat) || isNaN(eventLng)) {
+                console.error("❌ Invalid latitude or longitude values in API response.");
+                return;
+            }
+
+            // Initialize Mapbox
+            const map = new mapboxgl.Map({
+                container: "map", // ID of the div
+                style: "mapbox://styles/mapbox/light-v10",
+                center: [restaurantLng, restaurantLat], // Center on restaurant
+                zoom: 12,
+            });
+
+            // Collect locations from the plan data
+            const locations = [
+                {
+                    lng: restaurantLng,
+                    lat: restaurantLat,
+                    icon: "🍽️",
+                    popupText: `Restaurant: ${data.restaurant.name}`
+                },
+                {
+                    lng: eventLng,
+                    lat: eventLat,
+                    icon: "🎟",
+                    popupText: `Event: ${data.event.name}`
+                }
+            ];
+
+            // Add markers for locations
+            locations.forEach((loc) => {
+                const markerDiv = document.createElement("div");
+                markerDiv.className = "marker bg-black text-white text-lg flex items-center justify-center rounded-full w-8 h-8";
+                markerDiv.innerHTML = loc.icon;
+
+                new mapboxgl.Marker(markerDiv)
+                    .setLngLat([loc.lng, loc.lat])
+                    .setPopup(new mapboxgl.Popup().setText(loc.popupText))
+                    .addTo(map);
+            });
+
+            console.log("📍 Markers added to the map and view adjusted.");
+
+            // Adjust view to include all markers
+            const bounds = new mapboxgl.LngLatBounds();
+            locations.forEach((loc) => bounds.extend([loc.lng, loc.lat]));
+            map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+
+            console.log("📍 Markers added to the map and view adjusted.");
+        } catch (error) {
+            console.error("❌ Error loading map:", error);
+        }
+    }
+
+    // ✅ Ensure function runs only when DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", loadMapWithPlanDetails);
+
 
     async function fetchRestaurantBooking() {
-        const restaurantName = "Pasta Bowl"; // Change this to the actual restaurant
+        const restaurantNameElement = document.getElementById("restaurant-name");
 
-        console.log("🔍 Fetching reservation link for:", restaurantName);
+        // Ensure restaurant name is available before proceeding
+        if (!restaurantNameElement || restaurantNameElement.textContent === "Loading...") {
+            console.warn("⚠️ Restaurant name not loaded yet. Retrying...");
+            setTimeout(fetchRestaurantBooking, 500);
+            return;
+        }
+
+        const restaurantName = restaurantNameElement.textContent.trim();
+        console.log("🔍 Fetching Yelp Booking for:", restaurantName);
 
         const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
         const data = await response.json();
@@ -544,16 +617,30 @@
             return;
         }
 
+        // ✅ Check if the restaurant supports reservations
         if (!data.booking_url) {
             console.warn("⚠️ No reservation link available for:", restaurantName);
-            bookingContainer.innerHTML = `<p class="text-gray-500 text-sm">This restaurant does not support online reservations.</p>`;
+
+            // Provide the Yelp business page instead
+            if (data.business_url) {
+                bookingContainer.innerHTML = `
+                <p class="text-gray-500 text-sm">
+                    This restaurant does not support direct reservations, but you can view their page on Yelp:
+                </p>
+                <a href="${data.business_url}" target="_blank" class="bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out">
+                    View on Yelp
+                </a>
+            `;
+            } else {
+                bookingContainer.innerHTML = `
+                <p class="text-gray-500 text-sm">
+                    This restaurant does not support online reservations.
+                </p>`;
+            }
             return;
         }
 
-        // Debugging
-        console.log("✅ Showing 'Reserve on Yelp' button with URL:", data.booking_url);
-
-        // Update button properties
+        // ✅ Update Button for Yelp Reservations
         reserveButton.classList.remove("hidden", "opacity-0");
         reserveButton.innerText = "Reserve on Yelp";
         reserveButton.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
@@ -562,8 +649,9 @@
         bookingContainer.appendChild(reserveButton);
     }
 
-    // Call function for debugging
-    fetchRestaurantBooking();
+    // ✅ Fetch booking when page loads
+    document.addEventListener("DOMContentLoaded", fetchRestaurantBooking);
+
 
     async function loadPlanDetails() {
         try {
@@ -621,6 +709,39 @@
     // ✅ Call function when page loads
     document.addEventListener("DOMContentLoaded", loadPlanDetails);
 
+    function deletePlan() {
+        const urlPath = window.location.pathname;
+        const pathSegments = urlPath.split('/').filter(segment => segment); // Remove empty strings
+        const planId = pathSegments[pathSegments.length - 1]; // Get the last segment (plan ID)
+        console.log("Deleting Plan ID:", planId); // Debugging
+
+        if (!confirm("Are you sure you want to delete this plan?")) return;
+
+        fetch(`/delete-plan/${planId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken(),  // Ensure CSRF protection
+                "Content-Type": "application/json",
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = "/profilePage/";  // Redirect to profile page
+                } else {
+                    alert("Failed to delete the plan.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+    }
+
+    // Function to get CSRF token from cookies
+    function getCSRFToken() {
+        return document.cookie.split("; ")
+            .find(row => row.startsWith("csrftoken"))
+            ?.split("=")[1];
+    }
 
     ///////// Header SCRIPT //////////
 
@@ -740,39 +861,7 @@
             mobileMenu.classList.add("hidden");
         });
     });
-function deletePlan() {
-    const urlPath = window.location.pathname;
-    const pathSegments = urlPath.split('/').filter(segment => segment); // Remove empty strings
-    const planId = pathSegments[pathSegments.length - 1]; // Get the last segment (plan ID)
-    console.log("Deleting Plan ID:", planId); // Debugging
 
-    if (!confirm("Are you sure you want to delete this plan?")) return;
-
-    fetch(`/delete-plan/${planId}/`, {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": getCSRFToken(),  // Ensure CSRF protection
-            "Content-Type": "application/json",
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            window.location.href = "/profilePage/";  // Redirect to profile page
-        } else {
-            alert("Failed to delete the plan.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
-}
-
-// Function to get CSRF token from cookies
-function getCSRFToken() {
-    return document.cookie.split("; ")
-        .find(row => row.startsWith("csrftoken"))
-        ?.split("=")[1];
-}
 </script>
 </body>
 </html>

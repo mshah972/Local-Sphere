@@ -54,7 +54,6 @@ urlpatterns = [
     path('plan/<int:plan_id>/', plan_detail_view, name='planPage'),
     path('api/plan/<int:plan_id>/', get_plan_details, name='get_plan_details'),
     path("delete-plan/<int:plan_id>/", views.delete_plan, name="delete_plan"),
-
 ]
 
 if settings.DEBUG:  # Only serve media files in development

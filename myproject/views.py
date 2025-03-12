@@ -205,12 +205,7 @@ def save_plan_selection(request):
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
-def delete_plan(request, plan_id):
-    if request.method == "POST":
-        plan = PlanConfirmation.objects.filter(id=plan_id)
-        plan.delete()
-        return JsonResponse({"success": True, "message": "Plan deleted successfully."})
-    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
+
 def forgot(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -587,7 +582,7 @@ def profileEdit(request):
         "favorite_cuisines": favorite_cuisines,
         "diet_restrictions": diet_restrictions,
     }
-    
+
     return render(request, 'profileEdit.html', context)
 
 @login_required()
@@ -595,7 +590,8 @@ def profilePage(request):
     plans = PlanConfirmation.objects.filter(user=request.user).values(
         "id", "date", "time", "guests", "occasion", "order",
         "restaurant_name", "restaurant_address",
-        "event_name", "event_address", "restaurant_latitude"
+        "event_name", "event_address", "restaurant_latitude", "restaurant_longitude",
+        "event_latitude", "event_longitude"
     )
     plans_list = list(plans)
 
@@ -605,16 +601,16 @@ def profilePage(request):
 
 @login_required()
 def get_restaurant_booking(request):
-    """Fetch restaurant reservation link from Yelp API instead of booking times"""
-
+    """Fetch booking times for a restaurant from Yelp API"""
     restaurant_name = request.GET.get("name")  # Get restaurant name from request
     location = request.GET.get("location", "Chicago")  # Default to Chicago
 
+    print(f"🔍 Fetching Yelp Booking for: {restaurant_name}")  # ✅ Debugging
+
     if not restaurant_name:
-        print("🚨 ERROR: Restaurant name is missing in request")
         return JsonResponse({"error": "Restaurant name is required"}, status=400)
 
-    # Yelp API Endpoint to get business details
+    # Yelp API Endpoint
     url = f"https://api.yelp.com/v3/businesses/search?term={restaurant_name}&location={location}&limit=1"
 
     headers = {
@@ -623,38 +619,26 @@ def get_restaurant_booking(request):
     }
 
     try:
-        # Fetch restaurant data from Yelp
-        print(f"🔍 Fetching Yelp business ID for restaurant: {restaurant_name} in {location}")
         response = requests.get(url, headers=headers)
         data = response.json()
+
+        print("📜 Yelp API Response:", data)  # ✅ Debugging API Response
 
         # Extract restaurant ID
         businesses = data.get("businesses", [])
         if not businesses:
-            print(f"❌ No restaurant found on Yelp for: {restaurant_name}")
-            return JsonResponse({"error": "No restaurant found on Yelp"}, status=404)
+            return JsonResponse({"error": "No restaurant found"}, status=404)
 
-        restaurant_info = businesses[0]
-        restaurant_id = restaurant_info["id"]
-        print(f"✅ Found Yelp Business ID for {restaurant_name}: {restaurant_id}")
+        restaurant_id = businesses[0]["id"]
 
-        # Fetch full business details to get reservation link
-        details_url = f"https://api.yelp.com/v3/businesses/{restaurant_id}"
-        details_response = requests.get(details_url, headers=headers)
-        details_data = details_response.json()
+        # Fetch booking availability using restaurant ID
+        booking_url = f"https://api.yelp.com/v3/businesses/{restaurant_id}/reservations"
 
-        # Extract Yelp reservation link if available
-        reservation_url = details_data.get("url")  # Yelp restaurant page URL
-        if not reservation_url:
-            print(f"⚠️ No reservation link available for {restaurant_name}")
-            return JsonResponse({"restaurant": restaurant_name, "booking_url": None})
-
-        print(f"✅ Reservation URL for {restaurant_name}: {reservation_url}")
-        return JsonResponse({"restaurant": restaurant_name, "booking_url": reservation_url})
+        return JsonResponse({"booking_url": booking_url, "restaurant": restaurant_name})
 
     except requests.RequestException as e:
-        print(f"🚨 Yelp API Request Failed: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)
+
 
 @login_required
 def get_user_plans(request):
@@ -698,7 +682,7 @@ def plan_detail_view(request, plan_id):
 
 @login_required
 def get_plan_details(request, plan_id):
-    """Retrieve details of a specific plan"""
+    """Retrieve details of a specific plan, including coordinates."""
     try:
         print(f"🔍 Fetching Plan ID: {plan_id} for user: {request.user}")
 
@@ -713,10 +697,14 @@ def get_plan_details(request, plan_id):
             "restaurant": {
                 "name": plan.restaurant_name or "Unknown Restaurant",
                 "address": plan.restaurant_address or "Unknown Address",
+                "latitude": plan.restaurant_latitude if plan.restaurant_latitude else None,
+                "longitude": plan.restaurant_longitude if plan.restaurant_longitude else None,
             },
             "event": {
                 "name": plan.event_name or "No Event",
                 "address": plan.event_address or "No Event Address",
+                "latitude": plan.event_latitude if plan.event_latitude else None,
+                "longitude": plan.event_longitude if plan.event_longitude else None,
             }
         }
 
@@ -727,3 +715,10 @@ def get_plan_details(request, plan_id):
     except Exception as e:
         print(f"❌ Error retrieving plan: {e}")
         return JsonResponse({"error": str(e)}, status=500)
+
+def delete_plan(request, plan_id):
+    if request.method == "POST":
+        plan = PlanConfirmation.objects.filter(id=plan_id)
+        plan.delete()
+        return JsonResponse({"success": True, "message": "Plan deleted successfully."})
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
