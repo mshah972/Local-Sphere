@@ -1095,15 +1095,13 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("CSRF token missing. Please refresh and try again.");
             return;
         }
-
-        // ✅ Only send necessary variables (remove restaurants, events, and preferences)
         const requestData = {
                 location: storedPlanData.location,
                 date: storedPlanData.date,
                 time: storedPlanData.time,
-                attendees: storedPlanData.guests, // Convert guests to attendees
+                attendees: storedPlanData.guests, 
                 food: storedPlanData.cuisine,
-                ocasion: storedPlanData.ocasion, // ✅ Fix: Add "ocasion"
+                ocasion: storedPlanData.ocasion,
                 order: storedPlanData.order,
             };
 
@@ -1113,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", function () {
             recreateButton.textContent = "🔄 Generating New Plan...";
             recreateButton.disabled = true;
 
-            const response = await fetch("/generate-date-plan/", {  // ✅ Correct API URL
+            const response = await fetch("/generate-date-plan/", { 
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
