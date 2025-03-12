@@ -131,7 +131,7 @@
              aria-label="header">
             <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
-                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                <img class="h-15 w-auto" src="{% static 'logo1.svg' %}" alt="">
             </a>
             <div id="openMobileMenu" class="flex lg:hidden">
                 <button type="button"
@@ -396,7 +396,7 @@
             <div class="relative mt-8 rounded-3xl w-full flex flex-row overflow-hidden">
                 <div class="flex flex-col items-center ml-2">
                     <div class="m-2 ml-2 mt-4 bg-custom-blue p-2 rounded-full shadow-md w-10 h-auto">
-                        <img class="w-6 h-full object-cover" src="../static/restIcon.svg" alt="">
+                        <img class="w-6 h-full object-cover" src="{% static 'restIcon.svg' %}" alt="">
                     </div>
                     <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
                 </div>
@@ -444,7 +444,7 @@
             <div class="relative mt-8 rounded-3xl w-full flex flex-row overflow-hidden">
                 <div class="flex flex-col items-center ml-2">
                     <div class="m-2 ml-2 mt-4 bg-custom-blue p-2 rounded-full shadow-md w-10 h-auto">
-                        <img class="w-6 h-full object-cover" src="../static/ticket.svg" alt="">
+                        <img class="w-6 h-full object-cover" src="{% static 'ticket.svg' %}" alt="">
                     </div>
                     <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
                 </div>
