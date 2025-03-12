@@ -845,12 +845,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return {
             name: card.querySelector(".event-name, .restaurant-name")?.innerText ,
             address: card.querySelector(".event-address, .restaurant-address").innerText,
-            website: card.querySelector(".event-website, .restaurant-website")?.innerText || "",
-            rating: card.querySelector(".restaurant-rating")?.innerText || "",
-            start_time: card.querySelector(".event-start-time")?.innerText || "Choose Time",
-            end_time: card.querySelector(".event-end-time")?.innerText || "Choose Time",
-            type: card.querySelector(".event-type")?.innerText || "",
-            reservation_time: card.querySelector(".restaurant-reservation-time")?.innerText || "Choose Time",
         };
     }
 
@@ -863,10 +857,7 @@ document.addEventListener("DOMContentLoaded", function () {
             date: planDetails.date,
             time: planDetails.time,
             guests: planDetails.guests,
-            location: planDetails.location,
-            cuisine: planDetails.cuisine,
-            occasion: planDetails.ocasion,
-            order: planDetails.order,
+            occasion: planDetails.occasion,
         };
 
         console.log("Saving selection:", selectedData);

@@ -19,18 +19,11 @@ class PlanConfirmation(models.Model):
 
     restaurant_name = models.CharField(max_length=255, null=True, blank=True)
     restaurant_address = models.CharField(max_length=255, null=True, blank=True)
-    restaurant_website = models.URLField(null=True, blank=True)
-    restaurant_rating = models.CharField(max_length=50, null=True, blank=True)
-    restaurant_reservation_time = models.CharField(max_length=50, null=True, blank=True)
+
 
     event_name = models.CharField(max_length=255, null=True, blank=True)
     event_address = models.CharField(max_length=255, null=True, blank=True)
-    event_website = models.URLField(null=True, blank=True)
-    event_start_time = models.CharField(max_length=50, null=True, blank=True)
-    event_end_time = models.CharField(max_length=50, null=True, blank=True)
-    event_type = models.CharField(max_length=100, null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Plan for {self.date} at {self.time} - {self.location}"

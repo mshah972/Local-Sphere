@@ -22,7 +22,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from dotenv import load_dotenv
-from myproject.models import planConfirmation  # Ensure CustomUser model is imported correctly
+from myproject.models import PlanConfirmation  # Ensure CustomUser model is imported correctly
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -153,13 +153,11 @@ def save_plan_selection(request):
                 date=data.get("date"),
                 restaurant_name=data["restaurant"].get("name"),
                 restaurant_address=data["restaurant"].get("address"),
-                restaurant_website=data["restaurant"].get("website"),
-                restaurant_rating=data["restaurant"].get("rating"),
                 event_name=data["event"].get("name"),
                 event_address=data["event"].get("address"),
-                event_start_time=data["event"].get("start_time"),
-                event_end_time=data["event"].get("end_time"),
-                event_type=data["event"].get("type"),
+                time=data.get("time"),
+                occasion=data.get("occasion"),
+                guests=data.get("guests")
             )
             return JsonResponse({"message": "Plan saved successfully", "plan_id": plan.id}, status=201)
 
