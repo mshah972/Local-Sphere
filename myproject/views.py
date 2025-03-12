@@ -205,7 +205,12 @@ def save_plan_selection(request):
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
+def delete_plan(request, plan_id):
+    if request.method == "POST":
+        plan = PlanConfirmation.objects.filter(id=plan_id)
+        plan.delete()
+        return JsonResponse({"success": True, "message": "Plan deleted successfully."})
+    return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
 def forgot(request):
     if request.method == 'POST':
         email = request.POST.get('email')
