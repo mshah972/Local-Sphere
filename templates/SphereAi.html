@@ -1,976 +1,800 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/html">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Sphere - Your Local Guide</title>
-    <link href="{% static 'css/output.css' %}" rel="stylesheet" />
-    <link href="../static/css/output.css" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg" />
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link href="../static/css/output.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
     <style>
-      input[type="date"]::-webkit-calendar-picker-indicator {
-        background: transparent;
-        bottom: 0;
-        color: transparent;
-        cursor: pointer;
-        height: auto;
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: auto;
-      }
-
-      /* Style Google Autocomplete Dropdown */
-      /* Google Maps Dropdown Styling */
-      .pac-container {
-        background-color: #004aad !important; /* Blue background */
-        font-family: "Poppins", sans-serif !important;
-        border-radius: 16px !important; /* Match rounded style */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important; /* Enhanced shadow */
-        padding: 6px 0px !important; /* Remove top/bottom padding */
-        margin-top: 8px !important;
-        width: max-content !important;
-        min-width: 250px !important;
-      }
-
-      /* Style Each Suggestion Item */
-      .pac-item {
-        padding: 14px !important;
-        font-size: 14px !important;
-        font-weight: normal !important;
-        color: white !important; /* White text */
-        border-radius: 12px !important;
-        transition: background-color 0.3s ease-in-out !important;
-        border: none !important; /* Remove default borders */
-        margin: 8px !important; /* Remove unwanted spacing */
-      }
-
-      /* Fix White Gap Between Items */
-      .pac-item:not(:last-child) {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; /* Subtle separator */
-      }
-
-      /* Fix the White Border at the Top */
-      .pac-item:first-child {
-        margin-top: 0px !important;
-        padding-top: 12px !important;
-        border-top-left-radius: 12px !important;
-        border-top-right-radius: 12px !important;
-      }
-
-      /* Last Item Rounded Border */
-      .pac-item:last-child {
-        border-bottom-left-radius: 12px !important;
-        border-bottom-right-radius: 12px !important;
-      }
-
-      /* Highlighted Suggestion */
-      .pac-item:hover,
-      .pac-item.pac-selected {
-        background-color: #003580 !important; /* Darker blue on hover */
-        color: #fff !important;
-      }
-
-      /* Style the Highlighted Text */
-      .pac-item .pac-item-query {
-        font-weight: 500 !important;
-        font-size: 15px !important;
-        color: #f3ebde !important;
-      }
-
-      .pac-container::after {
-        margin-right: 12px !important;
-        margin-left: 12px !important;
-      }
-      .loading-container {
-        display: none;
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 10px;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-      }
-
-      .show {
-        display: block;
-        opacity: 1;
-      }
-
-      .dot {
-        animation: blink 1.5s infinite;
-      }
-
-      .dot:nth-child(2) {
-        animation-delay: 0.3s;
-      }
-
-      .dot:nth-child(3) {
-        animation-delay: 0.6s;
-      }
-
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 0;
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
         }
-        50% {
-          opacity: 1;
+
+        /* Style Google Autocomplete Dropdown */
+        /* Google Maps Dropdown Styling */
+        .pac-container {
+            background-color: #004AAD !important; /* Blue background */
+            font-family: "Poppins", sans-serif !important;
+            border-radius: 16px !important; /* Match rounded style */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important; /* Enhanced shadow */
+            padding: 6px 0px !important; /* Remove top/bottom padding */
+            margin-top: 8px !important;
+            width: max-content !important;
+            min-width: 250px !important;
         }
-      }
+
+        /* Style Each Suggestion Item */
+        .pac-item {
+            padding: 14px !important;
+            font-size: 14px !important;
+            font-weight: normal !important;
+            color: white !important; /* White text */
+            border-radius: 12px !important;
+            transition: background-color 0.3s ease-in-out !important;
+            border: none !important; /* Remove default borders */
+            margin: 8px !important; /* Remove unwanted spacing */
+        }
+
+        /* Fix White Gap Between Items */
+        .pac-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; /* Subtle separator */
+        }
+
+        /* Fix the White Border at the Top */
+        .pac-item:first-child {
+            margin-top: 0px !important;
+            padding-top: 12px !important;
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+        }
+
+        /* Last Item Rounded Border */
+        .pac-item:last-child {
+            border-bottom-left-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+        }
+
+        /* Highlighted Suggestion */
+        .pac-item:hover,
+        .pac-item.pac-selected {
+            background-color: #003580 !important; /* Darker blue on hover */
+            color: #fff !important;
+        }
+
+        /* Style the Highlighted Text */
+        .pac-item .pac-item-query {
+            font-weight: 500 !important;
+            font-size: 15px !important;
+            color: #F3EBDE !important;
+        }
+
+        .pac-container::after {
+            margin-right: 12px !important;
+            margin-left: 12px !important;
+        }
+        .loading-container {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .show {
+            display: block;
+            opacity: 1;
+        }
+
+        .dot {
+            animation: blink 1.5s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
     </style>
-  </head>
-  <body class="bg-custom-white">
-    <main role="main" class="flex flex-col mb-10 min-h-screen">
-      <header class="relative z-50">
-        <nav
-          class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
-          aria-label="header"
-        >
-          <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
-            <span class="sr-only">Local Sphere</span>
-            <img class="h-15 w-auto" src="../static/logo1.svg" alt="" />
-          </a>
-          <div id="openMobileMenu" class="flex lg:hidden">
-            <button
-              type="button"
-              class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-            >
-              <span class="sr-only">Open main menu</span>
-              <svg
-                class="size-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="hidden lg:flex lg:gap-8 lg:items-center">
-            <!-- Explore Button -->
-            <a
-              href="#"
-              class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer"
-            >
-              Explore
+</head>
+<body class="bg-custom-white">
+<main role="main" class="flex flex-col mb-10 min-h-screen">
+    <header class="relative z-50">
+        <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
+             aria-label="header">
+            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
-            <!-- SphereAi -->
-            <a
-              href="#"
-              class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer"
-            >
-              SphereAi
-            </a>
-            <!-- Company Dropdown -->
-            <div class="relative">
-              <button
-                id="companyButton"
-                type="button"
-                class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
-                aria-label="false"
-              >
-                Company
-                <svg
-                  id="dropdownIcon"
-                  class="size-5 flex-none color-custom-blue"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    id="arrowPath"
-                    fill-rule="evenodd"
-                    d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-              <div
-                id="companyDropdownMenu"
-                class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out"
-              >
-                <div class="p-4">
-                  <div
-                    class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white"
-                  >
-                    <div class="flex-auto">
-                      <a
-                        href="{% url 'about' %}"
-                        class="font-poppins text-base block text-center font-semibold text-white hover:text-black"
-                      >
-                        About Us
-                        <span class="absolute inset-0"></span>
-                      </a>
-                      <p
-                        class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased"
-                      >
-                        Meet the Team Behind Local Sphere.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div>
-                {% if user.is_authenticated %}
-                <!-- When Logged In: Show Profile with Dropdown -->
-                <div class="relative">
-                  <button
-                    id="userDropdownButton"
-                    type="button"
-                    class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"
-                  >
-                    <img
-                      src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
-                      alt="Profile Picture"
-                      class="w-8 h-8 rounded-full object-cover mr-2"
-                    />
-                    <span
-                      class="font-poppins text-base text-sm/6 font-medium pr-2"
-                      >{{ user.first_name }} {{ user.last_name }}</span
-                    >
-                    <svg
-                      id="userDropdownIcon"
-                      class="size-5 flex-none"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        id="userArrowPath"
-                        fill-rule="evenodd"
-                        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                        clip-rule="evenodd"
-                      />
+            <div id="openMobileMenu" class="flex lg:hidden">
+                <button type="button"
+                        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
                     </svg>
-                  </button>
-
-                  <!-- Dropdown Menu -->
-                  <div
-                    id="userDropdownMenu"
-                    class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out"
-                  >
-                    <a
-                      href="{% url 'profilePage' %}"
-                      class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      href="{% url 'logout' %}"
-                      class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100"
-                    >
-                      Logout
-                    </a>
-                  </div>
-                </div>
-                {% else %}
-                <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
-                <div class="flex items-center gap-4">
-                  <!-- Log In Button -->
-                  <a
-                    href="{% url 'login' %}"
-                    class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold"
-                  >
-                    Log in
-                  </a>
-
-                  <!-- "Start Exploring" Button -->
-                  <a
-                    href="{% url 'signup' %}"
-                    class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"
-                  >
-                    <span
-                      class="font-poppins text-base text-sm/6 font-medium pr-2"
-                      >Start Exploring</span
-                    >
-                    <span
-                      class="font-mulish text-base text-sm/6 font-medium pr-2"
-                      >It's Free</span
-                    >
-                    <span aria-hidden="true">&rarr;</span>
-                  </a>
-                </div>
-                {% endif %}
-              </div>
+                </button>
             </div>
-          </div>
+            <div class="hidden lg:flex lg:gap-8 lg:items-center">
+                <!-- Explore Button -->
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    Explore
+                </a>
+                <!-- SphereAi -->
+                <a href="#"
+                   class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
+                    SphereAi
+                </a>
+                <!-- Company Dropdown -->
+                <div class="relative">
+                    <button id="companyButton" type="button"
+                            class="flex items-center justify-center gap-x-1 text-base font-mulish text-custom-blue font-bold hover:font-extrabold subpixel-antialiased cursor-context-menu"
+                            aria-label="false">
+                        Company
+                        <svg id="dropdownIcon" class="size-5 flex-none color-custom-blue" viewBox="0 0 20 20"
+                             fill="currentColor" aria-hidden="true">
+                            <path id="arrowPath" fill-rule="evenodd"
+                                  d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <div id="companyDropdownMenu"
+                         class="hidden absolute top-full -left-20 items-center justify-center mt-6 w-max max-w-md rounded-3xl bg-custom-blue ring-1 shadow-lg ring-gray-900/5 transition duration-300 ease-in-out">
+                        <div class="p-4">
+                            <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
+                                <div class="flex-auto">
+                                    <a href="{% url 'about' %}"
+                                       class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
+                                        About Us
+                                        <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="group-font-mulish mt-2 font-medium text-white text-center text-xs group-hover:text-black subpixel-antialiased">
+                                        Meet the Team Behind Local Sphere.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        {% if user.is_authenticated %}
+                        <!-- When Logged In: Show Profile with Dropdown -->
+                        <div class="relative">
+                            <button id="userDropdownButton" type="button"
+                                    class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture"
+                                     class="w-8 h-8 rounded-full object-cover mr-2">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
+                                <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                     fill="currentColor" aria-hidden="true">
+                                    <path id="userArrowPath" fill-rule="evenodd"
+                                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div id="userDropdownMenu"
+                                class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                <a href="{% url 'profilePage' %}"
+                                class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Profile
+                                </a>
+                                <a href="{% url 'logout' %}"    
+                                    class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- When Not Logged In: Show Log In and "Start Exploring" Side by Side -->
+                        <div class="flex items-center gap-4">
+                            <!-- Log In Button -->
+                            <a href="{% url 'login' %}"
+                               class="font-mulish text-base font-bold text-custom-blue hover:font-extrabold">
+                                Log in
+                            </a>
+
+                            <!-- "Start Exploring" Button -->
+                            <a href="{% url 'signup' %}"
+                               class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <!-- Mobile menu, show/hide based on menu open state. -->
-        <div
-          id="mobileMenu"
-          class="lg:hidden hidden"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div class="fixed inset-0 z-10"></div>
-          <div
-            class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out"
-          >
-            <div class="flex items-center justify-between">
-              <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Local Sphere</span>
-                <img class="h-15 w-auto" src="../static/logo1.svg" alt="" />
-              </a>
-              <button
-                id="closeMobileMenu"
-                type="button"
-                class="-m-2.5 rounded-md p-2.5 text-gray-700"
-              >
-                <span class="sr-only">Close menu</span>
-                <svg
-                  class="size-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  data-slot="icon"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div class="mt-6 flow-root">
-              <div class="-my-6 divide-y divide-gray-500/10">
-                <div class="space-y-2 py-6">
-                  <a
-                    href="#"
-                    class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                    >Explore</a
-                  >
-                  <a
-                    href="{% url 'SphereAi' %}"
-                    class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                    >SphereAi</a
-                  >
-                  <a
-                    href="{% url 'login' %}"
-                    class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                    >Log in</a
-                  >
-                  <div class="-mx-3">
-                    <button
-                      id="mobileCompanyButton"
-                      type="button"
-                      class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                      aria-controls="disclosure-1"
-                      aria-expanded="false"
-                    >
-                      Company
-                      <svg
-                        id="mobileDropdownIcon"
-                        class="size-5 flex-none"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        data-slot="icon"
-                      >
-                        <path
-                          id="mobileArrowPath"
-                          fill-rule="evenodd"
-                          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
+        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 z-10"></div>
+            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+                <div class="flex items-center justify-between">
+                    <a href="#" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Local Sphere</span>
+                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+                    </a>
+                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                             aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                        </svg>
                     </button>
-                    <div
-                      id="mobileCompanyDropdown"
-                      class="hidden mt-2 space-y-2 transition duration-300 ease-in-out"
-                    >
-                      <a
-                        href="{% url 'about' %}"
-                        class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50"
-                        >About Us</a
-                      >
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="#"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
+                            <a href="{% url 'SphereAi' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+                            <a href="{% url 'login' %}"
+                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
+                                in</a>
+                            <div class="-mx-3">
+                                <button id="mobileCompanyButton" type="button"
+                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
+                                        aria-controls="disclosure-1" aria-expanded="false">
+                                    Company
+                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                         fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path id="mobileArrowPath" fill-rule="evenodd"
+                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                                <div id="mobileCompanyDropdown"
+                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                                    <a href="{% url 'about' %}"
+                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
+                                        Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <div>
+                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
+                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
+                                    <span aria-hidden="true">&rarr;</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="py-6">
-                  <div>
-                    <button
-                      class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer"
+            </div>
+        </div>
+    </header>
+    <!-- NEW PAGE COPY THIS UP  -->
+    <div
+            class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
+    >
+        <div
+                class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
+        >
+            <!-- Background Image -->
+            <img
+                    src="../static/sphereAiBack.png"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
+
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
                     >
-                      <span
-                        class="font-poppins text-base text-sm/6 font-medium pr-2"
-                        >Start Exploring</span
-                      >
-                      <span
-                        class="font-mulish text-base text-sm/6 font-medium pr-2"
-                        >It's Free</span
-                      >
-                      <span aria-hidden="true">&rarr;</span>
-                    </button>
-                  </div>
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="box-location" class="text-md">Chicago, IL</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
+                </span>
+                        <span id="box-date" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
+                </span>
+                        <span id="box-time" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
                 </div>
-              </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Fetched User Data
+                    </h2>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="user-fav-foods" class="text-md">Mexican</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="user-preferred-location" class="text-md"
+                        >Chicago, IL</span
+                        >
+                    </h3>
+                </div>
             </div>
-          </div>
-        </div>
-      </header>
-      <!-- NEW PAGE COPY THIS UP  -->
-      <div
-        class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
-      >
-        <div
-          class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
-        >
-          <!-- Background Image -->
-          <img
-            src="../static/sphereAiBack.png"
-            alt="Process Diagram"
-            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
-          />
-
-          <div class="relative flex flex-col items-center w-full space-y-12">
-            <!-- 📌 Card 1: User's Event Selection -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-            <h2 class="text-gray-800 font-semibold text-lg">Current Preferences</h2>
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="box-location" class="text-md">Chicago, IL</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
-                </span>
-                <span id="box-date" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
-                </span>
-                <span id="box-time" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/people.png" />
-                </span>
-                <span id="box-guests" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
-                </span>
-                <span id="box-food" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-            </div>
-
-            <!-- 🔽 Arrow -->
-            <div class="w-6 h-6">
-              <svg
-                class="w-full h-full text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-            </div>
-            <!-- 📌 New Card: User’s Favorite Foods, Restrictions, and Interests -->
-            <div
-            class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-            <h2 class="text-gray-800 font-semibold text-lg text-custom-blue">Profile:</h2>
-            <h2 class="text-gray-800 font-semibold text-lg">Preferences & Restrictions</h2>
-
-            <!-- Favorite Foods -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/foodIcon.svg" />
-              </span>
-              <span id="user-fav-foods-box" class="text-md">Loading...</span>
-            </h3>
-
-            <!-- Dietary Restrictions -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/restrictions.svg" />
-              </span>
-              <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
-            </h3>
-
-            <!-- Interests -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/search.svg" />
-              </span>
-              <span id="user-interests-box" class="text-md">Loading...</span>
-            </h3>
-            <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="user-preferred-location" class="text-md"
-                  >Chicago, IL</span
-                >
-              </h3>
-            </div>
-          </div>
         </div>
 
         <div
-          class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col"
+                class="relative w-full p-8 bg-white rounded-3xl lg:mr-15 lg:ml-5 flex flex-col"
         >
-          <div class="flex flex-row justify-between items-center w-full mr-5">
-            <div class="flex flex-col items-start justify-between w-full">
-              <label class="font-mulish text-gray-400 text-[12px] font-normal"
-                >Preferred Location</label
-              >
-              <div
-                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-              >
+            <div class="flex flex-row justify-between items-center w-full mr-5">
+                <div class="flex flex-col items-start justify-between w-full">
+                    <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                    >Preferred Location</label
+                    >
+                    <div
+                            class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
                 </span>
-                <input
-                  id="location"
-                  type="text"
-                  placeholder="Search Location..."
-                  class="w-full focus:outline-none"
-                />
-              </div>
-            </div>
-            <div class="flex flex-col items-start justify-between w-full ml-4">
-              <label class="font-mulish text-gray-400 text-[12px] font-normal"
-                >Preferred Date</label
-              >
-              <div
-                class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-              >
+                        <input
+                                id="location"
+                                type="text"
+                                placeholder="Search Location..."
+                                class="w-full focus:outline-none"
+                        />
+                    </div>
+                </div>
+                <div class="flex flex-col items-start justify-between w-full ml-4">
+                    <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                    >Preferred Date</label
+                    >
+                    <div
+                            class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                    >
                 <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
                 </span>
-                <input
-                  id="preferred-date"
-                  type="date"
-                  class="w-full focus:outline-none"
-                  required
-                />
-              </div>
+                        <input
+                                id="preferred-date"
+                                type="date"
+                                class="w-full focus:outline-none"
+                                required
+                        />
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Preferred Time</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Preferred Time</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
-                <img class="h-5 w-auto" src="../static/dayORnight.png" />
+                <img class="h-5 w-auto" src="../static/dayORnight.png"/>
               </span>
-              <select
-                id="preferred-time"
-                class="text-[16px] font-normal rounded-md w-full"
-                required
-              >
-                <option disabled selected hidden>Choose Time</option>
-                <option>Morning</option>
-                <option>Afternoon</option>
-                <option>Evening</option>
-                <option>Night</option>
-              </select>
+                    <select
+                            id="preferred-time"
+                            class="text-[16px] font-normal rounded-md w-full"
+                            required
+                    >
+                        <option disabled selected hidden>Choose Time</option>
+                        <option>Morning</option>
+                        <option>Afternoon</option>
+                        <option>Evening</option>
+                        <option>Night</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Total Attendee(s)</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Total Attendee(s)</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
                 <img
-                  class="h-5 w-auto"
-                  src="../static/people.png"
-                  alt="Peoples Icon"
+                        class="h-5 w-auto"
+                        src="../static/people.png"
+                        alt="Peoples Icon"
                 />
               </span>
-              <select
-                id="guests"
-                class="text-[16px] font-normal rounded-md w-full"
-              >
-                <option disabled selected hidden>Choose Guests</option>
-                <option>1 Guest</option>
-                <option>2 Guests</option>
-                <option>3 Guests</option>
-                <option>4 Guests</option>
-                <option>5 Guests</option>
-                <option>6 Guests</option>
-                <option>7 Guests</option>
-                <option>8 Guests</option>
-                <option>9 Guests</option>
-                <option>10+ Guests</option>
-              </select>
+                    <select
+                            id="guests"
+                            class="text-[16px] font-normal rounded-md w-full"
+                    >
+                        <option disabled selected hidden>Choose Guests</option>
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                        <option>5 Guests</option>
+                        <option>6 Guests</option>
+                        <option>7 Guests</option>
+                        <option>8 Guests</option>
+                        <option>9 Guests</option>
+                        <option>10+ Guests</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Favorite Food & Cuisines</label
-            >
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Favorite Food & Cuisines</label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
                 <img
-                  class="h-5 w-auto"
-                  src="../static/foodIcon.svg"
-                  alt="Peoples Icon"
+                        class="h-5 w-auto"
+                        src="../static/foodIcon.svg"
+                        alt="Peoples Icon"
                 />
               </span>
-              <select
-                id="food"
-                class="text-[16px] font-normal rounded-md w-full"
-                required
-              >
-                <option disabled selected hidden>Choose Food</option>
-                <option>Italian</option>
-                <option>Mexican</option>
-                <option>American</option>
-                <option>Chinese</option>
-              </select>
+                    <select
+                            id="food"
+                            class="text-[16px] font-normal rounded-md w-full"
+                            required
+                    >
+                        <option disabled selected hidden>Choose Food</option>
+                        <option>Italian</option>
+                        <option>Mexican</option>
+                        <option>American</option>
+                        <option>Chinese</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <div class="flex flex-col items-start justify-between w-full mt-6">
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Ocasion (Optional)
-            </label>
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Ocasion (Optional) </label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
                 <img
-                  class="h-5 w-auto"
-                  src="../static/ocassion.svg"
-                  alt="Peoples Icon"
+                        class="h-5 w-auto"
+                        src="../static/ocassion.svg"
+                        alt="Peoples Icon"
                 />
               </span>
-              <select
-                id="ocasion"
-                class="text-[16px] font-normal rounded-md w-full"
-                required
-              >
-                <option disabled selected hidden>Choose Ocasion</option>
-                <option>Graduation<a/option></option>
-                <option>Birthday</option>
-                <option>Meeting</option>
-                <option>Retirement</option>
-                <option>Date</option>
-                <option>Just for Fun</option>
-              </select>
+                    <select
+                            id="ocasion"
+                            class="text-[16px] font-normal rounded-md w-full"
+                            required
+                    >
+                        <option disabled selected hidden>Choose Ocasion</option>
+                        <option>Graduation<a/option>
+                        <option>Birthday</option>
+                        <option>Meeting</option>
+                        <option>Retierment</option>
+                        <option>Date</option>
+                        <option>Just for Fun</option>
+                    </select>
+                </div>
             </div>
-          </div>
 
-          <div
-            class="flex flex-col items-start justify-between w-full mt-6 mb-6"
-          >
-            <label class="font-mulish text-gray-400 text-[12px] font-normal"
-              >Edit Day Order
-            </label>
-            <div
-              class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
-            >
+            <div class="flex flex-col items-start justify-between w-full mt-6 mb-6">
+                <label class="font-mulish text-gray-400 text-[12px] font-normal"
+                >Edit Day Order </label
+                >
+                <div
+                        class="flex items-center border border-gray-300 rounded-2xl mt-1 px-3 py-2 w-full text-[16px] font-normal"
+                >
               <span class="mr-2">
                 <img
-                  class="h-5 w-auto"
-                  src="../static/preference.svg"
-                  alt="Peoples Icon"
+                        class="h-5 w-auto"
+                        src="../static/preference.svg"
+                        alt="Peoples Icon"
                 />
               </span>
-              <select
-                id="order"
-                class="text-[16px] font-normal rounded-md w-full"
-                required
-              >
-                <option value="Lunch Then Activity">Food Then Event</option>
-                <option value="Activity Then Lunch">Event Then Food</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Buttons -->
-          <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
-            <button
-              id="recreate-btn"
-              class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
-              onclick="showLoading()"
-            >
-              Craft Your Plan
-            </button>
-            <div id="loadingText" class="loading-container">
-              Loading<span class="dot">.</span><span class="dot">.</span
-              ><span class="dot">.</span>
-            </div>
-          </div>
-
-          <!--HERE-->
-          <div id="response-container" class="mt-4"></div>
-          <!--HERE-->
-        </div>
-
-        <div
-          class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
-        >
-          <!-- Background Image -->
-          <img
-            src="../static/sphereAiBack.png"
-            alt="Process Diagram"
-            class="absolute inset-0 w-full h-full object-cover rounded-2xl"
-          />
-
-          <div class="relative flex flex-col items-center w-full space-y-12">
-            <!-- 📌 Card 1: User's Event Selection -->
-            <div
-              class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-              <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span class="text-md">Chicago, IL</span>
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/calendar.svg" />
-                </span>
-                <span id="box-date-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/dayORnight.png" />
-                </span>
-                <span id="box-time-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/people.png" />
-                </span>
-                <span id="box-guests-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
-
-              <h3
-                class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/foodIcon.svg" />
-                </span>
-                <span id="box-food-mobile" class="text-md"
-                  >Waiting For User Selection...</span
-                >
-              </h3>
+                    <select id="order" class="text-[16px] font-normal rounded-md w-full" required>
+                        <option value="Lunch Then Activity">Food Then Event</option>
+                        <option value="Activity Then Lunch">Event Then Food </option>
+                    </select>
+                </div>
             </div>
 
-            <!-- 🔽 Arrow -->
-            <div class="w-6 h-6">
-              <svg
-                class="w-full h-full text-gray-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-            </div>
-            <!-- 📌 New Card: User’s Favorite Foods, Restrictions, and Interests -->
-            <div
-            class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
-            >
-            <h2 class="text-gray-800 font-semibold text-lg text-custom-blue">Profile:</h2>
-            <h2 class="text-gray-800 font-semibold text-lg">Preferences & Restrictions</h2>
 
-            <!-- Favorite Foods -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/foodIcon.svg" />
-              </span>
-              <span id="user-fav-foods-box" class="text-md">Loading...</span>
-            </h3>
+            
 
-            <!-- Dietary Restrictions -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/restrictions.svg" />
-              </span>
-              <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
-            </h3>
 
-            <!-- Interests -->
-            <h3
-              class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
-            >
-              <span class="mr-2">
-                <img class="h-6 w-auto" src="../static/search.svg" />
-              </span>
-              <span id="user-interests-box" class="text-md">Loading...</span>
-            </h3>
-            <h3
-                class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
-              >
-                <span class="mr-2">
-                  <img class="h-5 w-auto" src="../static/location.svg" />
-                </span>
-                <span id="user-preferred-location" class="text-md"
-                  >Chicago, IL</span
+            <!-- Buttons -->
+            <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
+                <button
+                    id="recreate-btn"
+                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    onclick="showLoading()"
                 >
-              </h3>
+                    Craft Your Plan
+                </button>
+                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
             </div>
 
             
-          </div>
+            <!--HERE-->
+            <div id="response-container" class="mt-4"></div>
+            <!--HERE-->
         </div>
-      </div>
-    </main>
-    <script>
-      async function initializeGoogleMaps() {
+
+        <div
+                class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
+        >
+            <!-- Background Image -->
+            <img
+                    src="../static/sphereAiBack.png"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
+
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span class="text-md">Chicago, IL</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
+                </span>
+                        <span id="box-date-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
+                </span>
+                        <span id="box-time-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Fetched User Data
+                    </h2>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="user-food-mobile" class="text-md">Mexican</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="user-preferred-location-mobile" class="text-md"
+                        >Chicago, I</span
+                        >
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    async function initializeGoogleMaps() {
         try {
-          // Fetch Google Maps API Key from Django backend
-          const response = await fetch("/api/getGoogleMapsApiKey/");
-          const data = await response.json();
-          const apiKey = data.apiKey;
+            // Fetch Google Maps API Key from Django backend
+            const response = await fetch("/api/getGoogleMapsApiKey/");
+            const data = await response.json();
+            const apiKey = data.apiKey;
 
-          if (!apiKey) {
-            console.error("Google Maps API Key not found.");
-            return;
-          }
+            if (!apiKey) {
+                console.error("Google Maps API Key not found.");
+                return;
+            }
 
-          // Dynamically load Google Maps script
-          const script = document.createElement("script");
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initializeAutocomplete`;
-          script.async = true;
-          script.defer = true;
-          document.body.appendChild(script);
+            // Dynamically load Google Maps script
+            const script = document.createElement("script");
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initializeAutocomplete`;
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+
         } catch (error) {
-          console.error("Error fetching Google Maps API Key:", error);
+            console.error("Error fetching Google Maps API Key:", error);
         }
-      }
+    }
 
-      function initializeAutocomplete() {
+    function initializeAutocomplete() {
         const input = document.getElementById("location");
         if (!input) {
-          console.error("Location input field not found.");
-          return;
+            console.error("Location input field not found.");
+            return;
         }
 
-        let userPreferredLocation =
-          localStorage.getItem("location") || "Search City";
+        let userPreferredLocation = localStorage.getItem("location") || "Search City";
         input.value = userPreferredLocation; // Set default value
 
         const autocomplete = new google.maps.places.Autocomplete(input, {
-          types: ["(cities)"], // Restrict to cities
+            types: ["(cities)"], // Restrict to cities
         });
 
         autocomplete.addListener("place_changed", function () {
-          const place = autocomplete.getPlace();
-          if (!place.geometry) {
-            alert("No details available for: " + place.name);
-            return;
-          }
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                alert("No details available for: " + place.name);
+                return;
+            }
 
-          document.getElementById("box-location").textContent = place.name;
-          localStorage.setItem("location", place.name);
+            document.getElementById("box-location").textContent = place.name;
+            localStorage.setItem("location", place.name);
         });
 
-        google.maps.event.addListener(
-          autocomplete,
-          "place_changed",
-          function () {
+        google.maps.event.addListener(autocomplete, "place_changed", function () {
             const pacContainer = document.querySelector(".pac-container");
             if (pacContainer) {
-              pacContainer.style.width = input.offsetWidth + "px";
+                pacContainer.style.width = input.offsetWidth + "px";
             }
-          }
-        );
-      }
+        });
+    }
 
-      // Call the function to load Google Maps dynamically
-      document.addEventListener("DOMContentLoaded", initializeGoogleMaps);
+    // Call the function to load Google Maps dynamically
+    document.addEventListener("DOMContentLoaded", initializeGoogleMaps);
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         console.log("Loading SphereAI page data...");
 
         // Check if data was stored in localStorage (which means page was accessed via redirect)
@@ -1021,78 +845,80 @@
 
         // 🔹 Clear data only if redirected from index.html
         if (redirected) {
-          setTimeout(() => {
-            localStorage.removeItem("location");
-            localStorage.removeItem("date");
-            localStorage.removeItem("time");
-            localStorage.removeItem("guests");
-            localStorage.removeItem("food");
-            console.log("LocalStorage data cleared after switch.");
-          }, 1000); // 1-second delay to ensure values are populated first
+            setTimeout(() => {
+                localStorage.removeItem("location");
+                localStorage.removeItem("date");
+                localStorage.removeItem("time");
+                localStorage.removeItem("guests");
+                localStorage.removeItem("food");
+                console.log("LocalStorage data cleared after switch.");
+            }, 1000); // 1-second delay to ensure values are populated first
         }
-      });
+    });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        // Simulated fetched user profile data from the database (Replace with API call)
-        const userProfile = {
-          location: "Chicago, IL",
-          food: "Italian",
-        };
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Simulated fetched user profile data from the database (Replace with API call)
+    const userProfile = {
+        location: "Chicago, IL",
+        food: "Italian",
+    };
 
         // Get all form inputs
         const formInputs = {
-          location: document.getElementById("location"),
-          date: document.getElementById("preferred-date"),
-          time: document.getElementById("preferred-time"),
-          attendees: document.getElementById("guests"),
-          food: document.getElementById("food"),
-          ocasion: document.getElementById("ocasion"), // New dropdown
-          order: document.getElementById("order"), // New dropdown
-        };
+        location: document.getElementById("location"),
+        date: document.getElementById("preferred-date"),
+        time: document.getElementById("preferred-time"),
+        attendees: document.getElementById("guests"),
+        food: document.getElementById("food"),
+        ocasion: document.getElementById("ocasion"), // New dropdown
+        order: document.getElementById("order") // New dropdown
+    };
 
         // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
-          boxLocation: document.getElementById("box-location"),
-          boxDate: document.getElementById("box-date"),
-          boxTime: document.getElementById("box-time"),
-          boxAttendees: document.getElementById("box-guests"),
-          boxFood: document.getElementById("box-food"),
+            boxLocation: document.getElementById("box-location"),
+            boxDate: document.getElementById("box-date"),
+            boxTime: document.getElementById("box-time"),
+            boxAttendees: document.getElementById("box-guests"),
+            boxFood: document.getElementById("box-food"),
 
-          // Mobile version elements
-          boxLocationMobile: document.getElementById("box-location-mobile"),
-          boxDateMobile: document.getElementById("box-date-mobile"),
-          boxTimeMobile: document.getElementById("box-time-mobile"),
-          boxAttendeesMobile: document.getElementById("box-guests-mobile"),
-          boxFoodMobile: document.getElementById("box-food-mobile"),
+            // Mobile version elements
+            boxLocationMobile: document.getElementById("box-location-mobile"),
+            boxDateMobile: document.getElementById("box-date-mobile"),
+            boxTimeMobile: document.getElementById("box-time-mobile"),
+            boxAttendeesMobile: document.getElementById("box-guests-mobile"),
+            boxFoodMobile: document.getElementById("box-food-mobile"),
         };
 
         // Function to update values dynamically for both desktop & mobile versions
         function updateDisplay(field, value) {
-          if (
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
-            ]
-          ) {
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}`
-            ].textContent = value || "--";
-          }
-          if (
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
-            ]
-          ) {
-            displayElements[
-              `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
-            ].textContent = value || "--";
-          }
+            if (
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+                    ]
+            ) {
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}`
+                    ].textContent = value || "--";
+            }
+            if (
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+                    ]
+            ) {
+                displayElements[
+                    `box${field.charAt(0).toUpperCase() + field.slice(1)}Mobile`
+                    ].textContent = value || "--";
+            }
         }
 
         Object.keys(formInputs).forEach((key) => {
-          formInputs[key].addEventListener("input", function () {
+        formInputs[key].addEventListener("input", function () {
             updateDisplay(key, this.value);
-          });
         });
+    });
 
         const dateInput = formInputs.date;
         const today = new Date();
@@ -1102,275 +928,264 @@
         const todayStr = today.toISOString().split("T")[0];
         const futureDateStr = futureDate.toISOString().split("T")[0];
 
-        dateInput.setAttribute("min", todayStr); // Set min date as today
+        dateInput.setAttribute("min", todayStr);  // Set min date as today
         dateInput.setAttribute("max", futureDateStr); // Set max date as 14 days from today
         dateInput.value = todayStr; // Pre-populate today's date
 
         dateInput.addEventListener("change", function () {
-          this.blur();
+            this.blur();
         });
 
         // Close date picker when clicking outside
         document.addEventListener("click", function (event) {
-          if (!dateInput.contains(event.target)) {
-            dateInput.blur();
-          }
+            if (!dateInput.contains(event.target)) {
+                dateInput.blur();
+            }
         });
 
-        const userDropdownButton =
-          document.getElementById("userDropdownButton");
+
+        const userDropdownButton = document.getElementById("userDropdownButton");
         const userDropdownMenu = document.getElementById("userDropdownMenu");
 
         userDropdownButton.addEventListener("click", function () {
-          userDropdownMenu.classList.toggle("hidden");
+            userDropdownMenu.classList.toggle("hidden");
         });
 
         // Close dropdown if clicking outside
         document.addEventListener("click", function (event) {
-          if (
-            !userDropdownButton.contains(event.target) &&
-            !userDropdownMenu.contains(event.target)
-          ) {
-            userDropdownMenu.classList.add("hidden");
-          }
+            if (!userDropdownButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.add("hidden");
+            }
         });
 
         function updateUserProfile() {
-          document.getElementById("user-fav-foods").textContent =
-            userProfile.food;
-          document.getElementById("user-food-mobile").textContent =
-            userProfile.food;
-          document.getElementById("user-preferred-location").textContent =
-            userProfile.location;
-          document.getElementById(
-            "user-preferred-location-mobile"
-          ).textContent = userProfile.location;
+            document.getElementById("user-fav-foods").textContent =
+                userProfile.food;
+            document.getElementById("user-food-mobile").textContent =
+                userProfile.food;
+            document.getElementById("user-preferred-location").textContent =
+                userProfile.location;
+            document.getElementById(
+                "user-preferred-location-mobile"
+            ).textContent = userProfile.location;
 
-          formInputs.food.value = userProfile.food;
-          updateDisplay("food", userProfile.food);
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
         }
 
         updateUserProfile();
 
         formInputs.food.addEventListener("change", function () {
-          const selectedFood = this.value.trim();
-          const foodDisplay = document.getElementById("user-fav-foods");
-          const foodDisplayMobile = document.getElementById("user-food-mobile");
+            const selectedFood = this.value.trim();
+            const foodDisplay = document.getElementById("user-fav-foods");
+            const foodDisplayMobile = document.getElementById("user-food-mobile");
 
-          if (selectedFood && selectedFood !== userProfile.food) {
-            foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
-            foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+            if (selectedFood && selectedFood !== userProfile.food) {
+                foodDisplay.innerHTML = `${userProfile.food} <span id="reset-food" class="cursor-pointer text-green-500 ml-2">➕</span>`;
+                foodDisplayMobile.innerHTML = `${userProfile.food} <span id="reset-food-mobile" class="cursor-pointer text-green-500 ml-2">➕</span>`;
 
-            document
-              .getElementById("reset-food")
-              .addEventListener("click", resetFood);
-            document
-              .getElementById("reset-food-mobile")
-              .addEventListener("click", resetFood);
-          } else {
-            foodDisplay.innerHTML = `${userProfile.food}`;
-            foodDisplayMobile.innerHTML = `${userProfile.food}`;
-          }
+                document
+                    .getElementById("reset-food")
+                    .addEventListener("click", resetFood);
+                document
+                    .getElementById("reset-food-mobile")
+                    .addEventListener("click", resetFood);
+            } else {
+                foodDisplay.innerHTML = `${userProfile.food}`;
+                foodDisplayMobile.innerHTML = `${userProfile.food}`;
+            }
         });
 
         // Function to reset food to user's fetched data
         function resetFood() {
-          formInputs.food.value = userProfile.food;
-          updateDisplay("food", userProfile.food);
-          document.getElementById(
-            "user-fav-foods"
-          ).innerHTML = `${userProfile.food}`;
-          document.getElementById(
-            "user-food-mobile"
-          ).innerHTML = `${userProfile.food}`;
+            formInputs.food.value = userProfile.food;
+            updateDisplay("food", userProfile.food);
+            document.getElementById(
+                "user-fav-foods"
+            ).innerHTML = `${userProfile.food}`;
+            document.getElementById(
+                "user-food-mobile"
+            ).innerHTML = `${userProfile.food}`;
         }
 
         // START OF
         // FRONTEND API
+        // DISCLAIMER: THE API KEY IS EXPOSED BE CAREFUL
         // Get all form inputs
         // const formInputs contains all user inputs
 
         // Event listener on the 'Craft Your Plan' button
-        document
-          .getElementById("recreate-btn")
-          .addEventListener("click", async function () {
-            const apiUrl = "http://localhost:8000/generate-date-plan/";
+        document.getElementById("recreate-btn").addEventListener("click", async function () {
+        const apiUrl = "http://localhost:8000/generate-date-plan/";
 
-            // Fetch input values including the new dropdowns
-            const location = formInputs.location.value;
-            const date = formInputs.date.value;
-            const time = formInputs.time.value;
-            const attendees = formInputs.attendees.value;
-            const food = formInputs.food.value;
-            const ocasion = formInputs.ocasion.value; // New dropdown
-            const order = formInputs.order.value; // New dropdown
+        // Fetch input values including the new dropdowns
+        const location = formInputs.location.value;
+        const date = formInputs.date.value;
+        const time = formInputs.time.value;
+        const attendees = formInputs.attendees.value;
+        const food = formInputs.food.value;
+        const ocasion = formInputs.ocasion.value; // New dropdown
+        const order = formInputs.order.value; // New dropdown
 
-            console.log("🚀 Sending API Request to:", apiUrl);
-            console.log("📨 Payload:", {
-              location,
-              date,
-              time,
-              attendees,
-              food,
-              ocasion,
-              order,
-            });
+        console.log("🚀 Sending API Request to:", apiUrl);
+        console.log("📨 Payload:", { location, date, time, attendees, food, ocasion, order });
 
-            try {
-              const response = await fetch(apiUrl, {
+        try {
+            const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
                 },
                 body: JSON.stringify({
-                  location,
-                  date,
-                  time,
-                  attendees,
-                  food,
-                  ocasion,
-                  order,
+                    location,
+                    date,
+                    time,
+                    attendees,
+                    food,
+                    ocasion,
+                    order
                 }),
-              });
+            });
 
-              console.log("✅ Response Status:", response.status);
+            console.log("✅ Response Status:", response.status);
 
-              if (!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-
-              const data = await response.json();
-              console.log("📩 Received Data:", data);
-
-              // Store response data
-              localStorage.setItem("planData", JSON.stringify(data));
-
-              // Redirect to confirmation page
-              window.location.href = "{% url 'planConfirmation' %}";
-            } catch (error) {
-              console.error("❌ Fetch error:", error);
-              alert(`Error creating plan: ${error.message}`);
             }
-          });
-      });
 
-      function showLoading() {
-        let loadingText = document.getElementById("loadingText");
-        loadingText.classList.add("show");
+            const data = await response.json();
+            console.log("📩 Received Data:", data);
 
-        // Simulate loading process (hide after 3 seconds)
-        setTimeout(() => {
-          loadingText.classList.remove("show");
-        }, 300000);
-      }
+            // Store response data
+            localStorage.setItem("planData", JSON.stringify(data));
 
-      ////////////////////////////////////// Header Script /////////////////////////////////////
+            // Redirect to confirmation page
+            window.location.href = "{% url 'planConfirmation' %}";
 
-      document.addEventListener("DOMContentLoaded", function () {
+        } catch (error) {
+            console.error("❌ Fetch error:", error);
+            alert(`Error creating plan: ${error.message}`);
+        }
+    });
+});
+
+    function showLoading() {
+    let loadingText = document.getElementById("loadingText");
+    loadingText.classList.add("show");
+
+    // Simulate loading process (hide after 3 seconds)
+    setTimeout(() => {
+        loadingText.classList.remove("show");
+    }, 300000);
+}
+
+    ////////////////////////////////////// Header Script /////////////////////////////////////
+
+    document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
         const dropdownMenu = document.getElementById("companyDropdownMenu");
         const dropdownIcon = document.getElementById("dropdownIcon");
         const arrowPath = document.getElementById("arrowPath");
 
         toggleButton.addEventListener("click", function () {
-          if (dropdownMenu.classList.contains("hidden")) {
-            // Show dropdown with animation
-            dropdownMenu.classList.remove("hidden");
-            setTimeout(() => {
-              dropdownMenu.classList.remove("opacity-0", "scale-95");
-              dropdownMenu.classList.add("opacity-100", "scale-100");
-            }, 10);
+            if (dropdownMenu.classList.contains("hidden")) {
+                // Show dropdown with animation
+                dropdownMenu.classList.remove("hidden");
+                setTimeout(() => {
+                    dropdownMenu.classList.remove("opacity-0", "scale-95");
+                    dropdownMenu.classList.add("opacity-100", "scale-100");
+                }, 10);
 
-            // Rotate the arrow up
-            dropdownIcon.classList.add("rotate-180");
-          } else {
-            // Hide dropdown with animation
-            dropdownMenu.classList.remove("opacity-100", "scale-100");
-            dropdownMenu.classList.add("opacity-0", "scale-95");
+                // Rotate the arrow up
+                dropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              dropdownMenu.classList.add("hidden");
-            }, 300); // Wait for animation to complete before hiding
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
 
-            // Rotate the arrow back down
-            dropdownIcon.classList.remove("rotate-180");
-          }
+                // Rotate the arrow back down
+                dropdownIcon.classList.remove("rotate-180");
+            }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-          if (
-            !toggleButton.contains(event.target) &&
-            !dropdownMenu.contains(event.target)
-          ) {
-            dropdownMenu.classList.remove("opacity-100", "scale-100");
-            dropdownMenu.classList.add("opacity-0", "scale-95");
+            if (
+                !toggleButton.contains(event.target) &&
+                !dropdownMenu.contains(event.target)
+            ) {
+                dropdownMenu.classList.remove("opacity-100", "scale-100");
+                dropdownMenu.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              dropdownMenu.classList.add("hidden");
-            }, 300);
+                setTimeout(() => {
+                    dropdownMenu.classList.add("hidden");
+                }, 300);
 
-            // Reset arrow to down position
-            dropdownIcon.classList.remove("rotate-180");
-          }
+                // Reset arrow to down position
+                dropdownIcon.classList.remove("rotate-180");
+            }
         });
-      });
+    });
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const mobileDropdownButton = document.getElementById(
-          "mobileCompanyButton"
+            "mobileCompanyButton"
         );
         const mobileDropdown = document.getElementById("mobileCompanyDropdown");
         const mobileDropdownIcon =
-          document.getElementById("mobileDropdownIcon");
+            document.getElementById("mobileDropdownIcon");
         const mobileArrowPath = document.getElementById("mobileArrowPath");
 
         mobileDropdownButton.addEventListener("click", function () {
-          if (mobileDropdown.classList.contains("hidden")) {
-            // Show dropdown with animation
-            mobileDropdown.classList.remove("hidden");
-            setTimeout(() => {
-              mobileDropdown.classList.remove("opacity-0", "scale-95");
-              mobileDropdown.classList.add("opacity-100", "scale-100");
-            }, 10);
+            if (mobileDropdown.classList.contains("hidden")) {
+                // Show dropdown with animation
+                mobileDropdown.classList.remove("hidden");
+                setTimeout(() => {
+                    mobileDropdown.classList.remove("opacity-0", "scale-95");
+                    mobileDropdown.classList.add("opacity-100", "scale-100");
+                }, 10);
 
-            // Rotate the arrow up
-            mobileDropdownIcon.classList.add("rotate-180");
-          } else {
-            // Hide dropdown with animation
-            mobileDropdown.classList.remove("opacity-100", "scale-100");
-            mobileDropdown.classList.add("opacity-0", "scale-95");
+                // Rotate the arrow up
+                mobileDropdownIcon.classList.add("rotate-180");
+            } else {
+                // Hide dropdown with animation
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              mobileDropdown.classList.add("hidden");
-            }, 300); // Wait for animation to complete before hiding
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300); // Wait for animation to complete before hiding
 
-            // Rotate the arrow back down
-            mobileDropdownIcon.classList.remove("rotate-180");
-          }
+                // Rotate the arrow back down
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
         });
 
         // Hide dropdown when clicking outside
         document.addEventListener("click", function (event) {
-          if (
-            !mobileDropdownButton.contains(event.target) &&
-            !mobileDropdown.contains(event.target)
-          ) {
-            mobileDropdown.classList.remove("opacity-100", "scale-100");
-            mobileDropdown.classList.add("opacity-0", "scale-95");
+            if (
+                !mobileDropdownButton.contains(event.target) &&
+                !mobileDropdown.contains(event.target)
+            ) {
+                mobileDropdown.classList.remove("opacity-100", "scale-100");
+                mobileDropdown.classList.add("opacity-0", "scale-95");
 
-            setTimeout(() => {
-              mobileDropdown.classList.add("hidden");
-            }, 300);
+                setTimeout(() => {
+                    mobileDropdown.classList.add("hidden");
+                }, 300);
 
-            // Reset arrow to down position
-            mobileDropdownIcon.classList.remove("rotate-180");
-          }
+                // Reset arrow to down position
+                mobileDropdownIcon.classList.remove("rotate-180");
+            }
         });
-      });
+    });
 
-      document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const mobileMenu = document.getElementById("mobileMenu");
         const openMobileMenu = document.getElementById("openMobileMenu");
         const closeMobileMenu = document.getElementById("closeMobileMenu");
@@ -1378,72 +1193,54 @@
 
         // Open mobile menu when clicking the hamburger button
         openMobileMenu.addEventListener("click", function () {
-          mobileMenu.classList.remove("hidden");
+            mobileMenu.classList.remove("hidden");
         });
 
         // Close mobile menu when clicking the close button
         closeMobileMenu.addEventListener("click", function () {
-          mobileMenu.classList.add("hidden");
+            mobileMenu.classList.add("hidden");
         });
 
         // Close mobile menu when clicking outside (on the backdrop)
         mobileBackdrop.addEventListener("click", function () {
-          mobileMenu.classList.add("hidden");
+            mobileMenu.classList.add("hidden");
         });
-      });
+    });
 
-      ////// Script for pulling event then food //////
+    ////// Script for pulling event then food //////
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const activity1 = localStorage.getItem("activity1") || "🍽️ Food";
-        const activity2 = localStorage.getItem("activity2") || "🎭 Event";
-        let orderPreference = localStorage.getItem("orderPreference");
+    document.addEventListener("DOMContentLoaded", function () {
+    const activity1 = localStorage.getItem("activity1") || "🍽️ Food";
+    const activity2 = localStorage.getItem("activity2") || "🎭 Event";
+    let orderPreference = localStorage.getItem("orderPreference");
 
-        console.log("Retrieved from localStorage:", {
-          activity1,
-          activity2,
-          orderPreference,
-        });
+    console.log("Retrieved from localStorage:", { activity1, activity2, orderPreference });
 
-        // Update page with retrieved selections
-        document.getElementById("box-activity-1").textContent = activity1;
-        document.getElementById("box-activity-2").textContent = activity2;
+    // Update page with retrieved selections
+    document.getElementById("box-activity-1").textContent = activity1;
+    document.getElementById("box-activity-2").textContent = activity2;
 
-        // Convert stored value back if necessary
-        if (orderPreference === "Food Then Event") {
-          orderPreference = "Lunch Then Activity";
-        } else if (orderPreference === "Event Then Food") {
-          orderPreference = "Activity Then Lunch";
-        }
+    // Convert stored value back if necessary
+    if (orderPreference === "Food Then Event") {
+        orderPreference = "Lunch Then Activity";
+    } else if (orderPreference === "Event Then Food") {
+        orderPreference = "Activity Then Lunch";
+    }
 
-        // Set dropdown value based on stored order
-        const orderDropdown = document.getElementById("order");
-        if (orderDropdown && orderPreference) {
-          orderDropdown.value = orderPreference;
-        }
+    // Set dropdown value based on stored order
+    const orderDropdown = document.getElementById("order");
+    if (orderDropdown && orderPreference) {
+        orderDropdown.value = orderPreference;
+    }
 
-        // Optional: Clear selections after retrieval
-        setTimeout(() => {
-          localStorage.removeItem("activity1");
-          localStorage.removeItem("activity2");
-          localStorage.removeItem("orderPreference");
-          console.log("Cleared stored activity selections.");
-        }, 2000);
-      });
-
-
-// Loading User Info /.////////
-  document.addEventListener("DOMContentLoaded", function () {
-    // Fetch user data from Django template variables
-    const favoriteFoods = "{{ favorite_foods }}";
-    const dietaryRestrictions = "{{ dietary_restrictions }}";
-    const interests = "{{ interests }}";
-
-    // Update left-side UI dynamically
-    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
-    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
-    document.getElementById("user-interests-box").textContent = interests || "Not Set";
-  });
-    </script>
-  </body>
+    // Optional: Clear selections after retrieval
+    setTimeout(() => {
+        localStorage.removeItem("activity1");
+        localStorage.removeItem("activity2");
+        localStorage.removeItem("orderPreference");
+        console.log("Cleared stored activity selections.");
+    }, 2000);
+});
+</script>
+</body>
 </html>
