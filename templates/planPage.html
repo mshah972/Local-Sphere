@@ -582,75 +582,73 @@
 
 
     async function fetchRestaurantBooking() {
-        const restaurantNameElement = document.getElementById("restaurant-name");
+        try {
+            let restaurantNameElement = document.getElementById("restaurant-name");
 
-        // Ensure restaurant name is available before proceeding
-        if (!restaurantNameElement || restaurantNameElement.textContent === "Loading...") {
-            console.warn("⚠️ Restaurant name not loaded yet. Retrying...");
-            setTimeout(fetchRestaurantBooking, 500);
-            return;
-        }
-
-        const restaurantName = restaurantNameElement.textContent.trim();
-        console.log("🔍 Fetching Yelp Booking for:", restaurantName);
-
-        const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
-        const data = await response.json();
-
-        console.log("📜 API Response:", data);
-
-        const bookingContainer = document.getElementById("booking-times");
-        const reserveButton = document.getElementById("reserve-button");
-        const loadingText = document.getElementById("loading-text");
-
-        // Remove loading text
-        if (loadingText) {
-            loadingText.remove();
-        }
-
-        // Clear existing content
-        bookingContainer.innerHTML = "";
-
-        if (data.error) {
-            console.error("🚨 API Error:", data.error);
-            bookingContainer.innerHTML = `<p class="text-red-500">${data.error}</p>`;
-            return;
-        }
-
-        // ✅ Check if the restaurant supports reservations
-        if (!data.booking_url) {
-            console.warn("⚠️ No reservation link available for:", restaurantName);
-
-            // Provide the Yelp business page instead
-            if (data.business_url) {
-                bookingContainer.innerHTML = `
-                <p class="text-gray-500 text-sm">
-                    This restaurant does not support direct reservations, but you can view their page on Yelp:
-                </p>
-                <a href="${data.business_url}" target="_blank" class="bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out">
-                    View on Yelp
-                </a>
-            `;
-            } else {
-                bookingContainer.innerHTML = `
-                <p class="text-gray-500 text-sm">
-                    This restaurant does not support online reservations.
-                </p>`;
+            // Wait for restaurant name to load (max retries: 10)
+            let retries = 0;
+            while ((!restaurantNameElement || restaurantNameElement.textContent === "Loading...") && retries < 10) {
+                console.warn(`⚠️ Restaurant name not loaded yet. Retrying... (${retries + 1}/10)`);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retrying
+                restaurantNameElement = document.getElementById("restaurant-name");
+                retries++;
             }
-            return;
+
+            // If still not loaded, exit the function
+            if (!restaurantNameElement || restaurantNameElement.textContent === "Loading...") {
+                console.error("❌ Restaurant name failed to load after multiple attempts.");
+                return;
+            }
+
+            const restaurantName = restaurantNameElement.textContent.trim();
+            console.log("🔍 Fetching Yelp Business Page for:", restaurantName);
+
+            const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
+            const data = await response.json();
+
+            console.log("📜 API Response:", data);
+
+            const bookingContainer = document.getElementById("booking-times");
+            const reserveButton = document.getElementById("reserve-button");
+            const loadingText = document.getElementById("loading-text");
+
+            // Remove loading text
+            if (loadingText) {
+                loadingText.remove();
+            }
+
+            // Clear existing content
+            bookingContainer.innerHTML = "";
+
+            if (data.error) {
+                console.error("🚨 API Error:", data.error);
+                bookingContainer.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+                return;
+            }
+
+            // ✅ Check if the restaurant has a Yelp business page
+            if (!data.business_url) {
+                console.warn("⚠️ No Yelp business page available for:", restaurantName);
+                bookingContainer.innerHTML = `<p class="text-gray-500 text-sm">This restaurant does not support Yelp Reservations.</p>`;
+                return;
+            }
+
+            // ✅ Update Button for Yelp Business Page
+            reserveButton.classList.remove("hidden", "opacity-0");
+            reserveButton.innerText = "View on Yelp";
+            reserveButton.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
+            reserveButton.onclick = () => window.open(data.business_url, "_blank");
+
+            bookingContainer.appendChild(reserveButton);
+
+        } catch (error) {
+            console.error("❌ Error fetching restaurant booking:", error);
         }
-
-        // ✅ Update Button for Yelp Reservations
-        reserveButton.classList.remove("hidden", "opacity-0");
-        reserveButton.innerText = "Reserve on Yelp";
-        reserveButton.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
-        reserveButton.onclick = () => window.open(data.booking_url, "_blank");
-
-        bookingContainer.appendChild(reserveButton);
     }
 
-    // ✅ Fetch booking when page loads
+    // ✅ Ensure function runs only when DOM is fully loaded
     document.addEventListener("DOMContentLoaded", fetchRestaurantBooking);
+
 
 
     async function loadPlanDetails() {
