@@ -473,6 +473,8 @@
     </main>
 
 <script>
+    const addressCoordinatesCache = {}; // Store address-coordinates pairs
+
 
     document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
@@ -648,9 +650,19 @@
         async function getCoordinates(address) {
             try {
                 if (!address || address.trim() === "") return null;
+                if (addressCoordinatesCache[address]) {
+                    return addressCoordinatesCache[address];
+                }
+
                 const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`);
+
                 const data = await response.json();
-                return data.features.length > 0 ? data.features[0].center : null;
+                if (data.features.length > 0) {
+                    const coordinates = data.features[0].center;
+                    addressCoordinatesCache[address] = coordinates; // Save to cache
+                    return coordinates;
+                    }
+                return null;
             } catch (error) {
                 console.error("Error fetching coordinates:", error);
                 return null;
@@ -932,14 +944,18 @@ document.addEventListener("DOMContentLoaded", function () {
              alert("Please select a restaurant and an event before saving.");
              return;
         }
+        const restaurantCoord = addressCoordinatesCache[selectedRestaurant.address];
+        const eventCoord = addressCoordinatesCache[selectedEvent.address];
+
 
         const selectedData = {
             date: planDetails.date,
             time: planDetails.time,
             guests: planDetails.guests,
             occasion: planDetails.occasion,
-            restaurant: selectedRestaurant ? { name: selectedRestaurant.name, address: selectedRestaurant.address } : null,
-            event: selectedEvent ? { name: selectedEvent.name, address: selectedEvent.address } : null,
+            restaurant: selectedRestaurant ? { name: selectedRestaurant.name, address: selectedRestaurant.address, latitude: restaurantCoord[0], longitude: restaurantCoord[1]} : null,
+            event: selectedEvent ? { name: selectedEvent.name, address: selectedEvent.address, latitude: eventCoord[0], longitude: eventCoord[1]} : null,
+
         };
 
         console.log("Saving selection:", selectedData);

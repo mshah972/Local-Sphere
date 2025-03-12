@@ -182,8 +182,14 @@ def save_plan_selection(request):
                 date=data.get("date"),
                 restaurant_name=restaurant_name,  # Prevent KeyError
                 restaurant_address=data.get("restaurant", {}).get("address"),
+                rlongitude=data.get("restaurant", {}).get("longitude"),
+                rlatitude=data.get("restaurant", {}).get("latitude"),
+
                 event_name=data.get("event", {}).get("name"),
                 event_address=data.get("event", {}).get("address"),
+                elongitude=data.get("event", {}).get("longitude"),
+                elatitude=data.get("event", {}).get("latitude"),
+
                 time=time,
                 occasion=data.get("occasion"),
                 guests=guests
@@ -579,7 +585,7 @@ def profilePage(request):
     plans = PlanConfirmation.objects.filter(user=request.user).values(
         "id", "date", "time", "guests", "occasion", "order",
         "restaurant_name", "restaurant_address",
-        "event_name", "event_address"
+        "event_name", "event_address", "rlatitude"
     )
     plans_list = list(plans)
 

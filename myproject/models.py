@@ -19,6 +19,10 @@ class PlanConfirmation(models.Model):
     restaurant_name = models.CharField(max_length=255, null=True, blank=True)
     restaurant_address = models.CharField(max_length=255, null=True, blank=True)
 
+    rlatitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    rlongitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    elatitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    elongitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
 
     event_name = models.CharField(max_length=255, null=True, blank=True)
     event_address = models.CharField(max_length=255, null=True, blank=True)
