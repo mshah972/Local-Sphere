@@ -391,6 +391,34 @@
                     <h2 class="text-gray-800 font-semibold text-lg">
                         Fetched User Data
                     </h2>
+                    <!-- Favorite Foods -->
+            <h3
+            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+          >
+            <span class="mr-2">
+              <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+            </span>
+            <span id="user-fav-foods-box" class="text-md">Loading...</span>
+          </h3>
+          <!-- Dietary Restrictions -->
+          <h3
+          class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+        >
+          <span class="mr-2">
+            <img class="h-6 w-auto" src="../static/restrictions.svg" />
+          </span>
+          <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
+        </h3>
+        <!-- Interests -->
+        <h3
+        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+      >
+        <span class="mr-2">
+          <img class="h-6 w-auto" src="../static/search.svg" />
+        </span>
+        <span id="user-interests-box" class="text-md">Loading...</span>
+      </h3>
+
 
                     <h3
                             class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
@@ -1241,6 +1269,18 @@
         console.log("Cleared stored activity selections.");
     }, 2000);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch user data from Django template variables
+    const favoriteFoods = "{{ favorite_foods }}";
+    const dietaryRestrictions = "{{ dietary_restrictions }}";
+    const interests = "{{ interests }}";
+
+    // Update left-side UI dynamically
+    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
+    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
+    document.getElementById("user-interests-box").textContent = interests || "Not Set";
+  });
 </script>
 </body>
 </html>
