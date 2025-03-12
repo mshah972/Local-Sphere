@@ -1075,6 +1075,93 @@ document.addEventListener("DOMContentLoaded", function () {
 //         return cookieValue;
 //     }
 // });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const recreateButton = document.getElementById("recreate-btn");
+    const recreateButtonMobile = document.getElementById("recreate-btn-mobile");
+
+    async function recreatePlan() {
+        console.log("🔄 Recreating Plan...");
+
+        const storedPlanData = JSON.parse(localStorage.getItem("planData"));
+        if (!storedPlanData) {
+            alert("⚠️ No previous plan data found.");
+            return;
+        }
+
+        const csrfToken = getCookie("csrftoken");
+        if (!csrfToken) {
+            console.error("❌ CSRF Token Missing!");
+            alert("CSRF token missing. Please refresh and try again.");
+            return;
+        }
+
+        // ✅ Only send necessary variables (remove restaurants, events, and preferences)
+        const requestData = {
+                location: storedPlanData.location,
+                date: storedPlanData.date,
+                time: storedPlanData.time,
+                attendees: storedPlanData.guests, // Convert guests to attendees
+                food: storedPlanData.cuisine,
+                ocasion: storedPlanData.ocasion, // ✅ Fix: Add "ocasion"
+                order: storedPlanData.order,
+            };
+
+        console.log("📨 Sending Data to API:", JSON.stringify(requestData, null, 2));
+
+        try {
+            recreateButton.textContent = "🔄 Generating New Plan...";
+            recreateButton.disabled = true;
+
+            const response = await fetch("/generate-date-plan/", {  // ✅ Correct API URL
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify(requestData),
+            });
+
+            const newPlanData = await response.json();
+            console.log("✅ API Response:", newPlanData);
+
+            if (!response.ok) {
+                console.error("❌ API Error:", newPlanData);
+                alert(`API Error: ${newPlanData.error || "Unknown error"}`);
+                return;
+            }
+
+            // ✅ Save new plan and reload page
+            localStorage.setItem("planData", JSON.stringify(newPlanData));
+            window.location.reload();
+
+        } catch (error) {
+            console.error("❌ Failed to recreate plan:", error);
+            alert("An error occurred while recreating the plan.");
+        } finally {
+            recreateButton.textContent = "🔄 Recreate Plan";
+            recreateButton.disabled = false;
+        }
+    }
+
+    recreateButton.addEventListener("click", recreatePlan);
+    recreateButtonMobile.addEventListener("click", recreatePlan);
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
 </body>
 </html>
