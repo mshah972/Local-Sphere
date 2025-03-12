@@ -205,7 +205,6 @@
                             </button>
 
                             <!-- Dropdown Menu -->
-                            <!-- Dropdown Menu -->
                             <div id="userDropdownMenu"
                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
                                 <a href="{% url 'profilePage' %}"
@@ -774,6 +773,46 @@
             default: return "th";
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownButton = document.getElementById("userDropdownButton");
+        const dropdownMenu = document.getElementById("userDropdownMenu");
+        const dropdownIcon = document.getElementById("userDropdownIcon");
+        const arrowPath = document.getElementById("userArrowPath");
+
+        if (dropdownButton && dropdownMenu) {
+            dropdownButton.addEventListener("click", function (event) {
+                event.stopPropagation(); // Prevents closing immediately when clicking
+                dropdownMenu.classList.toggle("hidden");
+
+                // Toggle arrow direction
+                if (dropdownMenu.classList.contains("hidden")) {
+                    arrowPath.setAttribute(
+                        "d",
+                        "M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                    ); // Original down arrow
+                } else {
+                    arrowPath.setAttribute(
+                        "d",
+                        "M5.22 11.78a.75.75 0 0 0 1.06 0L10 8.06l3.72 3.72a.75.75 0 1 0 1.06-1.06l-4.25-4.25a.75.75 0 0 0-1.06 0L5.22 10.72a.75.75 0 0 0 0 1.06Z"
+                    ); // Rotated up arrow
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener("click", function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.add("hidden");
+                    arrowPath.setAttribute(
+                        "d",
+                        "M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                    ); // Reset to down arrow
+                }
+            });
+        }
+    });
+
+
 
     ///////// Header SCRIPT //////////
 
