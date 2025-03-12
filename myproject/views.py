@@ -680,16 +680,64 @@ def plan_detail_view(request, plan_id):
 
     return render(request, "planPage.html", {"plan_id": plan_id})
 
+# Default fallback image
+DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 @login_required
 def get_plan_details(request, plan_id):
-    """Retrieve details of a specific plan, including coordinates."""
+    """Retrieve details of a specific plan including images"""
     try:
         print(f"🔍 Fetching Plan ID: {plan_id} for user: {request.user}")
 
         plan = get_object_or_404(PlanConfirmation, id=plan_id, user=request.user)
 
+        google_api_key = os.getenv("GOOGLE_API_KEY")  # Fetch API Key from .env
+
+        def fetch_image(location_name):
+            """Fetch location image from Google Places API"""
+            if not google_api_key or not location_name:
+                return DEFAULT_IMAGE_URL  # Use default image if no API key or invalid location name
+
+            place_search_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+            search_params = {
+                "input": location_name,
+                "inputtype": "textquery",
+                "fields": "place_id",
+                "key": google_api_key,
+            }
+
+            search_response = requests.get(place_search_url, params=search_params)
+            search_data = search_response.json()
+
+            if "candidates" not in search_data or not search_data["candidates"]:
+                return DEFAULT_IMAGE_URL  # No place found, use default
+
+            place_id = search_data["candidates"][0]["place_id"]
+
+            place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+            details_params = {
+                "place_id": place_id,
+                "fields": "photo",
+                "key": google_api_key,
+            }
+
+            details_response = requests.get(place_details_url, params=details_params)
+            details_data = details_response.json()
+
+            if "result" not in details_data or "photos" not in details_data["result"]:
+                return DEFAULT_IMAGE_URL  # No photos available, use default
+
+            photo_reference = details_data["result"]["photos"][0]["photo_reference"]
+            return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
+
+        # Fetch restaurant and event images
+        restaurant_image = fetch_image(plan.restaurant_name)
+        event_image = fetch_image(plan.event_name)
+
+        plan_title = generate_plan_title(plan)
+
         plan_data = {
             "id": plan.id,
+            "title": plan_title,
             "date": plan.date.strftime("%Y-%m-%d") if plan.date else "No Date Set",
             "time": plan.time.strftime("%H:%M") if plan.time else "No Time Set",
             "guests": plan.guests or 1,
@@ -697,19 +745,20 @@ def get_plan_details(request, plan_id):
             "restaurant": {
                 "name": plan.restaurant_name or "Unknown Restaurant",
                 "address": plan.restaurant_address or "Unknown Address",
-                "latitude": plan.restaurant_latitude if plan.restaurant_latitude else None,
-                "longitude": plan.restaurant_longitude if plan.restaurant_longitude else None,
+                "latitude": plan.restaurant_latitude,
+                "longitude": plan.restaurant_longitude,
+                "image_url": restaurant_image,  # ✅ Include restaurant image
             },
             "event": {
                 "name": plan.event_name or "No Event",
                 "address": plan.event_address or "No Event Address",
-                "latitude": plan.event_latitude if plan.event_latitude else None,
-                "longitude": plan.event_longitude if plan.event_longitude else None,
-            }
+                "latitude": plan.event_latitude,
+                "longitude": plan.event_longitude,
+                "image_url": event_image,  # ✅ Include event image
+            },
         }
 
         print(f"✅ Returning Plan Data: {plan_data}")
-
         return JsonResponse(plan_data, status=200)
 
     except Exception as e:
@@ -722,3 +771,41 @@ def delete_plan(request, plan_id):
         plan.delete()
         return JsonResponse({"success": True, "message": "Plan deleted successfully."})
     return JsonResponse({"success": False, "message": "Invalid request."}, status=400)
+
+
+def generate_plan_title(plan):
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    client = openai.OpenAI(api_key=openai_api_key)
+    """Generate a creative title using ChatGPT AI"""
+    prompt = f"""
+    Generate a short 3 words and catchy title for a saved plan.
+    - Occasion: {plan.occasion or "A special day"}
+    - Restaurant: {plan.restaurant_name or "A great restaurant"}
+    - Event: {plan.event_name or "An exciting event"}
+    - Date: {plan.date.strftime('%A, %B %d')} if available.
+
+    Example:
+    - "Romantic Dinner & Live Jazz Night"
+    - "Weekend Foodie Adventure"
+    - "Exploring Chicago with a Twist"
+
+    Now generate a unique title:
+    """
+
+    try:
+        print("🔍 Sending prompt to ChatGPT AI...")
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=20,
+            temperature=0.7,
+        )
+
+        title = response.choices[0].message.content.strip().replace('"', '').replace("'", "")
+
+        print(f"✅ AI-Generated Title: {title}")  # Debug Statement
+        return title
+
+    except Exception as e:
+        print(f"❌ AI Error: {e}")  # Debugging
+        return "A Memorable Experience"

@@ -326,13 +326,11 @@
                         </button>
                     </div>
                     <div class="absolute bottom-4 left-4 text-white p-4">
-                        <h2 id="fetched-plan-title" class="text-3xl font-bold">Birthday Party</h2>
-                        <div class="flex flex-row items-center justify-between mt-2">
-                            <p id="plan-date" class="font-mulish flex items-center space-x-2">Fetching date...</p>
+                        <h2 id="fetched-plan-title" class="text-3xl font-bold">Loading...</h2>
+                        <div class="flex flex-row items-center justify-start mt-2">
+                            <p id="plan-date" class="font-mulish flex items-center">Fetching date...</p>
                             <span class="ml-2">•</span>
-                            <p id="plan-time" class="font-mulish flex items-center space-x-2 ml-2">Fetching time...</p>
-                            <span class="ml-2">•</span>
-                            <p id="plan-guests" class="font-mulish flex items-center space-x-2 ml-2">Fetching guests...</p>
+                            <p id="plan-guests" class="font-mulish flex items-center ml-2">Fetching guests...</p>
 
                         </div>
                     </div>
@@ -406,7 +404,7 @@
                 <div class="p-4 mt-10 w-full">
                     <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
                         <div class="w-full h-[150px]">
-                            <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            <img id="restaurant-image" src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                  alt="${restaurant.name}"
                                  class="w-full h-full object-cover rounded-t-3xl">
                         </div>
@@ -414,12 +412,11 @@
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-center w-full pr-2">
                                     <span id="restaurant-name" class="font-semibold text-[14px] lg:text-[20px] pr-4">Loading...</span>
-                                    <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                    <span id="res-date" class="font-normal text-[12px] lg:text-[16px]">Loading...</span>
                                 </div>
                             </div>
                             <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
-                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
-                                    People</p>
+                                <p id="res-guests" class="font-mulish font-light text-[10px] lg:text-[14px]">Loading...</p>
                                 <p id="restaurant-address" class="font-mulish font-light text-[10px] lg:text-[14px]">
                                     Fetching restaurant details...</p>
                             </div>
@@ -455,20 +452,19 @@
                 <div class="p-4 mt-10 w-full">
                     <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
                         <div class="w-full h-[150px]">
-                            <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                 alt="${restaurant.name}"
+                            <img id="event-image" src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                 alt="${event.name}"
                                  class="w-full h-full object-cover rounded-t-3xl">
                         </div>
                         <div class="flex flex-col items-center justify-between p-4 h-full">
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-center w-full pr-2">
                                     <span id="event-name" class="font-semibold text-[14px] lg:text-[20px] pr-4">Loading...</span>
-                                    <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
+                                    <span id="eve-date" class="font-normal text-[12px] lg:text-[16px]">Loading...</span>
                                 </div>
                             </div>
                             <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
-                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
-                                    People</p>
+                                <p id="eve-guest" class="font-mulish font-light text-[10px] lg:text-[14px]">Loading...</p>
                                 <p id="event-address" class="font-mulish font-light text-[10px] lg:text-[14px]">
                                     Fetching event details...</p>
                             </div>
@@ -650,21 +646,20 @@
     document.addEventListener("DOMContentLoaded", fetchRestaurantBooking);
 
 
-
     async function loadPlanDetails() {
         try {
             // Extract plan ID from URL path
             const pathParts = window.location.pathname.split('/');
             const planId = pathParts[pathParts.length - 2]; // Extract last part of path
 
-            if (!planId || isNaN(planId)) {
+            if (!planId) {
                 console.error("❌ Plan ID not found in URL.");
                 return;
             }
 
             console.log(`🔍 Fetching plan details for ID: ${planId}`);
 
-            // Fetch plan details from API
+            // Fetch plan details
             const response = await fetch(`/api/plan/${planId}/`);
             const data = await response.json();
 
@@ -675,25 +670,38 @@
 
             console.log("✅ Plan Data:", data);
 
-            // Update Page Elements
-            document.getElementById('fetched-plan-title').textContent = data.occasion || "No Occasion";
-            document.getElementById('plan-date').textContent = data.date || "No Date Set";
-            document.getElementById('plan-time').textContent = data.time || "No Time Set";
+            // Update Plan Details
+            const planTitleElement = document.getElementById('fetched-plan-title');
+            document.getElementById('plan-date').textContent = formatDate(data.date);
             document.getElementById('plan-guests').textContent = `${data.guests} People`;
+            document.getElementById('res-guests').textContent = `${data.guests} People`;
+            document.getElementById('eve-guest').textContent = `${data.guests} People`;
+            document.getElementById('res-date').textContent = formatDate(data.date);
+            document.getElementById('eve-date').textContent = formatDate(data.date);
 
-            // Update Restaurant Details
+            planTitleElement.textContent = data.title || "A Memorable Experience";
+
+            // ✅ Update Restaurant Details
             if (data.restaurant && data.restaurant.name !== "Unknown Restaurant") {
                 document.getElementById('restaurant-name').textContent = data.restaurant.name;
                 document.getElementById('restaurant-address').textContent = data.restaurant.address;
+
+                // ✅ Update restaurant image
+                document.getElementById('restaurant-image').src = data.restaurant.image_url ||
+                    "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
             } else {
                 document.getElementById('restaurant-name').textContent = "No Restaurant Selected";
                 document.getElementById('restaurant-address').textContent = "N/A";
             }
 
-            // Update Event Details
+            // ✅ Update Event Details
             if (data.event && data.event.name !== "No Event") {
                 document.getElementById('event-name').textContent = data.event.name;
                 document.getElementById('event-address').textContent = data.event.address;
+
+                // ✅ Update event image
+                document.getElementById('event-image').src = data.event.image_url ||
+                    "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
             } else {
                 document.getElementById('event-name').textContent = "No Event Selected";
                 document.getElementById('event-address').textContent = "N/A";
@@ -739,6 +747,32 @@
         return document.cookie.split("; ")
             .find(row => row.startsWith("csrftoken"))
             ?.split("=")[1];
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+
+        // Get the day with the correct ordinal suffix
+        const day = date.getDate();
+        const dayWithSuffix = getOrdinalSuffix(day);
+
+        // Format the date
+        return date.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+        }) + dayWithSuffix;
+    }
+
+    // Helper function to get ordinal suffix
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return "th"; // Covers 4th to 20th
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
     }
 
     ///////// Header SCRIPT //////////
