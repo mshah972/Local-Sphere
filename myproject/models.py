@@ -9,12 +9,10 @@ from django.db import models
 class PlanConfirmation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Link to CustomUser
 
-    date = models.DateField()
-    time = models.TimeField()
-    guests = models.IntegerField()
-    location = models.CharField(max_length=255)
-    cuisine = models.CharField(max_length=255)
-    occasion = models.CharField(max_length=255)
+    date = models.DateField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
+    guests = models.IntegerField(null=True, blank=True)
+    occasion = models.CharField(max_length=255, null=True, blank=True)
     order = models.TextField()
 
     restaurant_name = models.CharField(max_length=255, null=True, blank=True)

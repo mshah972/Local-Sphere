@@ -23,6 +23,10 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from dotenv import load_dotenv
 from myproject.models import PlanConfirmation  # Ensure CustomUser model is imported correctly
+import re  # Import the re module
+
+
+
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -147,17 +151,25 @@ def save_plan_selection(request):
 
         try:
             data = json.loads(request.body)
+            time_pattern = re.compile(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
+            time = data.get("time")
+            if not time or not time_pattern.match(time):
+                time = None
+
+            guests = data.get("guests")
+            if not isinstance(guests, int) or guests < 1:
+                guests = None
 
             plan = PlanConfirmation.objects.create(
                 user=request.user,  # Associate plan with logged-in user
                 date=data.get("date"),
-                restaurant_name=data["restaurant"].get("name"),
-                restaurant_address=data["restaurant"].get("address"),
-                event_name=data["event"].get("name"),
-                event_address=data["event"].get("address"),
-                time=data.get("time"),
+                restaurant_name=data.get("restaurant", {}).get("name"),  # Prevent KeyError
+                restaurant_address=data.get("restaurant", {}).get("address"),
+                event_name=data.get("event", {}).get("name"),
+                event_address=data.get("event", {}).get("address"),
+                time=time,
                 occasion=data.get("occasion"),
-                guests=data.get("guests")
+                guests=guests
             )
             return JsonResponse({"message": "Plan saved successfully", "plan_id": plan.id}, status=201)
 

@@ -841,10 +841,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const card = selectedButton.closest(".restaurant-card, .event-card");
         if (!card) return null;
+        console.log(card.querySelector(".font-semibold")?.textContent);
 
         return {
-            name: card.querySelector(".event-name, .restaurant-name")?.innerText ,
-            address: card.querySelector(".event-address, .restaurant-address").innerText,
+            name: card.querySelector(".font-semibold")?.textContent, // ✅ Correct
+            address: card.querySelector(".font-mulish")?.textContent,
         };
     }
 
@@ -852,6 +853,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const planDetails = JSON.parse(localStorage.getItem("planData"));
+        const selectedRestaurant = getSelectedData("restaurant-button");
+        if (!selectedRestaurant && !selectedEvent) {
+             alert("Please select a restaurant and an event before saving.");
+             return;
+        }
+        const selectedEvent = getSelectedData("event-button");
 
         const selectedData = {
             date: planDetails.date,
