@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image, get_restaurant_booking, get_user_plans
+from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image, get_restaurant_booking, get_user_plans, plan_detail_view, get_plan_details
 from django.urls import path
 from .views import generate_date_plan
 from django.conf import settings
@@ -51,6 +51,8 @@ urlpatterns = [
     path("api/restaurant-booking/", get_restaurant_booking, name="restaurant-booking"),
     path("api/save-selection/", views.save_plan_selection, name="save-plan-selection"),
     path('api/user-plans/', get_user_plans, name='user-plans'),
+    path('plan/<int:plan_id>/', plan_detail_view, name='planPage'),
+    path('api/plan/<int:plan_id>/', get_plan_details, name='get_plan_details'),
 ]
 
 if settings.DEBUG:  # Only serve media files in development

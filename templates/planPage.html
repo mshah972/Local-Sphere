@@ -129,7 +129,7 @@
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
-            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
                 <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
@@ -326,10 +326,15 @@
                         </button>
                     </div>
                     <div class="absolute bottom-4 left-4 text-white p-4">
-                        <h2 class="text-3xl font-bold">Birthday Party</h2>
-                        <p class="font-mulish flex items-center space-x-2 pt-2">
-                            📅 Feb 12th · 📍 Chicago · 👥 6 People
-                        </p>
+                        <h2 id="fetched-plan-title" class="text-3xl font-bold">Birthday Party</h2>
+                        <div class="flex flex-row items-center justify-between mt-2">
+                            <p id="plan-date" class="font-mulish flex items-center space-x-2">Fetching date...</p>
+                            <span class="ml-2">•</span>
+                            <p id="plan-time" class="font-mulish flex items-center space-x-2 ml-2">Fetching time...</p>
+                            <span class="ml-2">•</span>
+                            <p id="plan-guests" class="font-mulish flex items-center space-x-2 ml-2">Fetching guests...</p>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -398,7 +403,7 @@
                     <div class="w-[2px] mb-4 bg-black flex-grow rounded-t-full"></div>
                 </div>
 
-                <div class="p-4 mt-10">
+                <div class="p-4 mt-10 w-full">
                     <div class="relative font-poppins bg-custom-blue text-custom-white rounded-3xl w-full flex flex-col justify-between shadow-lg overflow-hidden">
                         <div class="w-full h-[150px]">
                             <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -408,15 +413,15 @@
                         <div class="flex flex-col items-center justify-between p-4 h-full">
                             <div class="flex flex-col w-full">
                                 <div class="flex flex-row justify-between items-center w-full pr-2">
-                                    <span class="font-semibold text-[14px] lg:text-[20px] pr-4">Date Night In Chicago</span>
+                                    <span id="restaurant-name" class="font-semibold text-[14px] lg:text-[20px] pr-4">Loading...</span>
                                     <span class="font-normal text-[12px] lg:text-[16px]">Saturday, March 8th</span>
                                 </div>
                             </div>
                             <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
                                 <p class="font-mulish font-light text-[10px] lg:text-[14px]">2
                                     People</p>
-                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">
-                                    $$$</p>
+                                <p id="restaurant-address" class="font-mulish font-light text-[10px] lg:text-[14px]">
+                                    Fetching restaurant details...</p>
                             </div>
                         </div>
                     </div>
@@ -556,6 +561,63 @@
 
     // Call function for debugging
     fetchRestaurantBooking();
+
+    async function loadPlanDetails() {
+        try {
+            // Extract plan ID from URL path
+            const pathParts = window.location.pathname.split('/');
+            const planId = pathParts[pathParts.length - 2]; // Extract last part of path
+
+            if (!planId || isNaN(planId)) {
+                console.error("❌ Plan ID not found in URL.");
+                return;
+            }
+
+            console.log(`🔍 Fetching plan details for ID: ${planId}`);
+
+            // Fetch plan details from API
+            const response = await fetch(`/api/plan/${planId}/`);
+            const data = await response.json();
+
+            if (data.error) {
+                console.error("❌ Error fetching plan:", data.error);
+                return;
+            }
+
+            console.log("✅ Plan Data:", data);
+
+            // Update Page Elements
+            document.getElementById('fetched-plan-title').textContent = data.occasion || "No Occasion";
+            document.getElementById('plan-date').textContent = data.date || "No Date Set";
+            document.getElementById('plan-time').textContent = data.time || "No Time Set";
+            document.getElementById('plan-guests').textContent = `${data.guests} People`;
+
+            // Update Restaurant Details
+            if (data.restaurant && data.restaurant.name !== "Unknown Restaurant") {
+                document.getElementById('restaurant-name').textContent = data.restaurant.name;
+                document.getElementById('restaurant-address').textContent = data.restaurant.address;
+            } else {
+                document.getElementById('restaurant-name').textContent = "No Restaurant Selected";
+                document.getElementById('restaurant-address').textContent = "N/A";
+            }
+
+            // Update Event Details
+            if (data.event && data.event.name !== "No Event") {
+                document.getElementById('event-name').textContent = data.event.name;
+                document.getElementById('event-address').textContent = data.event.address;
+            } else {
+                document.getElementById('event-name').textContent = "No Event Selected";
+                document.getElementById('event-address').textContent = "N/A";
+            }
+
+        } catch (error) {
+            console.error("❌ Error loading plan details:", error);
+        }
+    }
+
+    // ✅ Call function when page loads
+    document.addEventListener("DOMContentLoaded", loadPlanDetails);
+
 
     ///////// Header SCRIPT //////////
 

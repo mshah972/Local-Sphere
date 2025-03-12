@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.conf import settings
 from django.core.mail import send_mail
@@ -182,13 +182,13 @@ def save_plan_selection(request):
                 date=data.get("date"),
                 restaurant_name=restaurant_name,  # Prevent KeyError
                 restaurant_address=data.get("restaurant", {}).get("address"),
-                rlongitude=data.get("restaurant", {}).get("longitude"),
-                rlatitude=data.get("restaurant", {}).get("latitude"),
+                restaurant_longitude=data.get("restaurant", {}).get("longitude"),
+                restaurant_latitude=data.get("restaurant", {}).get("latitude"),
 
                 event_name=data.get("event", {}).get("name"),
                 event_address=data.get("event", {}).get("address"),
-                elongitude=data.get("event", {}).get("longitude"),
-                elatitude=data.get("event", {}).get("latitude"),
+                event_longitude=data.get("event", {}).get("longitude"),
+                event_latitude=data.get("event", {}).get("latitude"),
 
                 time=time,
                 occasion=data.get("occasion"),
@@ -590,7 +590,7 @@ def profilePage(request):
     plans = PlanConfirmation.objects.filter(user=request.user).values(
         "id", "date", "time", "guests", "occasion", "order",
         "restaurant_name", "restaurant_address",
-        "event_name", "event_address", "rlatitude"
+        "event_name", "event_address", "restaurant_latitude"
     )
     plans_list = list(plans)
 
@@ -682,4 +682,43 @@ def get_user_plans(request):
         return JsonResponse({"plans": plans_data}, status=200)
 
     except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@login_required()
+def plan_detail_view(request, plan_id):
+    """Retrieve and display a specific plan based on the ID"""
+    plan = get_object_or_404(PlanConfirmation, id=plan_id, user=request.user)
+
+    return render(request, "planPage.html", {"plan_id": plan_id})
+
+@login_required
+def get_plan_details(request, plan_id):
+    """Retrieve details of a specific plan"""
+    try:
+        print(f"🔍 Fetching Plan ID: {plan_id} for user: {request.user}")
+
+        plan = get_object_or_404(PlanConfirmation, id=plan_id, user=request.user)
+
+        plan_data = {
+            "id": plan.id,
+            "date": plan.date.strftime("%Y-%m-%d") if plan.date else "No Date Set",
+            "time": plan.time.strftime("%H:%M") if plan.time else "No Time Set",
+            "guests": plan.guests or 1,
+            "occasion": plan.occasion or "No Occasion",
+            "restaurant": {
+                "name": plan.restaurant_name or "Unknown Restaurant",
+                "address": plan.restaurant_address or "Unknown Address",
+            },
+            "event": {
+                "name": plan.event_name or "No Event",
+                "address": plan.event_address or "No Event Address",
+            }
+        }
+
+        print(f"✅ Returning Plan Data: {plan_data}")
+
+        return JsonResponse(plan_data, status=200)
+
+    except Exception as e:
+        print(f"❌ Error retrieving plan: {e}")
         return JsonResponse({"error": str(e)}, status=500)
