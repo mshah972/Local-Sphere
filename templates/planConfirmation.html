@@ -970,17 +970,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(selectedData),
             });
 
-            const result = await response.json();
-            if (response.ok) {
-                alert("Selection saved successfully!");
-            } else {
-                alert(`Error saving selection: ${result.error}`);
+
+            const result = await response.json(); // Parse response JSON once
+
+        if (response.ok) {
+            alert("Selection saved successfully!");
+
+            // Redirect if a redirect URL is included in the response
+            if (result.redirect_url) {
+                window.location.href = result.redirect_url;
             }
-        } catch (error) {
-            console.error("Failed to save selection:", error);
-            alert("Failed to save selection.");
+        } else {
+            console.error("Error saving selection:", result.error);
+            alert(`Error saving selection: ${result.error || "Unknown error"}`);
         }
+    } catch (error) {
+        console.error("Failed to save selection:", error);
+        alert("Failed to save selection. Please try again.");
     }
+}
 
     saveButton.addEventListener("click", saveSelection);
     saveButtonMobile.addEventListener("click", saveSelection);

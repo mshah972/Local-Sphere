@@ -194,7 +194,12 @@ def save_plan_selection(request):
                 occasion=data.get("occasion"),
                 guests=guests
             )
-            return JsonResponse({"message": "Plan saved successfully", "plan_id": plan.id}, status=201)
+            return JsonResponse({
+                "message": "Plan saved successfully",
+                "plan_id": plan.id,
+                "redirect_url": "/profilePage/"  # Include redirect URL
+            }, status=201)
+
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
