@@ -597,8 +597,12 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
-                                    <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.guests} People</p>
-                                    <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.occasion}</p>
+                                    {% if plan.guests %}
+                                        <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.guests} People</p>
+                                    {% endif %}
+                                    {% if plan.occasion %}
+                                        <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.occasion}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
