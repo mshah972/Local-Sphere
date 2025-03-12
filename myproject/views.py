@@ -159,11 +159,12 @@ def save_plan_selection(request):
             guests = data.get("guests")
             if not isinstance(guests, int) or guests < 1:
                 guests = None
-
+            restaurant_name = data.get("restaurant", {}).get("name")  # ✅ Fixed
+            print(restaurant_name)
             plan = PlanConfirmation.objects.create(
                 user=request.user,  # Associate plan with logged-in user
                 date=data.get("date"),
-                restaurant_name=data.get("restaurant", {}).get("name"),  # Prevent KeyError
+                restaurant_name=restaurant_name,  # Prevent KeyError
                 restaurant_address=data.get("restaurant", {}).get("address"),
                 event_name=data.get("event", {}).get("name"),
                 event_address=data.get("event", {}).get("address"),
@@ -558,6 +559,15 @@ def profileEdit(request):
 
 @login_required()
 def profilePage(request):
+    plans = PlanConfirmation.objects.filter(user=request.user).values(
+        "id", "date", "time", "guests", "occasion", "order",
+        "restaurant_name", "restaurant_address",
+        "event_name", "event_address"
+    )
+    plans_list = list(plans)
+
+    # Print the formatted JSON to the console
+    print(json.dumps(plans_list, indent=4, default=str))
     return render(request, 'profilePage.html')
 
 @login_required()

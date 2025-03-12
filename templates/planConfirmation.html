@@ -854,17 +854,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const planDetails = JSON.parse(localStorage.getItem("planData"));
         const selectedRestaurant = getSelectedData("restaurant-button");
+        const selectedEvent = getSelectedData("event-button");
+
         if (!selectedRestaurant && !selectedEvent) {
              alert("Please select a restaurant and an event before saving.");
              return;
         }
-        const selectedEvent = getSelectedData("event-button");
 
         const selectedData = {
             date: planDetails.date,
             time: planDetails.time,
             guests: planDetails.guests,
             occasion: planDetails.occasion,
+            restaurant: selectedRestaurant ? { name: selectedRestaurant.name, address: selectedRestaurant.address } : null,
+            event: selectedEvent ? { name: selectedEvent.name, address: selectedEvent.address } : null,
         };
 
         console.log("Saving selection:", selectedData);
