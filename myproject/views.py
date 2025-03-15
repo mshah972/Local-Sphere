@@ -192,6 +192,21 @@ def save_plan_selection(request):
             restaurant_name = data.get("restaurant", {}).get("name")  # ✅ Fixed
             print(restaurant_name)
 
+            restaurant_data = data.get("restaurant", {})  # ✅ Extract restaurant data safely
+            event_data = data.get("event", {})
+
+            restaurant_name = restaurant_data.get("name")
+            restaurant_address = restaurant_data.get("address")
+            restaurant_longitude = restaurant_data.get("longitude")
+            restaurant_latitude = restaurant_data.get("latitude")
+            restaurant_image = restaurant_data.get("image_url", DEFAULT_IMAGE_URL)  # ✅ Use default image if missing
+
+            event_name = event_data.get("name")
+            event_address = event_data.get("address")
+            event_longitude = event_data.get("longitude")
+            event_latitude = event_data.get("latitude")
+            event_image = event_data.get("image_url", DEFAULT_IMAGE_URL)  # ✅ Use default image if missing
+
             raw_date = data.get("date")
             plan_date = None
             formatted_date = None
@@ -206,15 +221,17 @@ def save_plan_selection(request):
                 user=request.user,  # Associate plan with logged-in user
                 date=plan_date,
                 formatted_date=formatted_date,
-                restaurant_name=restaurant_name,  # Prevent KeyError
-                restaurant_address=data.get("restaurant", {}).get("address"),
-                restaurant_longitude=data.get("restaurant", {}).get("longitude"),
-                restaurant_latitude=data.get("restaurant", {}).get("latitude"),
+                restaurant_name=restaurant_name,
+                restaurant_address=restaurant_address,
+                restaurant_longitude=restaurant_longitude,
+                restaurant_latitude=restaurant_latitude,
+                restaurant_image=restaurant_image,  # ✅ Save restaurant image
 
-                event_name=data.get("event", {}).get("name"),
-                event_address=data.get("event", {}).get("address"),
-                event_longitude=data.get("event", {}).get("longitude"),
-                event_latitude=data.get("event", {}).get("latitude"),
+                event_name=event_name,
+                event_address=event_address,
+                event_longitude=event_longitude,
+                event_latitude=event_latitude,
+                event_image=event_image,  # ✅ Save event image
 
                 time=time,
                 occasion=data.get("occasion"),
@@ -658,7 +675,7 @@ def get_restaurant_booking(request):
         # Extract restaurant ID
         businesses = data.get("businesses", [])
         if not businesses:
-            return JsonResponse({"error": "No restaurant found"}, status=404)
+            return JsonResponse({"error": "Restaurant is not on Yelp!"}, status=404)
 
         restaurant_id = businesses[0]["id"]
 
@@ -670,7 +687,6 @@ def get_restaurant_booking(request):
     except requests.RequestException as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-
 @login_required
 def get_user_plans(request):
     """Retrieve all saved plans for the authenticated user"""
@@ -681,43 +697,6 @@ def get_user_plans(request):
         total_plans = user_plans.count()
 
         google_api_key = os.getenv("GOOGLE_API_KEY")
-
-        def get_image(location_name):
-            """Fetch location image from Google Places API"""
-            if not google_api_key or not location_name:
-                return DEFAULT_IMAGE_URL  # Use default image if no API key or invalid location name
-
-            place_search_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
-            search_params = {
-                "input": location_name,
-                "inputtype": "textquery",
-                "fields": "place_id",
-                "key": google_api_key,
-            }
-
-            search_response = requests.get(place_search_url, params=search_params)
-            search_data = search_response.json()
-
-            if "candidates" not in search_data or not search_data["candidates"]:
-                return DEFAULT_IMAGE_URL  # No place found, use default
-
-            place_id = search_data["candidates"][0]["place_id"]
-
-            place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-            details_params = {
-                "place_id": place_id,
-                "fields": "photo",
-                "key": google_api_key,
-            }
-
-            details_response = requests.get(place_details_url, params=details_params)
-            details_data = details_response.json()
-
-            if "result" not in details_data or "photos" not in details_data["result"]:
-                return DEFAULT_IMAGE_URL  # No photos available, use default
-
-            photo_reference = details_data["result"]["photos"][0]["photo_reference"]
-            return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
 
 
         # ✅ Convert QuerySet to JSON-friendly format
@@ -737,7 +716,7 @@ def get_user_plans(request):
                     "name": plan.event_name,
                     "address": plan.event_address,
                 },
-                "image":get_image(plan.event_name)
+                "image_url": plan.event_image or DEFAULT_IMAGE_URL,
             }
             for plan in user_plans
         ]
@@ -768,49 +747,6 @@ def get_plan_details(request, plan_id):
 
         plan = get_object_or_404(PlanConfirmation, id=plan_id, user=request.user)
 
-        google_api_key = os.getenv("GOOGLE_API_KEY")  # Fetch API Key from .env
-
-        def fetch_image(location_name):
-            """Fetch location image from Google Places API"""
-            if not google_api_key or not location_name:
-                return DEFAULT_IMAGE_URL  # Use default image if no API key or invalid location name
-
-            place_search_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
-            search_params = {
-                "input": location_name,
-                "inputtype": "textquery",
-                "fields": "place_id",
-                "key": google_api_key,
-            }
-
-            search_response = requests.get(place_search_url, params=search_params)
-            search_data = search_response.json()
-
-            if "candidates" not in search_data or not search_data["candidates"]:
-                return DEFAULT_IMAGE_URL  # No place found, use default
-
-            place_id = search_data["candidates"][0]["place_id"]
-
-            place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-            details_params = {
-                "place_id": place_id,
-                "fields": "photo",
-                "key": google_api_key,
-            }
-
-            details_response = requests.get(place_details_url, params=details_params)
-            details_data = details_response.json()
-
-            if "result" not in details_data or "photos" not in details_data["result"]:
-                return DEFAULT_IMAGE_URL  # No photos available, use default
-
-            photo_reference = details_data["result"]["photos"][0]["photo_reference"]
-            return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
-
-        # Fetch restaurant and event images
-        restaurant_image = fetch_image(plan.restaurant_name)
-        event_image = fetch_image(plan.event_name)
-
         plan_data = {
             "id": plan.id,
             "title": plan.title,
@@ -823,14 +759,14 @@ def get_plan_details(request, plan_id):
                 "address": plan.restaurant_address or "Unknown Address",
                 "latitude": plan.restaurant_latitude,
                 "longitude": plan.restaurant_longitude,
-                "image_url": restaurant_image,  # ✅ Include restaurant image
+                "image_url": plan.restaurant_image or DEFAULT_IMAGE_URL,
             },
             "event": {
                 "name": plan.event_name or "No Event",
                 "address": plan.event_address or "No Event Address",
                 "latitude": plan.event_latitude,
                 "longitude": plan.event_longitude,
-                "image_url": event_image,  # ✅ Include event image
+                "image_url": plan.event_image or DEFAULT_IMAGE_URL,
             },
         }
 

@@ -738,12 +738,12 @@
 
             // ✅ Fetch restaurant details and replace skeleton
             for (const restaurant of planData.restaurants) {
-                const details = await getRestaurantDetails(restaurant.name, restaurant.address);
+                const resdetails = await getRestaurantDetails(restaurant.name, restaurant.address);
 
                 restaurantList.innerHTML += `
                     <div class="restaurant-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                         <div class="w-full h-25">
-                            <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
+                            <img src="${resdetails.imageUrl}" alt="${restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
                         </div>
                         <button class="restaurant-button absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
@@ -755,7 +755,7 @@
                                 <div class="flex flex-row justify-between items-center w-full pr-2">
                                     <span class="font-semibold text-[16px] pr-4">${restaurant.name}</span>
                                     <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
-                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${resdetails.rating}
                                     </span>
                                 </div>
                                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${planData.cuisine}</p>
@@ -767,7 +767,7 @@
                 restaurantListMobile.innerHTML += `
                     <div class="relative font-poppins bg-gray-100 rounded-3xl w-full md:w-[85vw] flex flex-row border border-gray-200 hover:bg-custom-white overflow-hidden snap-center shadow-lg m-4">
                         <!-- Restaurant Image -->
-                         <img src="${details.imageUrl}" alt="${restaurant.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
+                         <img src="${resdetails.imageUrl}" alt="${restaurant.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
                         <!-- Restaurant Details -->
                         <div class="flex flex-col justify-between p-4 w-full">
                                 <div class="flex justify-between items-start w-full">
@@ -777,7 +777,7 @@
                             <div class="flex flex-row justify-between items-end w-full mt-4">
                                 <p class="font-mulish font-light text-gray-600 text-[12px] mr-4">${restaurant.address}</p>
                                 <span class="font-semibold text-md flex flex-row items-center mr-2">
-                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${details.rating}
+                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${resdetails.rating}
                                 </span>
                             </div>
                         </div>
@@ -796,12 +796,12 @@
             }
 
             for (const event of planData.events) {
-                const details = await getRestaurantDetails(event.name, event.address);
+                const evedetails = await getRestaurantDetails(event.name, event.address);
 
                 eventList.innerHTML += `
                     <div class="event-card relative font-poppins bg-gray-100 rounded-3xl w-full flex flex-col justify-between border border-gray-200 hover:bg-custom-white overflow-hidden">
                         <div class="w-full h-25">
-                            <img src="${details.imageUrl}"
+                            <img src="${evedetails.imageUrl}"
                                 alt="${event.name}"
                                 class="w-full h-full object-cover rounded-t-3xl">
                         </div>
@@ -815,7 +815,7 @@
                                 <div class="flex flex-row justify-between items-start w-full pr-2">
                                     <span class="font-semibold text-[16px] pr-4">${event.name}</span>
                                     <span class="font-semibold text-[14px] flex flex-row justify-center items-center">
-                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${details.rating}
+                                        <img src="../static/rating.svg" class="w-7 h-auto mr-2" alt="rating icon">${evedetails.rating}
                                     </span>
                                 </div>
                                 <p class="font-semibold text-custom-blue text-[12px] pt-1">${event.type}</p>
@@ -827,7 +827,7 @@
                 eventListMobile.innerHTML += `
                     <div class="relative font-poppins bg-gray-100 rounded-3xl w-full md:w-[85vw] flex flex-row border border-gray-200 hover:bg-custom-white overflow-hidden snap-center shadow-lg m-4">
                         <!-- Restaurant Image -->
-                         <img src="${details.imageUrl}" alt="${event.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
+                         <img src="${evedetails.imageUrl}" alt="${event.name}" class="w-30 h-auto object-cover rounded-3xl m-4">
                         <!-- Restaurant Details -->
                         <div class="flex flex-col justify-between p-4 w-full">
                                 <div class="flex justify-between items-start w-full">
@@ -837,7 +837,7 @@
                             <div class="flex flex-row justify-between items-end w-full mt-4">
                                 <p class="font-mulish font-light text-gray-600 text-[12px] mr-4">${event.address}</p>
                                 <span class="font-semibold text-md flex flex-row items-center mr-2">
-                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${details.rating}
+                                        <img src="../static/rating.svg" class="w-8 h-auto mr-2" alt="rating icon">${evedetails.rating}
                                 </span>
                             </div>
                         </div>
@@ -883,6 +883,7 @@
         console.error("❌ Error initializing page:", error);
     }
 });
+
 document.addEventListener("DOMContentLoaded", function () {
     const restaurantList = document.getElementById('restaurant-list');
     const eventList = document.getElementById('event-list');
@@ -930,11 +931,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return {
             name: card.querySelector(".font-semibold")?.textContent, // ✅ Correct
             address: card.querySelector(".font-mulish")?.textContent,
+            imageUrl: card.querySelector("img")?.src || "../static/default.jpg",  // ✅ Extract image URL
         };
     }
 
     async function saveSelection() {
-
 
         const planDetails = JSON.parse(localStorage.getItem("planData"));
         const selectedRestaurant = getSelectedData("restaurant-button");
@@ -953,9 +954,8 @@ document.addEventListener("DOMContentLoaded", function () {
             time: planDetails.time,
             guests: planDetails.guests,
             occasion: planDetails.occasion,
-            restaurant: selectedRestaurant ? { name: selectedRestaurant.name, address: selectedRestaurant.address, latitude: restaurantCoord[0], longitude: restaurantCoord[1]} : null,
-            event: selectedEvent ? { name: selectedEvent.name, address: selectedEvent.address, latitude: eventCoord[0], longitude: eventCoord[1]} : null,
-
+            restaurant: selectedRestaurant ? { name: selectedRestaurant.name, address: selectedRestaurant.address, latitude: restaurantCoord[0], longitude: restaurantCoord[1], image_url: selectedRestaurant.imageUrl || "../static/default.jpg"} : null,
+            event: selectedEvent ? { name: selectedEvent.name, address: selectedEvent.address, latitude: eventCoord[0], longitude: eventCoord[1], image_url: selectedEvent.imageUrl || "../static/default.jpg"} : null,
         };
 
         console.log("Saving selection:", selectedData);

@@ -30,6 +30,9 @@ class PlanConfirmation(models.Model):
 
     title = models.CharField(max_length=255, null=True, blank=True)
 
+    restaurant_image = models.URLField(max_length=1024, null=True, blank=True)
+    event_image = models.URLField(max_length=1024, null=True, blank=True)
+
 
     def __str__(self):
         return f"Plan for {self.formatted_date or self.date} at {self.time} - {self.title or 'No Title'}"

@@ -749,13 +749,22 @@
     }
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
+        if (!dateString) return "No Date Set";
 
-        // Get the day with the correct ordinal suffix
-        const day = date.getDate();
+        const dateParts = dateString.split("-");
+        if (dateParts.length !== 3) return "Invalid Date";
+
+        const year = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const day = parseInt(dateParts[2], 10);
+
+        const date = new Date(year, month, day);
+
+        if (isNaN(date)) return "Invalid Date"; // Handle invalid dates
+
         const dayWithSuffix = getOrdinalSuffix(day);
 
-        // Format the date
+        // ✅ Format the date properly
         return date.toLocaleDateString("en-US", {
             weekday: "long",
             month: "long",
@@ -763,9 +772,9 @@
         }) + dayWithSuffix;
     }
 
-    // Helper function to get ordinal suffix
+    // ✅ Helper function to get ordinal suffix (1st, 2nd, 3rd, etc.)
     function getOrdinalSuffix(day) {
-        if (day > 3 && day < 21) return "th"; // Covers 4th to 20th
+        if (day > 3 && day < 21) return "th"; // Covers 4th - 20th
         switch (day % 10) {
             case 1: return "st";
             case 2: return "nd";
@@ -773,6 +782,7 @@
             default: return "th";
         }
     }
+
 
     document.addEventListener("DOMContentLoaded", function () {
         const dropdownButton = document.getElementById("userDropdownButton");
