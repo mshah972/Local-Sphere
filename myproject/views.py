@@ -26,6 +26,8 @@ from dotenv import load_dotenv
 from myproject.models import PlanConfirmation  # Ensure CustomUser model is imported correctly
 import re  # Import the re module
 
+DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+
 
 
 load_dotenv()
@@ -680,7 +682,7 @@ def get_user_plans(request):
 
         google_api_key = os.getenv("GOOGLE_API_KEY")
 
-        def fetch_image(location_name):
+        def get_image(location_name):
             """Fetch location image from Google Places API"""
             if not google_api_key or not location_name:
                 return DEFAULT_IMAGE_URL  # Use default image if no API key or invalid location name
@@ -735,7 +737,7 @@ def get_user_plans(request):
                     "name": plan.event_name,
                     "address": plan.event_address,
                 },
-                "image":fetch_image(plan.event_name)
+                "image":get_image(plan.event_name)
             }
             for plan in user_plans
         ]
@@ -757,7 +759,7 @@ def plan_detail_view(request, plan_id):
     return render(request, "planPage.html", {"plan_id": plan_id})
 
 # Default fallback image
-DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+
 @login_required
 def get_plan_details(request, plan_id):
     """Retrieve details of a specific plan including images"""
