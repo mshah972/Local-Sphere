@@ -221,11 +221,7 @@
                         <div class="flex-row mt-4 justify-start text-center hidden lg:flex">
                             <div class="flex flex-col items-start">
                                 <p class="font-mulish text-sm lg:text-[15px] opacity-80">Plans You've Created</p>
-                                <p class="text-lg lg:text-[20px] font-bold">10</p>
-                            </div>
-                            <div class="flex flex-col items-start ml-15">
-                                <p class="font-mulish text-sm lg:text-[15px] opacity-80">Contributions</p>
-                                <p class="text-lg lg:text-[20px] font-bold">2</p>
+                                <p id="total-plans" class="text-lg lg:text-[20px] font-bold">Loading...</p>
                             </div>
                             <div class="flex flex-col items-start ml-15">
                                 <p class="font-mulish text-sm lg:text-[15px] opacity-80">Hours Saved</p>
@@ -245,11 +241,7 @@
                 <div class="flex flex-row mt-4 justify-start text-center lg:hidden">
                     <div class="flex flex-col items-start">
                         <p class="font-mulish text-sm lg:text-[15px] opacity-80">Plans You've Created</p>
-                        <p class="text-lg lg:text-[20px] font-bold">10</p>
-                    </div>
-                    <div class="flex flex-col items-start ml-15">
-                        <p class="font-mulish text-sm lg:text-[15px] opacity-80">Contributions</p>
-                        <p class="text-lg lg:text-[20px] font-bold">2</p>
+                        <p id="total-plans-mobile" class="text-lg lg:text-[20px] font-bold">Loading...</p>
                     </div>
                     <div class="flex flex-col items-start ml-15">
                         <p class="font-mulish text-sm lg:text-[15px] opacity-80">Hours Saved</p>
@@ -553,6 +545,11 @@
 
             const planContainer = document.getElementById("user-plans");
             const planSkeleton = document.getElementById("plan-skeleton");
+            const totalPlansElement = document.getElementById("total-plans");
+
+            if (totalPlansElement) {
+                totalPlansElement.textContent = `${data.total_plans}`;
+            }
 
             // ✅ Hide skeleton loader and show plan container
             planSkeleton.style.display = "none";
@@ -581,7 +578,7 @@
                     <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit text-white hover:text-custom-blue cursor-pointer shadow-lg mt-2">
                         <div class="relative font-poppins bg-custom-blue rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between overflow-hidden hover:bg-custom-white">
                             <div class="w-full h-[150px]">
-                                <img src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                <img src="${plan.image}"
                                      alt="${plan.restaurant.name}"
                                      class="w-full h-full object-cover rounded-t-3xl">
                             </div>
@@ -593,17 +590,17 @@
                             <div class="flex flex-col items-center justify-between p-4 h-full">
                                 <div class="flex flex-col w-full">
                                     <div class="flex flex-row justify-between items-center w-full pr-2">
-                                        <span class="font-semibold text-[14px] lg:text-[20px] pr-4">${plan.restaurant.name}</span>
-                                        <span class="font-normal text-[12px] lg:text-[16px]">${plan.date}</span>
+                                        <span class="font-semibold text-[14px] lg:text-[20px] pr-4 truncate overflow-hidden whitespace-nowrap w-full lg:w-[80%]" title="${plan.title}">
+                                            ${plan.title}
+                                        </span>
+                                        <span data-date="${plan.date}" class="font-normal text-[12px] lg:text-[16px]">
+                                            ${plan.date}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
-                                    {% if plan.guests %}
                                         <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.guests} People</p>
-                                    {% endif %}
-                                    {% if plan.occasion %}
-                                        <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.occasion}</p>
-                                    {% endif %}
+                                        <!-- <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.occasion}</p> -->
                                 </div>
                             </div>
                         </div>
@@ -621,6 +618,46 @@
 
     // ✅ Load plans when the profile page loads
     fetchPlan();
+
+    function formatDate(dateString) {
+        if (!dateString) return "No Date Set";
+
+        const date = new Date(dateString);
+
+        if (isNaN(date)) return "Invalid Date"; // Handle invalid dates
+
+        // Get the day with the correct ordinal suffix
+        const day = date.getDate();
+        const dayWithSuffix = getOrdinalSuffix(day);
+
+        // Format the date
+        return date.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+        }) + dayWithSuffix;
+    }
+
+    function getOrdinalSuffix(day) {
+        if (day > 3 && day < 21) return "th"; // Covers 4th - 20th
+        switch (day % 10) {
+            case 1: return "st";
+            case 2: return "nd";
+            case 3: return "rd";
+            default: return "th";
+        }
+    }
+
+    // ✅ Apply formatted date to all elements with data-date attribute
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('[data-date]').forEach(element => {
+            const rawDate = element.getAttribute("data-date");
+            if (rawDate) {
+                element.textContent = formatDate(rawDate);
+            }
+        });
+    });
+
 
 
     ////////////////////////////////////// Header Script /////////////////////////////////////

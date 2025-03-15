@@ -12,6 +12,7 @@ class PlanConfirmation(models.Model):
     favorite = models.BooleanField(default=False)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
+    formatted_date = models.CharField(max_length=255, null=True, blank=True)
     guests = models.IntegerField(null=True, blank=True)
     occasion = models.CharField(max_length=255, null=True, blank=True)
     order = models.TextField()
@@ -27,9 +28,11 @@ class PlanConfirmation(models.Model):
     event_name = models.CharField(max_length=255, null=True, blank=True)
     event_address = models.CharField(max_length=255, null=True, blank=True)
 
+    title = models.CharField(max_length=255, null=True, blank=True)
+
 
     def __str__(self):
-        return f"Plan for {self.date} at {self.time} - {self.location}"
+        return f"Plan for {self.formatted_date or self.date} at {self.time} - {self.title or 'No Title'}"
 
 class CustomUserManager(BaseUserManager):
     """Manager for custom user model with email as username"""

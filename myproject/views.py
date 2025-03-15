@@ -15,6 +15,7 @@ from myproject.models import CustomUser  # Ensure CustomUser model is imported c
 from django.contrib.auth.hashers import make_password
 from PIL import Image, ImageStat
 from io import BytesIO
+from datetime import datetime
 ### For Chat ###
 import os
 import openai
@@ -40,7 +41,6 @@ def index(request):
 
 def planPage(request):
     return render(request, 'planPage.html')
-
 
 
 def SphereAi(request):
@@ -157,6 +157,18 @@ def my_account(request):
 def planConfirmation(request):
     return render(request, 'planConfirmation.html')
 
+def format_date_readable(date_obj):
+    """Format date into 'Saturday, March 8th' style"""
+    day = date_obj.strftime("%d").lstrip("0")  # Remove leading zero
+    day_with_suffix = f"{day}{get_ordinal_suffix(int(day))}"  # Add suffix
+    return date_obj.strftime("%A, %B ") + day_with_suffix
+
+def get_ordinal_suffix(day):
+    """Get ordinal suffix for a given day (1st, 2nd, 3rd, 4th, etc.)"""
+    if 10 <= day % 100 <= 20:
+        return "th"
+    return {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
+
 def save_plan_selection(request):
     print("hello")
 
@@ -177,9 +189,21 @@ def save_plan_selection(request):
                 guests = None
             restaurant_name = data.get("restaurant", {}).get("name")  # ✅ Fixed
             print(restaurant_name)
+
+            raw_date = data.get("date")
+            plan_date = None
+            formatted_date = None
+            if raw_date:
+                try:
+                    plan_date = datetime.strptime(raw_date, "%Y-%m-%d").date()
+                    formatted_date = format_date_readable(plan_date)
+                except ValueError:
+                    return JsonResponse({"error": "Invalid date format"}, status=400)
+
             plan = PlanConfirmation.objects.create(
                 user=request.user,  # Associate plan with logged-in user
-                date=data.get("date"),
+                date=plan_date,
+                formatted_date=formatted_date,
                 restaurant_name=restaurant_name,  # Prevent KeyError
                 restaurant_address=data.get("restaurant", {}).get("address"),
                 restaurant_longitude=data.get("restaurant", {}).get("longitude"),
@@ -192,8 +216,13 @@ def save_plan_selection(request):
 
                 time=time,
                 occasion=data.get("occasion"),
-                guests=guests
+                guests=guests,
+
             )
+
+            plan.title = generate_plan_title(plan)
+            plan.save()
+
             return JsonResponse({
                 "message": "Plan saved successfully",
                 "plan_id": plan.id,
@@ -647,11 +676,54 @@ def get_user_plans(request):
         # ✅ Fetch all plans for the logged-in user
         user_plans = PlanConfirmation.objects.filter(user=request.user).order_by("-id")
 
+        total_plans = user_plans.count()
+
+        google_api_key = os.getenv("GOOGLE_API_KEY")
+
+        def fetch_image(location_name):
+            """Fetch location image from Google Places API"""
+            if not google_api_key or not location_name:
+                return DEFAULT_IMAGE_URL  # Use default image if no API key or invalid location name
+
+            place_search_url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+            search_params = {
+                "input": location_name,
+                "inputtype": "textquery",
+                "fields": "place_id",
+                "key": google_api_key,
+            }
+
+            search_response = requests.get(place_search_url, params=search_params)
+            search_data = search_response.json()
+
+            if "candidates" not in search_data or not search_data["candidates"]:
+                return DEFAULT_IMAGE_URL  # No place found, use default
+
+            place_id = search_data["candidates"][0]["place_id"]
+
+            place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
+            details_params = {
+                "place_id": place_id,
+                "fields": "photo",
+                "key": google_api_key,
+            }
+
+            details_response = requests.get(place_details_url, params=details_params)
+            details_data = details_response.json()
+
+            if "result" not in details_data or "photos" not in details_data["result"]:
+                return DEFAULT_IMAGE_URL  # No photos available, use default
+
+            photo_reference = details_data["result"]["photos"][0]["photo_reference"]
+            return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference={photo_reference}&key={google_api_key}"
+
+
         # ✅ Convert QuerySet to JSON-friendly format
         plans_data = [
             {
                 "id": plan.id,
-                "date": plan.date,
+                "title": plan.title,
+                "date": plan.formatted_date if plan.formatted_date else plan.date.strftime("%Y-%m-%d") if plan.date else "No Date Set",
                 "time": plan.time,
                 "guests": plan.guests,
                 "occasion": plan.occasion,
@@ -663,12 +735,16 @@ def get_user_plans(request):
                     "name": plan.event_name,
                     "address": plan.event_address,
                 },
+                "image":fetch_image(plan.event_name)
             }
             for plan in user_plans
         ]
 
         # ✅ Return JSON response
-        return JsonResponse({"plans": plans_data}, status=200)
+        return JsonResponse({
+            "plans": plans_data,
+            "total_plans": total_plans
+        }, status=200)
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
@@ -733,11 +809,9 @@ def get_plan_details(request, plan_id):
         restaurant_image = fetch_image(plan.restaurant_name)
         event_image = fetch_image(plan.event_name)
 
-        plan_title = generate_plan_title(plan)
-
         plan_data = {
             "id": plan.id,
-            "title": plan_title,
+            "title": plan.title,
             "date": plan.date.strftime("%Y-%m-%d") if plan.date else "No Date Set",
             "time": plan.time.strftime("%H:%M") if plan.time else "No Time Set",
             "guests": plan.guests or 1,
@@ -774,11 +848,18 @@ def delete_plan(request, plan_id):
 
 
 def generate_plan_title(plan):
+    """Generate a creative title using ChatGPT AI if not already saved."""
+
+    # ✅ Check if a title already exists
+    if plan.title:
+        print(f"🔹 Using Existing Title: {plan.title}")  # Debugging
+        return plan.title
+
     openai_api_key = os.getenv("OPENAI_API_KEY")
     client = openai.OpenAI(api_key=openai_api_key)
-    """Generate a creative title using ChatGPT AI"""
+
     prompt = f"""
-    Generate a short 3 words and catchy title for a saved plan.
+    Generate a short, catchy title for a saved plan.
     - Occasion: {plan.occasion or "A special day"}
     - Restaurant: {plan.restaurant_name or "A great restaurant"}
     - Event: {plan.event_name or "An exciting event"}
@@ -804,6 +885,11 @@ def generate_plan_title(plan):
         title = response.choices[0].message.content.strip().replace('"', '').replace("'", "")
 
         print(f"✅ AI-Generated Title: {title}")  # Debug Statement
+
+        # ✅ Save title to the database
+        plan.title = title
+        plan.save()
+
         return title
 
     except Exception as e:
