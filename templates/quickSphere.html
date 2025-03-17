@@ -497,45 +497,68 @@
 
 </main>
 <script>
-    document.getElementById("generate-quick").addEventListener("click", async function () {
-    const apiUrl = "/quick-plan/";
 
-    const location = document.getElementById("location").value;
-    const date = document.getElementById("preferred-date").value;
-    const time = document.getElementById("preferred-time").value;
-    const attendees = document.getElementById("guests").value;
-    const activity = document.getElementById("activity").textContent; // Get selected activity
-    const ocasion = document.getElementById("box-ocasion").textContent; 
-    const order = document.getElementById("box-order").textContent;
-
-    console.log("🚀 Sending API Request:", { location, date, time, attendees, activity, ocasion, order });
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            body: JSON.stringify({ location, date, time, attendees, activity, ocasion, order }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
         }
-
-        const data = await response.json();
-        if (data.redirect_url) {
-            window.location.href = data.redirect_url; // Redirect to Plan Confirmation
-        }
-
-    } catch (error) {
-        console.error("❌ Fetch error:", error);
-        alert(`Error creating plan: ${error.message}`);
     }
+    return cookieValue;
+}
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("generate-quick").addEventListener("click", async function () {
+        console.log("🚀 Button Clicked: Generating Quick Plan..."); // Debugging
+
+        const apiUrl = "/quickSphere/";
+
+        const location = document.getElementById("box-location").value;
+        const date = document.getElementById("box-date").value;
+        const time = document.getElementById("preferred-time").value;
+        const attendees = document.getElementById("guests").value;
+        const activity = document.getElementById("pulled-activity").textContent; 
+        const ocasion = document.getElementById("pulled-Ocasion").textContent; 
+        const order = document.getElementById("pulled-order").textContent;
+
+        console.log("📨 Sending API Request:", { location, date, time, attendees, activity, ocasion, order });
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: JSON.stringify({ location, date, time, attendees, activity, ocasion, order }),
+            });
+
+            console.log("✅ API Response Status:", response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("📩 Response Data:", data);
+
+            if (data.redirect_url) {
+                console.log("🔀 Redirecting to:", data.redirect_url);
+                window.location.href = data.redirect_url;
+            }
+
+        } catch (error) {
+            console.error("❌ Fetch error:", error);
+            alert(`Error creating plan: ${error.message}`);
+        }
+    });
 });
-    
 
     //// fetched plan data    
 
