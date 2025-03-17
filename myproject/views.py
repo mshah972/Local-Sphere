@@ -853,21 +853,32 @@ def generate_plan_title(plan):
     except Exception as e:
         print(f"❌ AI Error: {e}")  # Debugging
         return "A Memorable Experience"
-    
+
 @csrf_exempt
 @login_required
 def quick_plan(request):
+    print(f"🔍 Received request: {request.method}")
+
+    if request.method == "OPTIONS":
+        return JsonResponse({"message": "CORS preflight successful"}, status=200)
+
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
     try:
-        data = json.loads(request.body)
+        print("✅ POST request received")
 
+        # ✅ Read and parse request data
+        data = json.loads(request.body)
+        print(f"📨 Received Data: {data}")
+
+        # ✅ Validate required inputs from QuickSphere
         required_fields = ["location", "date", "time", "attendees", "activity", "ocasion", "order"]
         for field in required_fields:
             if not data.get(field):
                 return JsonResponse({"error": f"Missing required field: {field}"}, status=400)
 
+        # ✅ Extract necessary data
         location = data["location"]
         date = data["date"]
         time = data["time"]
@@ -876,17 +887,20 @@ def quick_plan(request):
         ocasion = data["ocasion"]
         order = data["order"]
 
-        # ✅ Get User Preferences
+        # ✅ Extract user preferences from their profile
         user = request.user
-        dietary_restrictions = user.diet_restrictions if hasattr(user, "diet_restrictions") else "None"
-        favorite_cuisines = user.favorite_cuisines if hasattr(user, "favorite_cuisines") else "None"
-        favorite_interests = user.interests if hasattr(user, "interests") else "None"
+        dietary_restrictions = user.diet_restrictions if user.diet_restrictions else "None"
+        favorite_cuisines = user.favorite_cuisines if user.favorite_cuisines else "None"
+        favorite_interests = user.interests if user.interests else "None"
 
-        # ✅ OpenAI API Call
+        print(f"📌 Extracted User Preferences -> Dietary Restrictions: {dietary_restrictions}, Favorite Cuisines: {favorite_cuisines}, Favorite Interests: {favorite_interests}")
+
+        # ✅ Check if OpenAI API key is available
         openai_api_key = os.getenv("OPENAI_API_KEY")
         if not openai_api_key:
             return JsonResponse({"error": "OpenAI API Key is missing!"}, status=500)
 
+        # ✅ OpenAI API Call to Generate QuickSphere Plan
         client = openai.OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
             model="gpt-4",
@@ -894,28 +908,47 @@ def quick_plan(request):
                 {
                     "role": "user",
                     "content": f"""
-                    Generate a JSON plan for **{ocasion}** at {location} on {date} at {time} for {attendees} people, featuring {activity}.
-                    Order of events: **{order}**.
+                    Generate a JSON object for a **{ocasion}** event in {location} on {date} at {time} for {attendees} people.
 
-                    User Preferences:
+                    The selected activity is **{activity}**, and the plan follows this order: **{order}**.
+
+                    Consider the user's preferences:
                     - **Dietary Restrictions:** {dietary_restrictions}
                     - **Favorite Cuisines:** {favorite_cuisines}
-                    - **Favorite Interests:** {favorite_interests}
+                    - **Favorite Interests for Activities:** {favorite_interests}
+                    ** IMPORTANT RULES **: Leave the activities and ocasion as they are, and make sure that everything is within a 10-mile radius. 
+                    -Do not take into account the favorite intrests as it is a specific {activity} event.
+                    -Make resturants and food walkable distance from the event.
 
-                    Return a JSON object with:
-                    - "date": string (YYYY-MM-DD)
+
+                    The JSON should contain:
+                    - "date": string (formatted as YYYY-MM-DD)
                     - "time": string
                     - "guests": integer
                     - "location": string
-                    - "activity": string
+                    - "cuisine": string
                     - "ocasion": string
                     - "order": string
-                    - "plan": {{"morning": string, "afternoon": string, "evening": string}}
+                    - "restaurants": an **array of exactly 3 objects**, each with:
+                        - "name": string
+                        - "address": string
+                        - "website": string
+                        - "rating": float
+                        - "reservation_time": string
+                    - "events": an **array of exactly 3 objects**, each with:
+                        - "name": string
+                        - "address": string
+                        - "website": string
+                        - "start_time": string
+                        - "end_time": string
+                        - "type": string
 
-                    **Rules:**
-                    - Respond **ONLY** with valid JSON.
-                    - **DO NOT** include explanations or markdown.
-                    - Ensure all values are **realistic and match user preferences**.
+                    **IMPORTANT RULES**:
+                    - Respond **ONLY** with a JSON object, with **no explanations, disclaimers, or Markdown formatting**.
+                    - Ensure **exactly 3 restaurants** and **exactly 3 events** are included.
+                    - The selections must be **realistic, diverse, and match the user's saved preferences**.
+                    - **Do NOT** use placeholders such as "Restaurant One" or "Event One."
+                    - **Make Sure** that everything is in the radius of 10 miles or less only.
                     """
                 }
             ],
@@ -923,26 +956,27 @@ def quick_plan(request):
             temperature=0.7,
         )
 
-        # ✅ Debugging OpenAI Response
         chat_response = response.choices[0].message.content.strip()
-        print(f"🔍 OpenAI Response: {chat_response}")  # Log response for debugging
+        print(f"📩 OpenAI Response: {chat_response}")  # Debugging
 
-        # ✅ Check if the response is a valid JSON
+        # ✅ Ensure OpenAI response is in valid JSON format
         try:
             plan_data = json.loads(chat_response)
+
+            # ✅ Extra Validation: Ensure OpenAI returns exactly 3 places
+            if len(plan_data.get("recommended_places", [])) != 3:
+                print("⚠️ OpenAI did not return exactly 3 places. Adjusting output.")
+                plan_data["recommended_places"] = plan_data.get("recommended_places", [])[:3]
+
         except json.JSONDecodeError:
+            print("❌ ERROR: OpenAI response is not valid JSON.")
             return JsonResponse({"error": "Invalid AI response format", "response": chat_response}, status=500)
 
-        # ✅ Ensure OpenAI returns required keys
-        required_keys = ["date", "time", "guests", "location", "activity", "ocasion", "order", "plan"]
-        for key in required_keys:
-            if key not in plan_data:
-                return JsonResponse({"error": f"Missing expected key: {key}", "response": plan_data}, status=500)
-
-        return JsonResponse({"redirect_url": "/plan-confirmation/", "plan_data": plan_data}, status=200)
+        return JsonResponse({"redirect_url": "/planConfirmation/", "plan_data": plan_data}, status=200)
 
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON format received"}, status=400)
 
     except Exception as e:
+        print(f"❌ ERROR: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)

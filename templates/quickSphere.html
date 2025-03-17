@@ -488,7 +488,7 @@
                 >
                     Craft Your Plan
                 </button>
-                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+                <div id="loadingText" class="loading-container text-center text-white">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
             </div>
 
             </div>
@@ -497,14 +497,24 @@
 
 </main>
 <script>
+// Loading Animation
+function showLoading() {
+    let loadingText = document.getElementById("loadingText");
+    loadingText.classList.add("show");
 
+    // Simulate loading process (hide after 3 seconds)
+    setTimeout(() => {
+        loadingText.classList.remove("show");
+    }, 300000);
+}
+// Function to get CSRF token from cookies
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + '=')) {
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
             }
@@ -512,54 +522,75 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("generate-quick").addEventListener("click", async function () {
-        console.log("🚀 Button Clicked: Generating Quick Plan..."); // Debugging
 
-        const apiUrl = "/quickSphere/";
+document.getElementById("generate-quick").addEventListener("click", async function () {
+    console.log("🚀 Button Clicked: Generating Quick Plan...");
 
-        const location = document.getElementById("box-location").value;
-        const date = document.getElementById("box-date").value;
-        const time = document.getElementById("preferred-time").value;
-        const attendees = document.getElementById("guests").value;
-        const activity = document.getElementById("pulled-activity").textContent; 
-        const ocasion = document.getElementById("pulled-Ocasion").textContent; 
-        const order = document.getElementById("pulled-order").textContent;
+    const apiUrl = "/quick_plan/";
 
-        console.log("📨 Sending API Request:", { location, date, time, attendees, activity, ocasion, order });
+    const location = document.getElementById("box-location").value;
+    const date = document.getElementById("box-date").value;
+    const time = document.getElementById("preferred-time").value;
+    const attendees = document.getElementById("guests").value;
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "X-CSRFToken": getCookie("csrftoken"),
-                },
-                body: JSON.stringify({ location, date, time, attendees, activity, ocasion, order }),
-            });
+    const activity = document.getElementById("pulled-activity").textContent.trim();
+    const occasion = document.getElementById("pulled-Ocasion").textContent.trim();
+    const order = document.getElementById("pulled-order").textContent.trim();
 
-            console.log("✅ API Response Status:", response.status);
+    const dietaryRestrictions = document.getElementById("user-dietary-restrictions-box").textContent.trim();
+    const favoriteFoods = document.getElementById("user-fav-foods-box").textContent.trim();
+    const interests = document.getElementById("user-interests-box").textContent.trim();
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+    showLoading();
 
-            const data = await response.json();
-            console.log("📩 Response Data:", data);
+    console.log("📨 Sending API Request:", { location, date, time, attendees, activity, occasion, order });
 
-            if (data.redirect_url) {
-                console.log("🔀 Redirecting to:", data.redirect_url);
-                window.location.href = data.redirect_url;
-            }
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-CSRFToken": getCookie("csrftoken") || csrftoken,  // ✅ Fixed CSRF retrieval
+            },
+            body: JSON.stringify({
+                location,
+                date,
+                time,
+                attendees,
+                activity,
+                ocasion: occasion,
+                order,
+                dietary_restrictions: dietaryRestrictions,
+                favorite_interests: interests,
+            }),
+        });
 
-        } catch (error) {
-            console.error("❌ Fetch error:", error);
-            alert(`Error creating plan: ${error.message}`);
+        console.log("✅ API Response Status:", response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-    });
-});
 
+        const data = await response.json();
+        console.log("📩 Response Data:", data);
+
+        if (data.plan_data) {
+            localStorage.setItem("planData", JSON.stringify(data.plan_data));
+        }
+
+        if (data.redirect_url) {
+            console.log("🔀 Redirecting to:", data.redirect_url);
+            window.location.href = data.redirect_url;
+        } else {
+            alert("✅ Plan generated successfully! Check the console for details.");
+        }
+
+    } catch (error) {
+        console.error("❌ Fetch error:", error);
+        alert(`Error creating plan: ${error.message}`);
+    }
+});
     //// fetched plan data    
 
     document.addEventListener("DOMContentLoaded", function () {

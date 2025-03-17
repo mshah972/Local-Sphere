@@ -20,7 +20,7 @@ from . import views
 from django.urls import path
 from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image, get_restaurant_booking, get_user_plans, plan_detail_view, get_plan_details
 from django.urls import path
-from .views import generate_date_plan
+from .views import generate_date_plan, quickSphere
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -55,8 +55,8 @@ urlpatterns = [
     path('api/plan/<int:plan_id>/', get_plan_details, name='get_plan_details'),
     path("delete-plan/<int:plan_id>/", views.delete_plan, name="delete_plan"),
     path('quickSphere/', views.quickSphere, name='quickSphere'),
+    path("quick_plan/", views.quick_plan, name="quick_plan"),
 ]
-
 
 if settings.DEBUG:  # Only serve media files in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
