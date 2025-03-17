@@ -271,20 +271,12 @@
                 </div>
             </div>
 
-            <!-- Favorites Section -->
             <div class="relative w-full p-6 lg:p-10">
                 <h3 class="text-lg lg:text-xl font-semibold">Favorites</h3>
-                <!-- Plan Card -->
                 <div class="w-full overflow-x-auto snap-x snap-mandatory">
-                    <ul id="user-plans" role="list" class="flex flex-row gap-6 font-poppins whitespace-nowrap m-2 mt-4 mb-4">
-                        <!-- Plans will be inserted dynamically here -->
+                    <ul id="favorites-list" role="list" class="flex flex-row gap-6 font-poppins whitespace-nowrap m-2 mt-4 mb-4">
+                        <!-- Favorites will be inserted dynamically here -->
                     </ul>
-
-                    <div id="plan-skeleton" class="flex flex-row gap-6">
-                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-[350px] lg:w-[500px] h-[200px]"></div>
-                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-[350px] lg:w-[500px] h-[200px]"></div>
-                        <div class="skeleton-card bg-gray-200 animate-pulse rounded-3xl w-[350px] lg:w-[500px] h-[200px]"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -331,45 +323,40 @@
             }
 
             data.plans.forEach(plan => {
-                const planCard = `
-
-                <a href="/plan/${plan.id}/">
-                    <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit text-white hover:text-custom-blue cursor-pointer shadow-lg mt-2">
-                        <div class="relative font-poppins bg-custom-blue rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between overflow-hidden hover:bg-custom-white">
-                            <div class="w-full h-[150px]">
-                                <img src="${plan.image_url}"
-                                     alt="${plan.restaurant.name}"
-                                     class="w-full h-full object-cover rounded-t-3xl">
-                            </div>
-                            <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer"
-                                    onclick="toggleRed(event, this)">
-                                <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
-                                </svg>
-                            </button>
-                            <div class="flex flex-col items-center justify-between p-4 h-full">
-                                <div class="flex flex-col w-full">
-                                    <div class="flex flex-row justify-between items-center w-full pr-2">
-                                        <span class="font-semibold text-[14px] lg:text-[20px] pr-4 truncate overflow-hidden whitespace-nowrap w-full lg:w-[80%]" title="${plan.title}">
-                                            ${plan.title}
-                                        </span>
-                                        <span data-date="${plan.date}" class="font-normal text-[12px] lg:text-[16px]">
-                                            ${plan.date}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
-                                        <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.guests} People</p>
-                                        <!-- <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.occasion}</p> -->
-                                </div>
+    const planCard = `
+        <a href="/plan/${plan.id}/">
+            <li class="flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit text-white hover:text-custom-blue cursor-pointer shadow-lg mt-2" data-id="${plan.id}">
+                <div class="relative font-poppins bg-custom-blue rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between overflow-hidden hover:bg-custom-white">
+                    <div class="w-full h-[150px]">
+                        <img src="${plan.image_url}" alt="${plan.restaurant.name}" class="w-full h-full object-cover rounded-t-3xl">
+                    </div>
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md cursor-pointer"
+                            onclick="toggleRed(event, this)">
+                        <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z"></path>
+                        </svg>
+                    </button>
+                    <div class="flex flex-col items-center justify-between p-4 h-full">
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-row justify-between items-center w-full pr-2">
+                                <span class="font-semibold text-[14px] lg:text-[20px] pr-4 truncate overflow-hidden whitespace-nowrap w-full lg:w-[80%]" title="${plan.title}">
+                                    ${plan.title}
+                                </span>
+                                <span data-date="${plan.date}" class="font-normal text-[12px] lg:text-[16px]">
+                                    ${plan.date}
+                                </span>
                             </div>
                         </div>
-                    </li>
-                </a>
-
-            `;
-                planContainer.innerHTML += planCard;
-            });
+                        <div class="flex flex-row justify-between items-center w-full pt-1 pr-2">
+                                <p class="font-mulish font-light text-[10px] lg:text-[14px]">${plan.guests} People</p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </a>
+    `;
+    planContainer.innerHTML += planCard;
+});
 
         } catch (error) {
             console.error("Failed to load plans:", error);
@@ -420,8 +407,52 @@
 
     function toggleRed(event, button) {
     event.stopPropagation(); // Prevents the card click event
-    event.preventDefault(); // Prevent accidental navigation if inside an <a>
+    event.preventDefault(); // Prevent accidental navigation
+
     button.classList.toggle("selected-button"); // Toggle red class
+
+    // Get the card container
+    const card = button.closest("li");
+    const planId = card.getAttribute("data-id"); // Unique identifier for each plan
+    const planTitle = card.querySelector("span[title]").textContent;
+    const planImage = card.querySelector("img").src;
+
+    // Get the favorites list container
+    const favoritesList = document.getElementById("favorites-list");
+
+    // Check if the plan is already in favorites
+    const existingFavorite = favoritesList.querySelector(`li[data-id='${planId}']`);
+
+    if (button.classList.contains("selected-button")) {
+        // ✅ Add to favorites if not already there
+        if (!existingFavorite) {
+            const favoriteCard = document.createElement("li");
+            favoriteCard.className = "flex-none snap-center rounded-3xl overflow-hidden w-fit h-fit text-white shadow-lg mt-2";
+            favoriteCard.setAttribute("data-id", planId);
+
+            // ✅ Make favorite cards clickable
+            favoriteCard.innerHTML = `
+                <a href="/plan/${planId}">
+                    <div class="relative font-poppins bg-custom-blue rounded-3xl w-[350px] lg:w-[500px] flex flex-col justify-between overflow-hidden hover:bg-custom-white">
+                        <div class="w-full h-[150px]">
+                            <img src="${planImage}" alt="${planTitle}" class="w-full h-full object-cover rounded-t-3xl">
+                        </div>
+                        <div class="flex flex-col items-center justify-between p-4 h-full">
+                            <span class="font-semibold text-[14px] lg:text-[20px] pr-4 truncate overflow-hidden whitespace-nowrap w-full lg:w-[80%]" title="${planTitle}">
+                                ${planTitle}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            `;
+            favoritesList.appendChild(favoriteCard);
+        }
+    } else {
+        // ✅ Remove from favorites when deselected
+        if (existingFavorite) {
+            existingFavorite.remove();
+        }
+    }
 }
 
 
