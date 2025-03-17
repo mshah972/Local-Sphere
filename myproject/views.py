@@ -72,6 +72,23 @@ def SphereAi(request):
     }
     return render(request, "SphereAi.html", context)
 
+@login_required
+def quickSphere(request):
+    user = request.user
+
+    # Fetch user preferences from the database
+    favorite_foods = ", ".join(user.favorite_cuisines) if user.favorite_cuisines else "None"
+    dietary_restrictions = ", ".join(user.diet_restrictions) if user.diet_restrictions else "None"
+    interests = ", ".join(user.interests) if user.interests else "None"
+
+    context = {
+        "favorite_foods": favorite_foods,
+        "dietary_restrictions": dietary_restrictions,
+        "interests": interests,
+    }
+    return render(request, "quickSphere.html", context)
+
+
 
 def signup(request):
     print("Request method:", request.method)  # Debugging
