@@ -54,7 +54,9 @@ urlpatterns = [
     path('plan/<int:plan_id>/', plan_detail_view, name='planPage'),
     path('api/plan/<int:plan_id>/', get_plan_details, name='get_plan_details'),
     path("delete-plan/<int:plan_id>/", views.delete_plan, name="delete_plan"),
+    path('quickSphere/', views.quickSphere, name='quickSphere'),
 ]
+
 
 if settings.DEBUG:  # Only serve media files in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

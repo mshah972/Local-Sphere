@@ -44,6 +44,9 @@ def index(request):
 def planPage(request):
     return render(request, 'planPage.html')
 
+def quickSphere(request):
+    return render(request, 'quickSphere.html')
+
 
 def SphereAi(request):
     if request.user.is_authenticated:

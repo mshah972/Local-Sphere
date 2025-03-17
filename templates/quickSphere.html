@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +22,7 @@
             width: auto;
         }
 
+        /* Style Google Autocomplete Dropdown */
         /* Google Maps Dropdown Styling */
         .pac-container {
             background-color: #004AAD !important; /* Blue background */
@@ -83,161 +84,35 @@
             margin-right: 12px !important;
             margin-left: 12px !important;
         }
-
-        .team-member {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        .loading-container {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        .team-member:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+        .show {
+            display: block;
+            opacity: 1;
         }
 
-        .container .card .icon {
-
-            position: absolute;
-
-            top: 0;
-
-            left: 0;
-
-            width: 100%;
-
-            height: 100%;
-
-            background: #2c73df;
-
+        .dot {
+            animation: blink 1.5s infinite;
         }
 
-        .container .card .icon .fa {
-
-            position: absolute;
-
-            top: 50%;
-
-            left: 50%;
-
-            transform: translate(-50%, -50%);
-
-            font-size: 80px;
-
-            color: #fff;
-
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
         }
 
-        .container .card .slide {
-
-            width: 300px;
-
-            height: 200px;
-
-            transition: 0.5s;
-
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
         }
 
-        .container .card .slide.slide1 {
-
-            position: relative;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            z-index: 1;
-
-            transition: .7s;
-
-            transform: translateY(100px);
-
-        }
-
-        .container .card:hover .slide.slide1 {
-
-            transform: translateY(0px);
-
-        }
-
-        .container .card .slide.slide2 {
-
-            position: relative;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            padding: 20px;
-
-            box-sizing: border-box;
-
-            transition: .8s;
-
-            transform: translateY(-100px);
-
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-
-        }
-
-        .container .card:hover .slide.slide2 {
-
-            transform: translateY(0);
-
-        }
-
-        .container .card .slide.slide2::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 30px;
-
-            height: 4px;
-
-            bottom: 10px;
-
-            left: 50%;
-
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            background: #2c73df;
-
-        }
-
-        .container .card .slide.slide2 .content p {
-
-            margin-bottom: 10px;
-
-            padding: 0;
-
-            text-align: center;
-
-            color: #414141;
-
-        }
-
-        .container .card .slide.slide2 .content h3 {
-
-            margin: 0;
-
-            padding: 0;
-
-            font-size: 24px;
-
-            text-align: center;
-
-            color: #414141;
-
-        }
-
-        .Image img {
-            transform: scale(1.8); /* Increases size by 10% */
-            transition: transform 0.3s ease-in-out;
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
         }
 
     </style>
@@ -247,7 +122,7 @@
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
-            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
+            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
                 <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
@@ -269,7 +144,7 @@
                     Explore
                 </a>
                 <!-- SphereAi -->
-                <a href="{% url 'SphereAi' %}"
+                <a href="#"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
                     SphereAi
                 </a>
@@ -291,7 +166,7 @@
                         <div class="p-4">
                             <div class="group relative flex items-center gap-x-6 rounded-xl p-4 text-sm/6 transition duration-250 ease-in-out hover:bg-custom-white">
                                 <div class="flex-auto">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins text-base block text-center font-semibold text-white hover:text-black">
                                         About Us
                                         <span class="absolute inset-0"></span>
@@ -311,8 +186,8 @@
                         <div class="relative">
                             <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
-                                     alt="Profile Picture" class="w-8 h-8 rounded-full object-cover mr-2">
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture"
+                                     class="w-8 h-8 rounded-full object-cover mr-2">
                                 <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                 <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
                                      fill="currentColor" aria-hidden="true">
@@ -399,7 +274,7 @@
                                 </button>
                                 <div id="mobileCompanyDropdown"
                                      class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                    <a href="#"
+                                    <a href="{% url 'about' %}"
                                        class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
                                         Us</a>
                                 </div>
@@ -420,173 +295,287 @@
         </div>
     </header>
     <!-- NEW PAGE COPY THIS UP  -->
+    <div
+            class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
+    >
+        <div
+                class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
+        >
+            <!-- Background Image -->
+            <img
+                    src="https://images.unsplash.com/photo-1545132147-d037e6c54cfd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
 
-    <body class="bg-custom-white">
-    <div class="max-w-9xl mx-auto px-6 py-12 mr-5 ml-5 md:mr-10 md:ml-10 lg:mr-15 lg:ml-15 font-poppins">
-        <!-- Header Section -->
-        <div class="relative w-full h-30 rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                 alt="City View" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-                <h1 class="text-white text-3xl font-bold">About Us</h1>
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                <h2 class="text-gray-800 font-semibold text-lg">
+                    Current Event Selection:
+                </h2>
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="box-location" class="text-md">Chicago, IL</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
+                </span>
+                        <span id="box-date" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
+                </span>
+                        <span id="box-time" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                    
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Profile: 
+                    </h2>
+
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Restrictions & Preferences
+                    </h2>
+                    <!-- Dietary Restrictions -->
+                    <h3
+                    class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                    <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/restrictions.svg" />
+                    </span>
+                    <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
+                    </h3>
+                    <!-- Favorite Foods -->
+                        <h3
+                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                        <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                        </span>
+                        <span id="user-fav-foods-box" class="text-md">Loading...</span>
+                    </h3>
+                        <!-- Interests -->
+                        <h3
+                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                        <span class="mr-2">
+                        <img class="h-6 w-auto" src="../static/search.svg" />
+                        </span>
+                        <span id="user-interests-box" class="text-md">Loading...</span>
+                    </h3>
+                </div>
+                <!-- Buttons -->
+            <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
+                <button
+                    id="recreate-btn"
+                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                    onclick="showLoading()"
+                >
+                    Craft Your Plan
+                </button>
+                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
             </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="mt-10">
-            <h2 class="text-2xl font-bold text-gray-900">About Local Sphere</h2>
-            <p class="mt-4 text-gray-700">Welcome to Local Sphere, your go-to AI-powered date planning companion! We take the hassle out of organizing the perfect date by curating personalized experiences tailored to your preferences. Whether it's a romantic dinner, an adventurous outing, or a cozy night in, our smart AI considers your interests, location, and budget to craft unforgettable date ideas. Let us handle the planning while you focus on making memories!</p>
-        </div>
-
-
-        <!-- Team Section -->
-        <div class="mt-12 p-2">
-            <h2 class="text-2xl font-bold text-gray-900 text-center">Our Team</h2>
-            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/Jose.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Jose Nunez
-                                </h3>
-                                <p class="font-mulish font-normal">UI/UX Designer</p>
-                                <p class="font-normal text-sm">I am a Computer Science major and I enjoy playing soccer and
-                                    video games.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/Moksh.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Moksh Shah
-                                </h3>
-                                <p class="font-mulish font-normal"> Lead Developer</p>
-                                <p class="font-normal text-sm">I am a Software Engineer Student and I enjoy building mobile apps.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/kevin.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Kevin
-                                </h3>
-                                <p class="font-mulish font-normal">Project Manager</p>
-                                <p class="font-normal text-sm">I work as a Network Engineer and I like to automate.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/Peter.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Peter
-                                </h3>
-                                <p class="font-mulish font-normal">Documentation Manager</p>
-                                <p class="font-normal text-sm">Majoring in Accounting and Computer Science. From Mt. Prospect
-                                    IL.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/Daniel.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Daniel
-                                </h3>
-                                <p class="font-mulish font-normal">Presentation Manager</p>
-                                <p class="font-normal text-sm">I am a Software Engineer, I play the piano and guitar.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container font-poppins">
-                    <div class="card">
-                        <div class="slide slide1 bg-custom-blue">
-                            <div class="content bg-custom-blue">
-                                <div class="Image">
-                                    <i class="Image" aria-hidden="true">
-                                        <img src="../static/Jeniece.png" alt="Team Logo" class="w-20 h-auto">
-                                    </i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slide slide2 bg-white">
-                            <div class="content">
-                                <h3 class="font-semibold text-gray-900">
-                                    Jeniece
-                                </h3>
-                                <p class="font-mulish font-normal">Testing Manager</p>
-                                <p class="font-normal text-sm">I am an Executive Support Analyst & I love cooking!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
-    </div>
-    </div>
-    </body>
+    
 
-    <script>
+        <div
+                class="relative w-full lg:hidden lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl mt-10"
+        >
+            <!-- Background Image -->
+            <img
+                    src="../static/sphereAiBack.png"
+                    alt="Process Diagram"
+                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
+            />
 
-        ////////////////////////////////////// Header Script /////////////////////////////////////
+            <div class="relative flex flex-col items-center w-full space-y-12">
+                <!-- 📌 Card 1: User's Event Selection -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span class="text-md">Chicago, IL</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/calendar.svg"/>
+                </span>
+                        <span id="box-date-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/dayORnight.png"/>
+                </span>
+                        <span id="box-time-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/people.png"/>
+                </span>
+                        <span id="box-guests-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="box-food-mobile" class="text-md"
+                        >Waiting For User Selection...</span
+                        >
+                    </h3>
+                </div>
+
+                <!-- 🔽 Arrow -->
+                <div class="w-6 h-6">
+                    <svg
+                            class="w-full h-full text-gray-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 4v16m8-8H4"
+                        ></path>
+                    </svg>
+                </div>
+
+                <!-- 📌 Card 2: User’s Personal Data from Signup -->
+                <div
+                        class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
+                >
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Fetched User Data
+                    </h2>
+
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    >
+                <span class="mr-2">
+                  <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
+                </span>
+                        <span id="user-food-mobile" class="text-md">Mexican</span>
+                    </h3>
+
+                    <h3
+                            class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
+                    >
+                <span class="mr-2">
+                  <img class="h-5 w-auto" src="../static/location.svg"/>
+                </span>
+                        <span id="user-preferred-location-mobile" class="text-md"
+                        >Chicago, I</span
+                        >
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Fetch user data from Django template variables
+    const favoriteFoods = "{{ favorite_foods }}";
+    const dietaryRestrictions = "{{ dietary_restrictions }}";
+    const interests = "{{ interests }}";
+
+    // Update left-side UI dynamically
+    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
+    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
+    document.getElementById("user-interests-box").textContent = interests || "Not Set";
+  });
+
+  
+    ////////////////////////////////////// Header Script /////////////////////////////////////
 
 
     const userDropdownButton = document.getElementById("userDropdownButton");
@@ -720,6 +709,6 @@
             mobileMenu.classList.add("hidden");
         });
     });
-    </script>
+</script>
 </body>
 </html>
