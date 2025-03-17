@@ -122,7 +122,7 @@
     <header class="relative z-50">
         <nav class="mx-0 sm:mx-4 lg:mx-10 flex max-w-screen items-center justify-between p-6 lg:px-8"
              aria-label="header">
-            <a href="{% url 'creation' %}" class="-m-1.5 p-1.5">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Local Sphere</span>
                 <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
             </a>
@@ -482,7 +482,7 @@
                 <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
                 <button
-                    id="recreate-btn"
+                    id="generate-quick"
                     class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
                     onclick="showLoading()"
                 >
@@ -497,6 +497,68 @@
 
 </main>
 <script>
+    document.getElementById("generate-quick").addEventListener("click", async function () {
+    const apiUrl = "/quick-plan/";
+
+    const location = document.getElementById("location").value;
+    const date = document.getElementById("preferred-date").value;
+    const time = document.getElementById("preferred-time").value;
+    const attendees = document.getElementById("guests").value;
+    const activity = document.getElementById("activity").textContent; // Get selected activity
+    const ocasion = document.getElementById("box-ocasion").textContent; 
+    const order = document.getElementById("box-order").textContent;
+
+    console.log("🚀 Sending API Request:", { location, date, time, attendees, activity, ocasion, order });
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify({ location, date, time, attendees, activity, ocasion, order }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.redirect_url) {
+            window.location.href = data.redirect_url; // Redirect to Plan Confirmation
+        }
+
+    } catch (error) {
+        console.error("❌ Fetch error:", error);
+        alert(`Error creating plan: ${error.message}`);
+    }
+});
+    
+
+    //// fetched plan data    
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Retrieve saved values from localStorage
+        const activity = localStorage.getItem("selectedActivity") || "Not Set";
+        const order = localStorage.getItem("selectedOrder") || "Not Set";
+        const occasion = localStorage.getItem("selectedOccasion") || "Not Set";
+
+        // Populate the "Chosen Plan" section on the left side
+        document.getElementById("pulled-activity").textContent = activity;
+        document.getElementById("pulled-order").textContent = order;
+        document.getElementById("pulled-Ocasion").textContent = occasion;
+
+        // Clear localStorage after loading the values to prevent accidental reuse
+        setTimeout(() => {
+            localStorage.removeItem("selectedActivity");
+            localStorage.removeItem("selectedOrder");
+            localStorage.removeItem("selectedOccasion");
+        }, 1000);
+    });
+
+//  GOOGLE STUFF ////
     async function loadGoogleMaps() {
         try {
             const response = await fetch("/api/getGoogleMapsApiKey/");

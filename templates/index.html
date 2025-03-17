@@ -569,136 +569,60 @@
     <div class="flex flex-col mt-10 ml-5 mr-5 md:ml-10 md:mr-10 lg:mr-15 lg:ml-15">
         <div class="w-full flex flex-col space-x-1 font-mulish text-[18px] md:text-[20px] lg:text-[22px]">
             <span class="text-black font-bold">
-                Pick Your Style
+                Seek Discomfort
             </span>
             <span class="font-poppins text-black font-light text-[12px] mt-1 pr-4">
-                Lorem ipsum odor amet, consectetuer adipiscing elit. Elit mattis quisque cursus maximus sit est vestibulum?
+                Dont have any ideas yet? Want to try somthing new? Get Adventures from our Popular Activities and Personal Favorites!
             </span>
         </div>
 
         <!-- Cards Row 1  -->
         <div class="@container w-full overflow-x-auto mt-4 snap-x snap-mandatory">
             <ul role="list" class="flex flex-row gap-6 font-poppins">
+                <!-- COPY THIS FOR PLANING -->
                 <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1533760881669-80db4d7b4c15?q=80&w=4240&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Beach"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Beach
-                        </div>
-                    </div>
+                    <a href="{% url 'quickSphere' %}" 
+                    class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block"
+                    onclick="saveActivity('Beach', 'Day at the Beach', 'Lunch then Activity')">
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
+                            <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
+                                <!-- Background Image -->
+                                <img src="https://images.unsplash.com/photo-1468413253725-0d5181091126?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    alt="Beach"
+                                    class="w-full h-full object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black/40"></div>
+                                <!-- Text Overlay -->
+                                <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
+                                    Beach Day
+                                </div>
+                            </div>
+                        </li>
                     </a>
+                <!-- PLANING  -->
+                 <!-- COPY THIS FOR PLANING -->
+                    <a href="{% url 'quickSphere' %}" 
+                    class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block"
+                    onclick="saveActivity('Hiking', 'Hiking Day', 'Lunch then Activity')">
+                        <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
+                            <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
+                                <!-- Background Image -->
+                                <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGlraW5nfGVufDB8fDB8fHww"
+                                    alt="Beach"
+                                    class="w-full h-full object-cover rounded-lg">
+                                <div class="absolute inset-0 bg-black/40"></div>
+                                <!-- Text Overlay -->
+                                <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
+                                    Hiking
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                <!-- PLANING  -->
+
+                
+                
+                
                 </li>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1566424746223-f79e6597943b?q=80&w=5060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Mountain"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Mountain
-                        </div>
-                    </div>
-                </a>
-                </li>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1501238295340-c810d3c156d2?q=80&w=4272&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Party"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Party
-                        </div>
-                    </div>
-                </a>
-                </li>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://occ-0-8407-92.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABbjJD-qRDegSr87RXNsujiin2n7bHuEAF_lerwix2Em0R0Kn4aUXlufPM0PlfakTBzteW0d_WCNrJ44IVaf1JCAgU5ezMyBeRRdZ.jpg?r=152"
-                             alt="Comedy"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Comedy
-                        </div>
-                    </div>
-                </a>
-                </li>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1619229667009-e7e51684e8e6?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Concerts"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Concerts
-                        </div>
-                    </div>
-                </li>
-                </a>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1513279922550-250c2129b13a?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Date Night"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Date Night
-                        </div>
-                    </div>
-                </li>
-                </a>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1580809361436-42a7ec204889?q=80&w=4032&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Opera Hall"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Opera
-                        </div>
-                    </div>
-                </li>
-                </a>
-                <a href="#" class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block">
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
-                    <div class="relative w-[230px] h-[130px] md:w-[250px] md:h-[150px] lg:w-[300px] lg:h-[160px]">
-                        <!-- Background Image -->
-                        <img src="https://images.unsplash.com/photo-1739036679577-05f49ff85bb0?q=80&w=5075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                             alt="Ice Skiing"
-                             class="w-full h-full object-cover rounded-lg">
-                        <div class="absolute inset-0 bg-black/40"></div>
-                        <!-- Text Overlay -->
-                        <div class="absolute bottom-4 left-6 text-white text-lg lg:text-xl font-normal">
-                            Skiing
-                        </div>
-                    </div>
-                </li>
-                </a>
             </ul>
         </div>
     </div>
@@ -881,6 +805,13 @@
 
 </main>
 <script>
+
+function saveActivity(activity, occasion, order) {
+        localStorage.setItem("selectedActivity", activity);
+        localStorage.setItem("selectedOrder", order);
+        localStorage.setItem("selectedOccasion", occasion);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         const apiKey = "b84f959e6ea47b4faf97b74709d55105";
 
