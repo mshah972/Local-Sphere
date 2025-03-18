@@ -336,7 +336,7 @@
                                 id="box-date" 
                                 type="date" 
                                 class="text-md bg-transparent border-none focus:outline-none w-full text-center"
-                                value="Input Date">
+                            >
                         </h3>
                 
                         <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
@@ -523,15 +523,22 @@ function getCookie(name) {
     return cookieValue;
 }
 
+
 document.getElementById("generate-quick").addEventListener("click", async function () {
     console.log("🚀 Button Clicked: Generating Quick Plan...");
 
-    const apiUrl = "/quick_plan/";
+    const location = document.getElementById("box-location").value.trim();
+    const date = document.getElementById("box-date").value.trim();
+    const time = document.getElementById("preferred-time").value.trim();
+    const attendees = document.getElementById("guests").value.trim();
 
-    const location = document.getElementById("box-location").value;
-    const date = document.getElementById("box-date").value;
-    const time = document.getElementById("preferred-time").value;
-    const attendees = document.getElementById("guests").value;
+    // Validation: Ensure required fields are not empty
+    if (!date || !time || !attendees) {
+        alert("🚨 Please fill in Date, Time of Day, and Guests before crafting your plan!");
+        return; // Stop execution if validation fails
+    }
+
+    const apiUrl = "/quick_plan/";
 
     const activity = document.getElementById("pulled-activity").textContent.trim();
     const occasion = document.getElementById("pulled-Ocasion").textContent.trim();
@@ -551,7 +558,7 @@ document.getElementById("generate-quick").addEventListener("click", async functi
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "X-CSRFToken": getCookie("csrftoken") || csrftoken,  // ✅ Fixed CSRF retrieval
+                "X-CSRFToken": getCookie("csrftoken"),
             },
             body: JSON.stringify({
                 location,
@@ -699,7 +706,6 @@ document.getElementById("generate-quick").addEventListener("click", async functi
     document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
     document.getElementById("user-interests-box").textContent = interests || "Not Set";
 });
-  
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
 
