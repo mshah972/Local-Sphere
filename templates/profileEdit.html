@@ -340,6 +340,7 @@
                         <input type="hidden" id="interestsInput" name="interests">
 
                         <select id="interestDropdown" class="w-full font-normal rounded-md">
+
                             <option disabled selected hidden>Select</option>
                             <option>Music Concerts</option>
                             <option>Chicago Cubs</option>
@@ -529,7 +530,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // **Add Interests, Cuisines, and Dietary Restrictions**
 
 document.addEventListener("DOMContentLoaded", function () {
-
         // Get user input elements
         const userDescriptionInput = document.getElementById("biography");
         const cuisineDropdown = document.getElementById("cuisineDropdown");
@@ -596,64 +596,60 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Diet Restrictions:", dietRestrictionsHiddenInput.value);
         }
 
-
-
-
-
         // Function to add an item to both the tag section and table
-            function addItem(selectedValue, displayContainer, tableContainer, container, dropdown, type) {
-                if (!selectedValue) return;
+        function addItem(selectedValue, displayContainer, tableContainer, container, dropdown, type) {
+            if (!selectedValue) return;
 
-                // Check if already selected
-                if ([...displayContainer.children].some(item => item.dataset.item === selectedValue)) return;
+            // Check if already selected
+            if ([...displayContainer.children].some(item => item.dataset.item === selectedValue)) return;
 
-                // Create a new tag below the input
-                const itemTag = document.createElement("div");
-                itemTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
-                itemTag.dataset.item = selectedValue;
-                itemTag.innerHTML = `
-                <span>${selectedValue}</span>
-                <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
+            // Create a new tag below the input
+            const itemTag = document.createElement("div");
+            itemTag.className = "border border-gray-300 text-black px-4 py-2 rounded-2xl flex items-center gap-2 text-[12px] md:text-[12px] lg:text-[16px]";
+            itemTag.dataset.item = selectedValue;
+            itemTag.innerHTML = `
+            <span>${selectedValue}</span>
+            <span class="ml-2 cursor-pointer removeItem"><img class="w-5 h-auto" src="../static/removeIcon.svg" alt="Remove"></span>`;
 
-                // Append to the list
-                displayContainer.appendChild(itemTag);
+            // Append to the list
+            displayContainer.appendChild(itemTag);
 
-                // Create a table entry
-                const tableRow = document.createElement("div");
-                tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
-                tableRow.dataset.item = selectedValue;
-                tableRow.innerText = selectedValue;
+            // Create a table entry
+            const tableRow = document.createElement("div");
+            tableRow.className = "bg-black text-white px-4 py-2 rounded-lg text-center";
+            tableRow.dataset.item = selectedValue;
+            tableRow.innerText = selectedValue;
 
-                // Append to the table
-                tableContainer.appendChild(tableRow);
+            // Append to the table
+            tableContainer.appendChild(tableRow);
 
-                // Show the container if it was hidden
-                toggleVisibility(container, tableContainer);
+            // Show the container if it was hidden
+            toggleVisibility(container, tableContainer);
 
-                // Update dropdown to hide selected options
-                updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
+            // Update dropdown to hide selected options
+            updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
 
-                // Remove item when clicking "✖"
-                itemTag.querySelector(".removeItem").addEventListener("click", function () {
-                    itemTag.remove();
+            // Remove item when clicking "✖"
+            itemTag.querySelector(".removeItem").addEventListener("click", function () {
+                itemTag.remove();
 
-                    // Find and remove corresponding table entry
-                    [...tableContainer.children].forEach(row => {
-                        if (row.dataset.item === selectedValue) {
-                            row.remove();
-                        }
-                    });
-
-                    // Hide table if no items remain
-                    toggleVisibility(container, tableContainer);
-
-                    // Show the option again in the dropdown
-                    updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
+                // Find and remove corresponding table entry
+                [...tableContainer.children].forEach(row => {
+                    if (row.dataset.item === selectedValue) {
+                        row.remove();
+                    }
                 });
 
-                // Reset dropdown selection
-                dropdown.selectedIndex = 0;
-            }
+                // Hide table if no items remain
+                toggleVisibility(container, tableContainer);
+
+                // Show the option again in the dropdown
+                updateDropdownOptions(dropdown, [...displayContainer.children].map(item => item.dataset.item));
+            });
+
+            // Reset dropdown selection
+            dropdown.selectedIndex = 0;
+        }
 
         // Function to add diet restriction icons
         function addDietIcon(selectedValue) {

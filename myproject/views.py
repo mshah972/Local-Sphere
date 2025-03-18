@@ -659,7 +659,7 @@ def profilePage(request):
         "id", "date", "time", "guests", "occasion", "order",
         "restaurant_name", "restaurant_address",
         "event_name", "event_address", "restaurant_latitude", "restaurant_longitude",
-        "event_latitude", "event_longitude"
+        "event_latitude", "event_longitude","favorite"
     )
     plans_list = list(plans)
 
@@ -853,7 +853,29 @@ def generate_plan_title(plan):
     except Exception as e:
         print(f"❌ AI Error: {e}")  # Debugging
         return "A Memorable Experience"
+@csrf_exempt  # Remove if you handle CSRF properly
+def update_favorite(request, plan_id):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            favorite_status = data.get("favorite")
 
+            # Ensure request user is authenticated
+            if not request.user.is_authenticated:
+                return JsonResponse({"error": "Unauthorized"}, status=401)
+
+            # Fetch plan and update favorite status
+            plan = get_object_or_404(PlanConfirmation, id=plan_id, user=request.user)
+            plan.favorite = favorite_status
+            plan.save()
+            print(plan.favorite)
+
+            return JsonResponse({"success": True, "favorite": plan.favorite})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request"}, status=405)
 @csrf_exempt
 @login_required
 def quick_plan(request):

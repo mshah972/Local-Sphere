@@ -56,6 +56,8 @@ urlpatterns = [
     path("delete-plan/<int:plan_id>/", views.delete_plan, name="delete_plan"),
     path('quickSphere/', views.quickSphere, name='quickSphere'),
     path("quick_plan/", views.quick_plan, name="quick_plan"),
+    path("api/user-plans/<int:plan_id>/favorite/", views.update_favorite, name="update_favorite"),
+
 ]
 
 if settings.DEBUG:  # Only serve media files in development
