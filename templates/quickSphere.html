@@ -114,7 +114,28 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
+        .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+        }
 
+        .img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.responsive-container {
+    display: flex;
+    flex-wrap: wrap; /* Prevents elements from disappearing */
+    width: 100%;
+    max-width: 1200px; /* Prevents the div from getting too wide */
+    margin: 0 auto; /* Centers it properly */
+    padding: 0 16px; /* Adds some breathing room on the sides */
+}
     </style>
 </head>
 <body class="bg-custom-white">
@@ -293,18 +314,14 @@
     </header>
     <!-- NEW PAGE COPY THIS UP  -->
      
-    <div
-            class="@container flex w-full mx-auto flex-col lg:flex-row 2xl:flex-row font-poppins p-4 lg:p-0"
-    >
-        <div
-                class="relative w-full hidden lg:inline-flex 2xl:inline-flex lg:w-5/10 p-6 h-auto lg:ml-20 flex flex-col items-center overflow-hidden rounded-3xl"
-        >
-            <!-- Background Image -->
-            <img
-                    src="https://images.unsplash.com/photo-1545132147-d037e6c54cfd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="Process Diagram"
-                    class="absolute inset-0 w-full h-full object-cover rounded-2xl"
-            />
+<div class="responsive-container @container flex w-full flex-col lg:flex-row 2xl:flex-row font-poppins justify-center items-center">   
+    <div class="relative w-full flex flex-col lg:flex-row items-center p-6 h-auto lg:ml-20 overflow-visible rounded-3xl">      
+        
+        <!-- Background Image -->
+        <img src="https://images.unsplash.com/photo-1545132147-d037e6c54cfd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Process Diagram"
+        class="absolute inset-0 w-full h-full object-cover rounded-2xl"/>
+
 
             <div class="relative flex flex-col items-center w-full space-y-12">
                 <!-- 📌 Card 1: User's Event Selection -->
@@ -489,7 +506,7 @@
             </div>
 
             </div>
-        </div>
+        </div>      
         </div>
 
 </main>
