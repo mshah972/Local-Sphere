@@ -512,15 +512,15 @@
 </main>
 <script>
 // Loading Animation
-function showLoading() {
-    let loadingText = document.getElementById("loadingText");
-    loadingText.classList.add("show");
+// function showLoading() {
+//     let loadingText = document.getElementById("loadingText");
+//     loadingText.classList.add("show");
 
-    // Simulate loading process (hide after 3 seconds)
-    setTimeout(() => {
-        loadingText.classList.remove("show");
-    }, 300000);
-}
+//     // Simulate loading process (hide after 3 seconds)
+//     setTimeout(() => {
+//         loadingText.classList.remove("show");
+//     }, 300000);
+// }
 // Function to get CSRF token from cookies
 function getCookie(name) {
     let cookieValue = null;
@@ -540,31 +540,34 @@ function getCookie(name) {
 
 document.getElementById("generate-quick").addEventListener("click", async function () {
     console.log("🚀 Button Clicked: Generating Quick Plan...");
+    
+    const button = document.getElementById("generate-quick");
+    button.disabled = true;  // Disable button
+    button.textContent = "Creating Plan..."; // Change button text
 
     const location = document.getElementById("box-location").value.trim();
     const date = document.getElementById("box-date").value.trim();
     const time = document.getElementById("preferred-time").value.trim();
     const attendees = document.getElementById("guests").value.trim();
 
-    // Validation: Ensure required fields are not empty
     if (!date || !time || !attendees) {
         alert("🚨 Please fill in Date, Time of Day, and Guests before crafting your plan!");
-        return; // Stop execution if validation fails
+        button.disabled = false; // Re-enable button if validation fails
+        button.textContent = "Craft Your Plan";
+        return;
     }
 
     const apiUrl = "/quick_plan/";
-
+    
     const activity = document.getElementById("pulled-activity").textContent.trim();
     const occasion = document.getElementById("pulled-Ocasion").textContent.trim();
     const order = document.getElementById("pulled-order").textContent.trim();
-
+    
     const dietaryRestrictions = document.getElementById("user-dietary-restrictions-box").textContent.trim();
     const favoriteFoods = document.getElementById("user-fav-foods-box").textContent.trim();
     const interests = document.getElementById("user-interests-box").textContent.trim();
 
-    showLoading();
 
-    console.log("📨 Sending API Request:", { location, date, time, attendees, activity, occasion, order });
 
     try {
         const response = await fetch(apiUrl, {
@@ -610,6 +613,9 @@ document.getElementById("generate-quick").addEventListener("click", async functi
     } catch (error) {
         console.error("❌ Fetch error:", error);
         alert(`Error creating plan: ${error.message}`);
+    } finally {
+        button.disabled = false; // Re-enable button after request is complete
+        button.textContent = "Craft Your Plan"; // Restore original button text
     }
 });
     //// fetched plan data    

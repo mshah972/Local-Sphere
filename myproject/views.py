@@ -940,7 +940,6 @@ def quick_plan(request):
                     - **Favorite Interests for Activities:** {favorite_interests}
                     ** IMPORTANT RULES **: Leave the activities and ocasion as they are, and make sure that everything is within a 10-mile radius. 
                     -Do not take into account the favorite intrests as it is a specific {activity} event.
-                    -Make resturants and food walkable distance from the event.
 
 
                     The JSON should contain:
