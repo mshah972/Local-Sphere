@@ -58,6 +58,9 @@ def SphereAi(request):
 
 @login_required
 def SphereAi(request):
+    if not request.user.is_authenticated:
+        return redirect('login.html')
+    
     user = request.user
 
     # Fetch user preferences from the database
