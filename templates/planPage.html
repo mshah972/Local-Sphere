@@ -307,18 +307,11 @@
                     <img src="https://images.unsplash.com/photo-1515963665762-77ef90e624fa?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-black/40"></div>
                     <div class="absolute top-4 right-4 flex gap-3">
-                        <!-- Favorite Button -->
-                        <button class="bg-white p-2 rounded-full shadow-md">
-                            <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="heart">
-                                <path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z" fill="#000000" class="color000000 svgShape"></path>
-                            </svg>
-                        </button>
-                        <!-- Edit Plan -->
-                        <button @click="openEditModal = true" class="bg-white p-2 rounded-full shadow-md cursor-pointer">
-                            <svg class="w-6 h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="settings">
-                                <path fill="none" d="M0 0h24v24H0V0z"></path>
-                                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" fill="#000000" class="color000000 svgShape"></path>
-                            </svg>
+                    
+                            <!-- Delete Plan Button -->
+                        <button class="text-red-500 flex items-center space-x-2 hover:text-red-600 cursor-pointer bg-white p-2 rounded-full shadow-md cursor-pointer" 
+                        onclick="deletePlan()">
+                            🗑️ 
                         </button>
                     </div>
                     <div class="absolute bottom-4 left-4 text-white p-4">
@@ -329,62 +322,6 @@
                             <p id="plan-guests" class="font-mulish flex items-center ml-2">Fetching guests...</p>
 
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Edit Plan Modal (Initially Hidden) -->
-            <div x-show="openEditModal" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50" x-cloak>
-                <div class="bg-white rounded-3xl shadow-lg w-[900px] p-6 relative">
-                    <!-- Close Button -->
-                    <button @click="openEditModal = false" class="absolute top-4 right-4 text-gray-500 hover:text-black cursor-pointer">
-                        ✖
-                    </button>
-
-                    <!-- Modal Header -->
-                    <h2 class="text-2xl font-bold text-gray-900">Edit plan details</h2>
-
-                    <!-- Plan Title Input -->
-                    <div class="mt-4">
-                        <label for="plan-title" class="text-gray-700 font-semibold">Plan title</label>
-                        <input id="plan-title" type="text" placeholder="Birthday Party"
-                               class="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-
-                    <!-- Who Can View Section -->
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-900">Who can view</h3>
-
-                        <!-- Public Option -->
-                        <label class="flex items-start space-x-3 mt-3">
-                            <input type="radio" name="visibility" value="public" class="w-5 h-5 text-blue-500">
-                            <div>
-                                <p class="font-semibold text-gray-900">Public</p>
-                                <p class="text-gray-600 text-sm">Everyone can see this plan.</p>
-                            </div>
-                        </label>
-
-                        <!-- Private Option -->
-                        <label class="flex items-start space-x-3 mt-3">
-                            <input type="radio" name="visibility" value="private" class="w-5 h-5 text-blue-500">
-                            <div>
-                                <p class="font-semibold text-gray-900">Private</p>
-                                <p class="text-gray-600 text-sm">Only you can see this plan.</p>
-                            </div>
-                        </label>
-                    </div>
-
-                    <!-- Footer Buttons -->
-                    <div class="mt-6 flex justify-between items-center">
-                        <!-- Delete Plan Button -->
-                        <button class="text-red-500 flex items-center space-x-2 hover:text-red-600 cursor-pointer" onclick="deletePlan()">
-                            🗑️ Delete Plan
-                        </button>
-
-                        <!-- Save Plan Button -->
-                        <button class="bg-custom-blue text-white flex items-center px-4 py-2 rounded-lg hover:bg-custom-white hover:text-black transition cursor-pointer">
-                            💾 Save Plan
-                        </button>
                     </div>
                 </div>
             </div>
