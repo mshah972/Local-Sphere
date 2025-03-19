@@ -470,13 +470,13 @@
                 {
                     lng: restaurantLng,
                     lat: restaurantLat,
-                    icon: "🍽️",
+                    icon: "{% static 'restaurantIcon.png' %}",
                     popupText: `Restaurant: ${data.restaurant.name}`
                 },
                 {
                     lng: eventLng,
                     lat: eventLat,
-                    icon: "🎟",
+                    icon: "{% static 'eventIcon.png' %}",
                     popupText: `Event: ${data.event.name}`
                 }
             ];
@@ -484,14 +484,18 @@
             // Add markers for locations
             locations.forEach((loc) => {
                 const markerDiv = document.createElement("div");
-                markerDiv.className = "marker bg-black text-white text-lg flex items-center justify-center rounded-full w-8 h-8";
-                markerDiv.innerHTML = loc.icon;
+                markerDiv.style.backgroundImage = `url(${loc.icon})`;  // Use 'url()' here
+                markerDiv.style.width = "40px";
+                markerDiv.style.height = "40px";
+                markerDiv.style.backgroundSize = "cover";
+                markerDiv.style.cursor = "pointer";
 
                 new mapboxgl.Marker(markerDiv)
                     .setLngLat([loc.lng, loc.lat])
-                    .setPopup(new mapboxgl.Popup().setText(loc.popupText))
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${loc.popupText}</strong>`))
                     .addTo(map);
             });
+
 
             console.log("📍 Markers added to the map and view adjusted.");
 
