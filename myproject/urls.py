@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image, get_restaurant_booking, get_user_plans, plan_detail_view, get_plan_details
+from .views import logout_view, get_google_maps_api_key, get_restaurant_details, get_mapbox_api_key, update_user_profile, get_location_image, get_restaurant_booking, get_user_plans, plan_detail_view, get_plan_details, check_auth
 from django.urls import path
 from .views import generate_date_plan, quickSphere
 from django.conf import settings
@@ -57,7 +57,7 @@ urlpatterns = [
     path('quickSphere/', views.quickSphere, name='quickSphere'),
     path("quick_plan/", views.quick_plan, name="quick_plan"),
     path("api/user-plans/<int:plan_id>/favorite/", views.update_favorite, name="update_favorite"),
-
+    path('api/check-auth/', views.check_auth, name='check_auth'),
 ]
 
 if settings.DEBUG:  # Only serve media files in development

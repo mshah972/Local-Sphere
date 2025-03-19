@@ -127,8 +127,6 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
-                <!-- Explore Button -->
-            
                 <!-- SphereAi -->
                 <a href="{% url 'SphereAi' %}"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
@@ -423,10 +421,10 @@
 
                 <!-- 7) Final Button (e.g., "Plan") -->
                 <div class="flex items-center px-6 py-2">
-                    <button id="plan-button" class="p-4 bg-custom-blue hover:bg-gray-700 text-white rounded-2xl">
+                    <a href="{% if user.is_authenticated %}{% url 'SphereAi' %}{% else %}{% url 'login' %}{% endif %}"  id="plan-button" class="p-4 bg-custom-blue hover:bg-gray-700 text-white rounded-2xl">
                         <!-- Planner Icon (Bag) -->
                         <img class="h-6 w-auto" src="../static/search.svg"/>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -592,7 +590,6 @@
         <div class="@container w-full overflow-x-auto mt-4 snap-x snap-mandatory">
             <ul role="list" class="flex flex-row gap-6 font-poppins">
                 <!-- COPY THIS FOR PLANING -->
-                <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
                     <a href="{% url 'quickSphere' %}" 
                     class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block"
                     onclick="saveActivity('Tour City', 'City Day', 'Lunch then Activity')">
@@ -778,10 +775,9 @@
         </div>
         <div class="@container w-full overflow-x-auto mt-4 snap-x snap-mandatory">
             <ul role="list" class="flex flex-row gap-6 font-poppins">
-
                 <!-- COPY THIS FOR PLANING -->
                  <!-- There is 4 steps lol -->
-                <a href="{% url 'quickSphere' %}" 
+                <a href="{% url 'quickSphere' %}"
                 class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg block"
                 onclick="saveActivity('Amazing Breakfast In Chicago', 'Wildberry Pancakes & Cafe', 'Breakfast then Activity')">  <!-- Pt 1, Change the three Hiking things to the new plan -->
                     <li class="flex-none snap-center rounded-3xl overflow-hidden bg-white w-fit h-fit shadow-lg">
@@ -1355,9 +1351,22 @@ function saveActivity(activity, occasion, order) {
         guestsInput.addEventListener("change", saveToLocalStorage);
 
         // Handle form submission and redirect to SphereAI
-        document.getElementById("plan-button").addEventListener("click", function () {
-            saveToLocalStorage(); // Ensure data is saved before redirecting
-            window.location.href = "/SphereAi/"; // Redirect to SphereAI page
+        document.getElementById("plan-button").addEventListener("click", async function () {
+            try {
+                // Check if the user is authenticated
+                const response = await fetch('/api/check-auth/');
+                const data = await response.json();
+
+                if (data.is_authenticated) {
+                    saveToLocalStorage(); // Ensure data is saved before redirecting
+                    window.location.href = "/SphereAi/"; // Redirect if authenticated
+                } else {
+                    // Redirect to login page if not authenticated
+                    window.location.href = "/login/";
+                }
+            } catch (error) {
+                console.error("Error checking authentication:", error);
+            }
         });
 
         document.getElementById("plan-button-mobile").addEventListener("click", function () {

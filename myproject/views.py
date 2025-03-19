@@ -1005,3 +1005,6 @@ def quick_plan(request):
     except Exception as e:
         print(f"❌ ERROR: {str(e)}")
         return JsonResponse({"error": str(e)}, status=500)
+
+def check_auth(request):
+    return JsonResponse({"is_authenticated": request.user.is_authenticated})
