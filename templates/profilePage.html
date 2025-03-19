@@ -320,7 +320,6 @@ async function fetchPlan() {
 
         data.plans.forEach(plan => {
             const { id, image_url, title, favorite, date, guests } = plan;
-
             // ✅ ADD Favorite Cards Dynamically
             if (favorite) {
                 const favoriteCard = document.createElement("li");

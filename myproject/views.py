@@ -740,6 +740,7 @@ def get_user_plans(request):
                     "address": plan.event_address,
                 },
                 "image_url": plan.event_image or DEFAULT_IMAGE_URL,
+                "favorite": plan.favorite,
             }
             for plan in user_plans
         ]
