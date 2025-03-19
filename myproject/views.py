@@ -468,7 +468,6 @@ def generate_date_plan(request):
                     - "time": string
                     - "guests": integer
                     - "location": string
-                    - "cuisine": string
                     - "ocasion": string
                     - "order": string
                     - "restaurants": an **array of exactly 3 objects**, each with:
@@ -477,6 +476,7 @@ def generate_date_plan(request):
                         - "website": string
                         - "rating": float
                         - "reservation_time": string
+                        - "cuisine": string
                     - "events": an **array of exactly 3 objects**, each with:
                         - "name": string
                         - "address": string
@@ -951,7 +951,6 @@ def quick_plan(request):
                     - "time": string
                     - "guests": integer
                     - "location": string
-                    - "cuisine": string
                     - "ocasion": string
                     - "order": string
                     - "restaurants": an **array of exactly 3 objects**, each with:
@@ -960,6 +959,7 @@ def quick_plan(request):
                         - "website": string
                         - "rating": float
                         - "reservation_time": string
+                        - "cuisine": string
                     - "events": an **array of exactly 3 objects**, each with:
                         - "name": string
                         - "address": string
