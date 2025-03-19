@@ -10,7 +10,6 @@
     <link rel="icon" type="image/svg+xml" href="../static/favicon.svg">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         input[type="date"]::-webkit-calendar-picker-indicator {
             background: transparent;
@@ -327,7 +326,7 @@
 
     <div class="@container w-full mx-auto flex-row font-poppins hidden 2xl:inline-flex">
         <!-- Main Content -->
-        <div x-data="{ openEditModal: false }" class="relative w-screen rounded-3xl mr-5 ml-15 flex flex-col">
+        <div class="relative w-screen rounded-3xl mr-5 ml-15 flex flex-col">
             <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                 <div class="relative w-full h-[250px] rounded-3xl overflow-hidden shadow-lg">
                     <img src="https://images.unsplash.com/photo-1515963665762-77ef90e624fa?q=80&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="w-full h-full object-cover">
@@ -439,6 +438,67 @@
         </div>
 
     </div>
+
+    <!-- Mobile Optimized Plan View -->
+    <div class="w-full mx-auto font-poppins flex flex-col 2xl:hidden px-4">
+        <!-- Main Image and Title -->
+        <div class="relative rounded-3xl overflow-hidden shadow-lg">
+            <img src="https://images.unsplash.com/photo-1515963665762-77ef90e624fa?q=80&w=3271&auto=format&fit=crop" alt="Plan Image" class="w-full h-[200px] object-cover">
+            <div class="absolute inset-0 bg-black/100"></div>
+            <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md text-red-500" onclick="deletePlan()">
+                🗑️
+            </button>
+            <div class="absolute bottom-3 left-4 text-white">
+                <h2 id="fetched-plan-title-mobile" class="text-2xl font-bold">Loading...</h2>
+                <div class="text-sm mt-1 flex items-center">
+                    <span id="plan-date-mobile">Fetching date...</span>
+                    <span class="mx-2">•</span>
+                    <span id="plan-guests-mobile">Fetching guests...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Restaurant Card -->
+        <div class="mt-6 bg-custom-blue text-white rounded-3xl shadow-lg overflow-hidden">
+            <img id="restaurant-image-mobile" src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop" class="w-full h-[50px] object-cover">
+            <div class="p-4">
+                <h3 id="restaurant-name-mobile" class="text-lg font-semibold">Loading...</h3>
+                <p id="restaurant-address-mobile" class="text-sm font-light">Fetching restaurant details...</p>
+                <div class="mt-2 flex justify-between text-xs">
+                    <span id="res-date-mobile">Loading...</span>
+                    <span id="res-guests-mobile">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Times -->
+        <div class="mt-6 bg-white rounded-3xl shadow-lg p-4">
+            <h3 class="font-semibold text-gray-800">Available Booking Times</h3>
+            <p class="text-xs text-gray-600 mb-3">Reserve your table</p>
+            <div id="booking-times-mobile" class="flex flex-wrap gap-2 text-sm">
+                <p class="text-gray-400">Loading available times...</p>
+            </div>
+        </div>
+
+        <!-- Event Card -->
+        <div class="mt-6 bg-custom-blue text-white rounded-3xl shadow-lg overflow-hidden">
+            <img id="event-image-mobile" src="https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop" class="w-full h-[50px] object-cover">
+            <div class="p-4">
+                <h3 id="event-name-mobile" class="text-lg font-semibold">Loading...</h3>
+                <p id="event-address-mobile" class="text-sm font-light">Fetching event details...</p>
+                <div class="mt-2 flex justify-between text-xs">
+                    <span id="eve-date-mobile">Loading...</span>
+                    <span id="eve-guest-mobile">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="mt-6">
+            <div id="map-mobile" class="w-full h-[250px] rounded-3xl shadow-lg"></div>
+        </div>
+
+    </div>
 </main>
 <script>
 
@@ -470,8 +530,10 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             // Ensure the map container exists
             const mapContainer = document.getElementById("map");
-            if (!mapContainer) {
-                console.error("❌ Map container (#map) not found.");
+            const mapMobileContainer = document.getElementById("map-mobile");
+
+            if (!mapContainer || !mapMobileContainer) {
+                console.error("❌ Map container (#map or #map-mobile) not found.");
                 return;
             }
 
@@ -505,12 +567,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Initialize Mapbox
             const map = new mapboxgl.Map({
                 container: "map", // ID of the div
                 style: "mapbox://styles/mapbox/streets-v11",
                 center: [restaurantLng, restaurantLat], // Center on restaurant
                 zoom: 12,
+            });
+
+            const mapMobile = new mapboxgl.Map({
+                container: "map-mobile", // ID of the div
+                style: "mapbox://styles/mapbox/streets-v11",
+                center: [restaurantLng, restaurantLat], // Center on restaurant
+                zoom: 12,
+                interactive: false,
             });
 
             // Collect locations from the plan data
@@ -519,30 +588,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     lng: restaurantLng,
                     lat: restaurantLat,
                     icon: "{% static 'restaurantIcon.png' %}",
-                    popupText: `Restaurant: ${data.restaurant.name}`
+                    popupText: `${data.restaurant.name}`
                 },
                 {
                     lng: eventLng,
                     lat: eventLat,
                     icon: "{% static 'eventIcon.png' %}",
-                    popupText: `Event: ${data.event.name}`
+                    popupText: `${data.event.name}`
                 }
             ];
 
             // Add markers for locations
             locations.forEach((loc) => {
-                const markerDiv = document.createElement("div");
-                markerDiv.style.backgroundImage = `url(${loc.icon})`;  // Use 'url()' here
-                markerDiv.style.width = "40px";
-                markerDiv.style.height = "40px";
-                markerDiv.style.backgroundSize = "cover";
-                markerDiv.style.cursor = "pointer";
+                [map, mapMobile].forEach(targetMap => {
+                    const markerDiv = document.createElement("div");
+                    markerDiv.style.backgroundImage = `url(${loc.icon})`;
+                    markerDiv.style.width = "35px";
+                    markerDiv.style.height = "35px";
+                    markerDiv.style.backgroundSize = "cover";
+                    markerDiv.style.cursor = "pointer";
 
-                new mapboxgl.Marker(markerDiv)
-                    .setLngLat([loc.lng, loc.lat])
-                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${loc.popupText}</strong>`))
-                    .addTo(map);
+                    new mapboxgl.Marker(markerDiv)
+                        .setLngLat([loc.lng, loc.lat])
+                        .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${loc.popupText}</strong>`))
+                        .addTo(targetMap);
+                });
             });
+
 
 
             console.log("📍 Markers added to the map and view adjusted.");
@@ -551,6 +623,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const bounds = new mapboxgl.LngLatBounds();
             locations.forEach((loc) => bounds.extend([loc.lng, loc.lat]));
             map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
+            mapMobile.fitBounds(bounds, { padding: 50, maxZoom: 15 });
 
             console.log("📍 Markers added to the map and view adjusted.");
         } catch (error) {
@@ -565,12 +638,13 @@ document.addEventListener("DOMContentLoaded", function () {
     async function fetchRestaurantBooking() {
         try {
             let restaurantNameElement = document.getElementById("restaurant-name");
+            let restaurantNameMobileElement = document.getElementById("restaurant-name-mobile");
 
             // Wait for restaurant name to load (max retries: 10)
             let retries = 0;
             while ((!restaurantNameElement || restaurantNameElement.textContent === "Loading...") && retries < 10) {
                 console.warn(`⚠️ Restaurant name not loaded yet. Retrying... (${retries + 1}/10)`);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms before retrying
+                await new Promise(resolve => setTimeout(resolve, 500));
                 restaurantNameElement = document.getElementById("restaurant-name");
                 retries++;
             }
@@ -582,6 +656,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const restaurantName = restaurantNameElement.textContent.trim();
+            restaurantNameMobileElement.textContent = restaurantName;
             console.log("🔍 Fetching Yelp Business Page for:", restaurantName);
 
             const response = await fetch(`/api/restaurant-booking/?name=${encodeURIComponent(restaurantName)}`);
@@ -590,37 +665,40 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("📜 API Response:", data);
 
             const bookingContainer = document.getElementById("booking-times");
+            const bookingContainerMobile = document.getElementById("booking-times-mobile");
             const reserveButton = document.getElementById("reserve-button");
-            const loadingText = document.getElementById("loading-text");
-
-            // Remove loading text
-            if (loadingText) {
-                loadingText.remove();
-            }
+            const reserveButtonMobile = document.getElementById("reserve-button-mobile");
 
             // Clear existing content
             bookingContainer.innerHTML = "";
+            bookingContainerMobile.innerHTML = "";
 
             if (data.error) {
                 console.error("🚨 API Error:", data.error);
                 bookingContainer.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+                bookingContainerMobile.innerHTML = `<p class="text-red-500">${data.error}</p>`;
                 return;
             }
 
             // ✅ Check if the restaurant has a Yelp business page
             if (!data.business_url) {
                 console.warn("⚠️ No Yelp business page available for:", restaurantName);
-                bookingContainer.innerHTML = `<p class="text-gray-500 text-sm">This restaurant does not support Yelp Reservations.</p>`;
+                const noBookingMessage = `<p class="text-gray-500 text-sm">This restaurant does not support Yelp Reservations.</p>`;
+                bookingContainer.innerHTML = noBookingMessage;
+                bookingContainerMobile.innerHTML = noBookingMessage;
                 return;
             }
 
-            // ✅ Update Button for Yelp Business Page
-            reserveButton.classList.remove("hidden", "opacity-0");
-            reserveButton.innerText = "View on Yelp";
-            reserveButton.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
-            reserveButton.onclick = () => window.open(data.business_url, "_blank");
+            // ✅ Update Buttons for Yelp Business Page
+            [reserveButton, reserveButtonMobile].forEach(button => {
+                button.classList.remove("hidden", "opacity-0");
+                button.innerText = "View on Yelp";
+                button.className = "bg-custom-blue text-white px-4 py-2 shadow-lg rounded-lg hover:bg-custom-white hover:text-black transition transform hover:scale-105 cursor-pointer duration-300 ease-in-out";
+                button.onclick = () => window.open(data.business_url, "_blank");
+            });
 
             bookingContainer.appendChild(reserveButton);
+            bookingContainerMobile.appendChild(reserveButtonMobile);
 
         } catch (error) {
             console.error("❌ Error fetching restaurant booking:", error);
@@ -633,9 +711,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function loadPlanDetails() {
         try {
-            // Extract plan ID from URL path
             const pathParts = window.location.pathname.split('/');
-            const planId = pathParts[pathParts.length - 2]; // Extract last part of path
+            const planId = pathParts[pathParts.length - 2];
 
             if (!planId) {
                 console.error("❌ Plan ID not found in URL.");
@@ -644,7 +721,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log(`🔍 Fetching plan details for ID: ${planId}`);
 
-            // Fetch plan details
             const response = await fetch(`/api/plan/${planId}/`);
             const data = await response.json();
 
@@ -655,49 +731,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log("✅ Plan Data:", data);
 
-            // Update Plan Details
-            const planTitleElement = document.getElementById('fetched-plan-title');
-            document.getElementById('plan-date').textContent = formatDate(data.date);
-            document.getElementById('plan-guests').textContent = `${data.guests} People`;
-            document.getElementById('res-guests').textContent = `${data.guests} People`;
-            document.getElementById('eve-guest').textContent = `${data.guests} People`;
-            document.getElementById('res-date').textContent = formatDate(data.date);
-            document.getElementById('eve-date').textContent = formatDate(data.date);
+            const elements = [
+                ['fetched-plan-title', 'fetched-plan-title-mobile', data.title || "A Memorable Experience"],
+                ['plan-date', 'plan-date-mobile', formatDate(data.date)],
+                ['plan-guests', 'plan-guests-mobile', `${data.guests} People`],
+                ['res-guests', 'res-guests-mobile', `${data.guests} People`],
+                ['eve-guest', 'eve-guest-mobile', `${data.guests} People`],
+                ['res-date', 'res-date-mobile', formatDate(data.date)],
+                ['eve-date', 'eve-date-mobile', formatDate(data.date)],
+            ];
 
-            planTitleElement.textContent = data.title || "A Memorable Experience";
+            elements.forEach(([desktopId, mobileId, text]) => {
+                document.getElementById(desktopId).textContent = text;
+                document.getElementById(mobileId).textContent = text;
+            });
 
-            // ✅ Update Restaurant Details
-            if (data.restaurant && data.restaurant.name !== "Unknown Restaurant") {
-                document.getElementById('restaurant-name').textContent = data.restaurant.name;
-                document.getElementById('restaurant-address').textContent = data.restaurant.address;
+            // Update Restaurant Details
+            const restaurantName = data.restaurant && data.restaurant.name !== "Unknown Restaurant" ? data.restaurant.name : "No Restaurant Selected";
+            const restaurantAddress = data.restaurant && data.restaurant.address ? data.restaurant.address : "N/A";
+            const restaurantImageUrl = data.restaurant && data.restaurant.image_url ? data.restaurant.image_url : "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop";
 
-                // ✅ Update restaurant image
-                document.getElementById('restaurant-image').src = data.restaurant.image_url ||
-                    "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-            } else {
-                document.getElementById('restaurant-name').textContent = "No Restaurant Selected";
-                document.getElementById('restaurant-address').textContent = "N/A";
-            }
+            [['restaurant-name', 'restaurant-name-mobile', restaurantName],
+                ['restaurant-address', 'restaurant-address-mobile', restaurantAddress]].forEach(([desktopId, mobileId, text]) => {
+                document.getElementById(desktopId).textContent = text;
+                document.getElementById(mobileId).textContent = text;
+            });
 
-            // ✅ Update Event Details
-            if (data.event && data.event.name !== "No Event") {
-                document.getElementById('event-name').textContent = data.event.name;
-                document.getElementById('event-address').textContent = data.event.address;
+            document.getElementById('restaurant-image').src = restaurantImageUrl;
+            document.getElementById('restaurant-image-mobile').src = restaurantImageUrl;
 
-                // ✅ Update event image
-                document.getElementById('event-image').src = data.event.image_url ||
-                    "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-            } else {
-                document.getElementById('event-name').textContent = "No Event Selected";
-                document.getElementById('event-address').textContent = "N/A";
-            }
+            // Update Event Details
+            const eventName = data.event && data.event.name !== "No Event" ? data.event.name : "No Event Selected";
+            const eventAddress = data.event && data.event.address ? data.event.address : "N/A";
+            const eventImageUrl = data.event && data.event.image_url ? data.event.image_url : "https://images.unsplash.com/photo-1494522358652-f30e61a60313?q=80&w=1740&auto=format&fit=crop";
+
+            [['event-name', 'event-name-mobile', eventName],
+                ['event-address', 'event-address-mobile', eventAddress]].forEach(([desktopId, mobileId, text]) => {
+                document.getElementById(desktopId).textContent = text;
+                document.getElementById(mobileId).textContent = text;
+            });
+
+            document.getElementById('event-image').src = eventImageUrl;
+            document.getElementById('event-image-mobile').src = eventImageUrl;
 
         } catch (error) {
             console.error("❌ Error loading plan details:", error);
         }
     }
 
-    // ✅ Call function when page loads
+    // Ensure function runs only when DOM is fully loaded
     document.addEventListener("DOMContentLoaded", loadPlanDetails);
 
     function deletePlan() {
