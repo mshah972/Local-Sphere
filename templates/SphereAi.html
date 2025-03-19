@@ -84,6 +84,7 @@
             margin-right: 12px !important;
             margin-left: 12px !important;
         }
+
         .loading-container {
             display: none;
             font-size: 18px;
@@ -111,8 +112,12 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
         }
 
     </style>
@@ -139,7 +144,7 @@
             </div>
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
                 <!-- Explore Button -->
-               
+
                 <!-- SphereAi -->
                 <a href="#"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
@@ -183,7 +188,8 @@
                         <div class="relative">
                             <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture"
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     alt="Profile Picture"
                                      class="w-8 h-8 rounded-full object-cover mr-2">
                                 <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                 <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
@@ -196,13 +202,13 @@
 
                             <!-- Dropdown Menu -->
                             <div id="userDropdownMenu"
-                                class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
                                 <a href="{% url 'profilePage' %}"
-                                class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
                                     Profile
                                 </a>
-                                <a href="{% url 'logout' %}"    
-                                    class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
                                     Logout
                                 </a>
                             </div>
@@ -310,9 +316,9 @@
                 <div
                         class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
-                <h2 class="text-gray-800 font-semibold text-lg">
-                    Current Event Selection:
-                </h2>
+                    <h2 class="text-gray-800 font-semibold text-lg">
+                        Current Event Selection:
+                    </h2>
                     <h3
                             class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
                     >
@@ -354,7 +360,7 @@
                         >Waiting For User Selection...</span
                         >
                     </h3>
-                    
+
 
                     <h3
                             class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
@@ -367,20 +373,20 @@
                         >
                     </h3>
                     <!-- Occasion Display -->
-<h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
     <span class="mr-2">
-        <img class="h-5 w-auto" src="../static/ocassion.svg" />
+        <img class="h-5 w-auto" src="../static/ocassion.svg"/>
     </span>
-    <span id="box-ocasion" class="text-md">Waiting For User Selection...</span>
-</h3>
+                        <span id="box-ocasion" class="text-md">Waiting For User Selection...</span>
+                    </h3>
 
-<!-- Order Display -->
-<h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
+                    <!-- Order Display -->
+                    <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
     <span class="mr-2">
-        <img class="h-5 w-auto" src="../static/preference.svg" />
+        <img class="h-5 w-auto" src="../static/preference.svg"/>
     </span>
-    <span id="box-order" class="text-md">Waiting For User Selection...</span>
-</h3>
+                        <span id="box-order" class="text-md">Waiting For User Selection...</span>
+                    </h3>
                 </div>
 
                 <!-- 🔽 Arrow -->
@@ -405,7 +411,7 @@
                         class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
                     <h2 class="text-gray-800 font-semibold text-lg">
-                        Profile: 
+                        Profile:
                     </h2>
 
                     <h2 class="text-gray-800 font-semibold text-lg">
@@ -413,33 +419,33 @@
                     </h2>
                     <!-- Dietary Restrictions -->
                     <h3
-                    class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                     <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/restrictions.svg" />
+                        <img class="h-6 w-auto" src="../static/restrictions.svg"/>
                     </span>
-                    <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
+                        <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
                     </h3>
                     <!-- Favorite Foods -->
-                        <h3
-                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                         <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                        <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
                         </span>
                         <span id="user-fav-foods-box" class="text-md">Loading...</span>
                     </h3>
-                        <!-- Interests -->
-                        <h3
-                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    <!-- Interests -->
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                         <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/search.svg" />
+                        <img class="h-6 w-auto" src="../static/search.svg"/>
                         </span>
                         <span id="user-interests-box" class="text-md">Loading...</span>
                     </h3>
 
-<!-- WHYY???? -->
+                    <!-- WHYY???? -->
                     <h3
                             class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
@@ -448,7 +454,7 @@
                 </span>
                         <span id="user-fav-foods" class="text-md">Mexican</span>
                     </h3>
-<!-- THIS BREAKS IT???? -->
+                    <!-- THIS BREAKS IT???? -->
                     <h3
                             class="text-black font-medium mt-2 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full"
                     >
@@ -645,28 +651,26 @@
               </span>
                     <select id="order" class="text-[16px] font-normal rounded-md w-full" required>
                         <option value="Lunch Then Activity">Food Then Event</option>
-                        <option value="Activity Then Lunch">Event Then Food </option>
+                        <option value="Activity Then Lunch">Event Then Food</option>
                     </select>
                 </div>
             </div>
 
 
-            
-
-
             <!-- Buttons -->
             <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
                 <button
-                    id="recreate-btn"
-                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
-                    onclick="showLoading()"
+                        id="recreate-btn"
+                        class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                        onclick="showLoading()"
                 >
                     Craft Your Plan
                 </button>
-                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+                <div id="loadingText" class="loading-container">Loading<span class="dot">.</span><span
+                        class="dot">.</span><span class="dot">.</span></div>
             </div>
 
-            
+
             <!--HERE-->
             <div id="response-container" class="mt-4"></div>
             <!--HERE-->
@@ -914,24 +918,23 @@
     });
 
 
-
     document.addEventListener("DOMContentLoaded", function () {
-    // Simulated fetched user profile data from the database (Replace with API call)
-    const userProfile = {
-        location: "Chicago, IL",
-        food: "Italian",
-    };
+        // Simulated fetched user profile data from the database (Replace with API call)
+        const userProfile = {
+            location: "Chicago, IL",
+            food: "Italian",
+        };
 
         // Get all form inputs
         const formInputs = {
-        location: document.getElementById("location"),
-        date: document.getElementById("preferred-date"),
-        time: document.getElementById("preferred-time"),
-        attendees: document.getElementById("guests"),
-        food: document.getElementById("food"),
-        ocasion: document.getElementById("ocasion"), // New dropdown
-        order: document.getElementById("order") // New dropdown
-    };
+            location: document.getElementById("location"),
+            date: document.getElementById("preferred-date"),
+            time: document.getElementById("preferred-time"),
+            attendees: document.getElementById("guests"),
+            food: document.getElementById("food"),
+            ocasion: document.getElementById("ocasion"), // New dropdown
+            order: document.getElementById("order") // New dropdown
+        };
 
         // Get all display elements (Both Desktop & Mobile)
         const displayElements = {
@@ -972,10 +975,10 @@
         }
 
         Object.keys(formInputs).forEach((key) => {
-        formInputs[key].addEventListener("input", function () {
-            updateDisplay(key, this.value);
+            formInputs[key].addEventListener("input", function () {
+                updateDisplay(key, this.value);
+            });
         });
-    });
 
         const dateInput = formInputs.date;
         const today = new Date();
@@ -1073,69 +1076,69 @@
 
         // Event listener on the 'Craft Your Plan' button
         document.getElementById("recreate-btn").addEventListener("click", async function () {
-        const apiUrl = "http://localhost:8000/generate-date-plan/";
+            const apiUrl = "http://localhost:8000/generate-date-plan/";
 
-        // Fetch input values including the new dropdowns
-        const location = formInputs.location.value;
-        const date = formInputs.date.value;
-        const time = formInputs.time.value;
-        const attendees = formInputs.attendees.value;
-        const food = formInputs.food.value;
-        const ocasion = formInputs.ocasion.value; // New dropdown
-        const order = formInputs.order.value; // New dropdown
+            // Fetch input values including the new dropdowns
+            const location = formInputs.location.value;
+            const date = formInputs.date.value;
+            const time = formInputs.time.value;
+            const attendees = formInputs.attendees.value;
+            const food = formInputs.food.value;
+            const ocasion = formInputs.ocasion.value; // New dropdown
+            const order = formInputs.order.value; // New dropdown
 
-        console.log("🚀 Sending API Request to:", apiUrl);
-        console.log("📨 Payload:", { location, date, time, attendees, food, ocasion, order });
+            console.log("🚀 Sending API Request to:", apiUrl);
+            console.log("📨 Payload:", {location, date, time, attendees, food, ocasion, order});
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-                body: JSON.stringify({
-                    location,
-                    date,
-                    time,
-                    attendees,
-                    food,
-                    ocasion,
-                    order
-                }),
-            });
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                    },
+                    body: JSON.stringify({
+                        location,
+                        date,
+                        time,
+                        attendees,
+                        food,
+                        ocasion,
+                        order
+                    }),
+                });
 
-            console.log("✅ Response Status:", response.status);
+                console.log("✅ Response Status:", response.status);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("📩 Received Data:", data);
+
+                // Store response data
+                localStorage.setItem("planData", JSON.stringify(data));
+
+                // Redirect to confirmation page
+                window.location.href = "{% url 'planConfirmation' %}";
+
+            } catch (error) {
+                console.error("❌ Fetch error:", error);
+                alert(`Error creating plan: ${error.message}`);
             }
-
-            const data = await response.json();
-            console.log("📩 Received Data:", data);
-
-            // Store response data
-            localStorage.setItem("planData", JSON.stringify(data));
-
-            // Redirect to confirmation page
-            window.location.href = "{% url 'planConfirmation' %}";
-
-        } catch (error) {
-            console.error("❌ Fetch error:", error);
-            alert(`Error creating plan: ${error.message}`);
-        }
+        });
     });
-});
 
     function showLoading() {
-    let loadingText = document.getElementById("loadingText");
-    loadingText.classList.add("show");
+        let loadingText = document.getElementById("loadingText");
+        loadingText.classList.add("show");
 
-    // Simulate loading process (hide after 3 seconds)
-    setTimeout(() => {
-        loadingText.classList.remove("show");
-    }, 300000);
-}
+        // Simulate loading process (hide after 3 seconds)
+        setTimeout(() => {
+            loadingText.classList.remove("show");
+        }, 300000);
+    }
 
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
@@ -1267,93 +1270,93 @@
     ////// Script for pulling event then food //////
 
     document.addEventListener("DOMContentLoaded", function () {
-    const activity1 = localStorage.getItem("activity1") || "🍽️ Food";
-    const activity2 = localStorage.getItem("activity2") || "🎭 Event";
-    let orderPreference = localStorage.getItem("orderPreference");
+        const activity1 = localStorage.getItem("activity1") || "🍽️ Food";
+        const activity2 = localStorage.getItem("activity2") || "🎭 Event";
+        let orderPreference = localStorage.getItem("orderPreference");
 
-    console.log("Retrieved from localStorage:", { activity1, activity2, orderPreference });
+        console.log("Retrieved from localStorage:", {activity1, activity2, orderPreference});
 
-    // Update page with retrieved selections
-    document.getElementById("box-activity-1").textContent = activity1;
-    document.getElementById("box-activity-2").textContent = activity2;
+        // Update page with retrieved selections
+        document.getElementById("box-activity-1").textContent = activity1;
+        document.getElementById("box-activity-2").textContent = activity2;
 
-    // Convert stored value back if necessary
-    if (orderPreference === "Food Then Event") {
-        orderPreference = "Lunch Then Activity";
-    } else if (orderPreference === "Event Then Food") {
-        orderPreference = "Activity Then Lunch";
-    }
-
-    // Set dropdown value based on stored order
-    const orderDropdown = document.getElementById("order");
-    if (orderDropdown && orderPreference) {
-        orderDropdown.value = orderPreference;
-    }
-
-    // Optional: Clear selections after retrieval
-    setTimeout(() => {
-        localStorage.removeItem("activity1");
-        localStorage.removeItem("activity2");
-        localStorage.removeItem("orderPreference");
-        console.log("Cleared stored activity selections.");
-    }, 2000);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch user data from Django template variables
-    const favoriteFoods = "{{ favorite_foods }}";
-    const dietaryRestrictions = "{{ dietary_restrictions }}";
-    const interests = "{{ interests }}";
-
-    // Update left-side UI dynamically
-    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
-    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
-    document.getElementById("user-interests-box").textContent = interests || "Not Set";
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get references to form inputs
-    const formInputs = {
-        ocasion: document.getElementById("ocasion"),
-        order: document.getElementById("order")
-    };
-
-    // Get references to the left-side display boxes
-    const displayElements = {
-        boxOcasion: document.getElementById("box-ocasion"),
-        boxOrder: document.getElementById("box-order")
-    };
-
-    // Function to update the left-side display
-    function updateDisplay(field, value) {
-        if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`]) {
-            displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`].textContent = value || "Not Set";
+        // Convert stored value back if necessary
+        if (orderPreference === "Food Then Event") {
+            orderPreference = "Lunch Then Activity";
+        } else if (orderPreference === "Event Then Food") {
+            orderPreference = "Activity Then Lunch";
         }
-    }
 
-    // Add event listeners to update the left side when inputs change
-    Object.keys(formInputs).forEach((key) => {
-        formInputs[key].addEventListener("change", function () {
-            updateDisplay(key, this.value);
+        // Set dropdown value based on stored order
+        const orderDropdown = document.getElementById("order");
+        if (orderDropdown && orderPreference) {
+            orderDropdown.value = orderPreference;
+        }
+
+        // Optional: Clear selections after retrieval
+        setTimeout(() => {
+            localStorage.removeItem("activity1");
+            localStorage.removeItem("activity2");
+            localStorage.removeItem("orderPreference");
+            console.log("Cleared stored activity selections.");
+        }, 2000);
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Fetch user data from Django template variables
+        const favoriteFoods = "{{ favorite_foods }}";
+        const dietaryRestrictions = "{{ dietary_restrictions }}";
+        const interests = "{{ interests }}";
+
+        // Update left-side UI dynamically
+        document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
+        document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
+        document.getElementById("user-interests-box").textContent = interests || "Not Set";
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to form inputs
+        const formInputs = {
+            ocasion: document.getElementById("ocasion"),
+            order: document.getElementById("order")
+        };
+
+        // Get references to the left-side display boxes
+        const displayElements = {
+            boxOcasion: document.getElementById("box-ocasion"),
+            boxOrder: document.getElementById("box-order")
+        };
+
+        // Function to update the left-side display
+        function updateDisplay(field, value) {
+            if (displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`]) {
+                displayElements[`box${field.charAt(0).toUpperCase() + field.slice(1)}`].textContent = value || "Not Set";
+            }
+        }
+
+        // Add event listeners to update the left side when inputs change
+        Object.keys(formInputs).forEach((key) => {
+            formInputs[key].addEventListener("change", function () {
+                updateDisplay(key, this.value);
+            });
+        });
+
+        // Set default values if they exist in localStorage
+        const savedOcasion = localStorage.getItem("ocasion") || "Not Set";
+        const savedOrder = localStorage.getItem("order") || "Not Set";
+
+        updateDisplay("ocasion", savedOcasion);
+        updateDisplay("order", savedOrder);
+
+        // Save to localStorage on change
+        formInputs.ocasion.addEventListener("change", function () {
+            localStorage.setItem("ocasion", this.value);
+        });
+
+        formInputs.order.addEventListener("change", function () {
+            localStorage.setItem("order", this.value);
         });
     });
-
-    // Set default values if they exist in localStorage
-    const savedOcasion = localStorage.getItem("ocasion") || "Not Set";
-    const savedOrder = localStorage.getItem("order") || "Not Set";
-
-    updateDisplay("ocasion", savedOcasion);
-    updateDisplay("order", savedOrder);
-
-    // Save to localStorage on change
-    formInputs.ocasion.addEventListener("change", function () {
-        localStorage.setItem("ocasion", this.value);
-    });
-
-    formInputs.order.addEventListener("change", function () {
-        localStorage.setItem("order", this.value);
-    });
-});
 </script>
 </body>
 </html>

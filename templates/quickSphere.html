@@ -84,6 +84,7 @@
             margin-right: 12px !important;
             margin-left: 12px !important;
         }
+
         .loading-container {
             display: none;
             font-size: 18px;
@@ -111,31 +112,36 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
         }
+
         .centered-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .img {
-    max-width: 100%;
-    height: auto;
-    object-fit: cover;
-}
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
 
-.responsive-container {
-    display: flex;
-    flex-wrap: wrap; /* Prevents elements from disappearing */
-    width: 100%;
-    max-width: 1200px; /* Prevents the div from getting too wide */
-    margin: 0 auto; /* Centers it properly */
-    padding: 0 16px; /* Adds some breathing room on the sides */
-}
+        .responsive-container {
+            display: flex;
+            flex-wrap: wrap; /* Prevents elements from disappearing */
+            width: 100%;
+            max-width: 1200px; /* Prevents the div from getting too wide */
+            margin: 0 auto; /* Centers it properly */
+            padding: 0 16px; /* Adds some breathing room on the sides */
+        }
     </style>
 </head>
 <body class="bg-custom-white">
@@ -160,7 +166,7 @@
             </div>
             <div class="hidden lg:flex lg:gap-8 lg:items-center">
                 <!-- Explore Button -->
-               
+
                 <!-- SphereAi -->
                 <a href="{% url 'SphereAi' %}"
                    class="font-mulish text-base font-bold text-custom-blue subpixel-antialiased hover:font-extrabold cursor-pointer">
@@ -204,7 +210,8 @@
                         <div class="relative">
                             <button id="userDropdownButton" type="button"
                                     class="flex items-center justify-center rounded-2xl p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}" alt="Profile Picture"
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     alt="Profile Picture"
                                      class="w-8 h-8 rounded-full object-cover mr-2">
                                 <span class="font-poppins text-base text-sm/6 font-medium pr-2">{{ user.first_name }} {{ user.last_name }}</span>
                                 <svg id="userDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
@@ -217,13 +224,13 @@
 
                             <!-- Dropdown Menu -->
                             <div id="userDropdownMenu"
-                                class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
+                                 class="hidden absolute top-full right-0 mt-2 w-40 rounded-lg bg-white shadow-lg ring-1 ring-gray-900/5 transition duration-300 ease-in-out">
                                 <a href="{% url 'profilePage' %}"
-                                class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
                                     Profile
                                 </a>
-                                <a href="{% url 'logout' %}"    
-                                    class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
+                                <a href="{% url 'logout' %}"
+                                   class="block w-full text-center px-4 py-2 text-sm font-semibold text-custom-blue hover:bg-gray-100">
                                     Logout
                                 </a>
                             </div>
@@ -313,14 +320,14 @@
         </div>
     </header>
     <!-- NEW PAGE COPY THIS UP  -->
-     
-<div class="responsive-container @container flex w-full flex-col lg:flex-row 2xl:flex-row font-poppins justify-center items-center">   
-    <div class="relative w-full flex flex-col lg:flex-row items-center p-6 h-auto lg:ml-20 overflow-visible rounded-3xl">      
-        
-        <!-- Background Image -->
-        <img src="https://images.unsplash.com/photo-1545132147-d037e6c54cfd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Process Diagram"
-        class="absolute inset-0 w-full h-full object-cover rounded-2xl"/>
+
+    <div class="responsive-container @container flex w-full flex-col lg:flex-row 2xl:flex-row font-poppins justify-center items-center">
+        <div class="relative w-full flex flex-col lg:flex-row items-center p-6 h-auto lg:ml-20 overflow-visible rounded-3xl">
+
+            <!-- Background Image -->
+            <img src="https://images.unsplash.com/photo-1545132147-d037e6c54cfd?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 alt="Process Diagram"
+                 class="absolute inset-0 w-full h-full object-cover rounded-2xl"/>
 
 
             <div class="relative flex flex-col items-center w-full space-y-12">
@@ -329,38 +336,38 @@
                     <!-- 📌 Card 1: User's Event Selection (Quick Create) -->
                     <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
                         <h2 class="text-gray-800 font-semibold text-lg">Quick Create:</h2>
-                
+
                         <h3 class="text-black font-medium mt-2 flex border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/location.svg"/>
                             </span>
-                            <input 
-                                id="box-location" 
-                                type="text" 
-                                class="text-md bg-transparent border-none focus:outline-none w-full"
-                                placeholder="Enter Location"
+                            <input
+                                    id="box-location"
+                                    type="text"
+                                    class="text-md bg-transparent border-none focus:outline-none w-full"
+                                    placeholder="Enter Location"
                             />
                         </h3>
-                
+
                         <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/calendar.svg"/>
                             </span>
-                            <input 
-                                id="box-date" 
-                                type="date" 
-                                class="text-md bg-transparent border-none focus:outline-none w-full text-center"
+                            <input
+                                    id="box-date"
+                                    type="date"
+                                    class="text-md bg-transparent border-none focus:outline-none w-full text-center"
                             >
                         </h3>
-                
+
                         <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/dayORnight.png"/>
                             </span>
                             <select
-                                id="preferred-time"
-                                class="text-[14px] font-medium rounded-md w-full bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-custom-blue appearance-none px-3 py-1 text-center cursor-pointer"
-                                required
+                                    id="preferred-time"
+                                    class="text-[14px] font-medium rounded-md w-full bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-custom-blue appearance-none px-3 py-1 text-center cursor-pointer"
+                                    required
                             >
                                 <option disabled selected hidden>Choose Time</option>
                                 <option>Morning</option>
@@ -369,15 +376,15 @@
                                 <option>Night</option>
                             </select>
                         </h3>
-                
+
                         <h3 class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/people.png"/>
                             </span>
                             <select
-                                id="guests"
-                                class="text-[14px] font-medium rounded-md w-full bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-custom-blue appearance-none px-3 py-1 text-center cursor-pointer"
-                                required
+                                    id="guests"
+                                    class="text-[14px] font-medium rounded-md w-full bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-custom-blue appearance-none px-3 py-1 text-center cursor-pointer"
+                                    required
                             >
                                 <option disabled selected hidden>Choose Guests</option>
                                 <option>1 Guest</option>
@@ -395,40 +402,40 @@
                     </div>
 
                     <!-- 🔽 Arrow -->
-                <div class="w-10 h-10 p-2">
-                    <svg
-                            class="w-full h-full text-black"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                    >
-                        <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4v16m8-8H4"
-                        ></path>
-                    </svg>
-                </div>
-                
+                    <div class="w-10 h-10 p-2">
+                        <svg
+                                class="w-full h-full text-black"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                        >
+                            <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 4v16m8-8H4"
+                            ></path>
+                        </svg>
+                    </div>
+
                     <!-- 📌 Card 2: Chosen Plan -->
                     <div class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center">
                         <h2 class="text-gray-800 font-semibold text-lg">Chosen Plan:</h2>
-                
+
                         <h3 class="text-black font-medium mt-2 flex border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/preference.svg"/>
                             </span>
                             <span id="pulled-activity" class="text-md">Loading...</span>
                         </h3>
-                
+
                         <h3 class="text-black font-medium mt-2 flex border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/preference.svg"/>
                             </span>
                             <span id="pulled-Ocasion" class="text-md">Loading...</span>
                         </h3>
-                
+
                         <h3 class="text-black font-medium mt-2 flex border border-custom-blue p-2 rounded-full w-full">
                             <span class="mr-2">
                                 <img class="h-5 w-auto" src="../static/preference.svg"/>
@@ -459,7 +466,7 @@
                         class="bg-white p-6 rounded-4xl w-full flex flex-col items-center border border-white/20 text-center"
                 >
                     <h2 class="text-gray-800 font-semibold text-lg">
-                        Profile: 
+                        Profile:
                     </h2>
 
                     <h2 class="text-gray-800 font-semibold text-lg">
@@ -467,157 +474,165 @@
                     </h2>
                     <!-- Dietary Restrictions -->
                     <h3
-                    class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                     <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/restrictions.svg" />
+                        <img class="h-6 w-auto" src="../static/restrictions.svg"/>
                     </span>
-                    <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
+                        <span id="user-dietary-restrictions-box" class="text-md">Loading...</span>
                     </h3>
                     <!-- Favorite Foods -->
-                        <h3
-                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                         <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/foodIcon.svg" />
+                        <img class="h-6 w-auto" src="../static/foodIcon.svg"/>
                         </span>
                         <span id="user-fav-foods-box" class="text-md">Loading...</span>
                     </h3>
-                        <!-- Interests -->
-                        <h3
-                        class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
+                    <!-- Interests -->
+                    <h3
+                            class="text-black font-medium mt-4 flex justify-center items-center border border-custom-blue p-2 rounded-full w-full mb-2"
                     >
                         <span class="mr-2">
-                        <img class="h-6 w-auto" src="../static/search.svg" />
+                        <img class="h-6 w-auto" src="../static/search.svg"/>
                         </span>
                         <span id="user-interests-box" class="text-md">Loading...</span>
                     </h3>
                 </div>
                 <!-- Buttons -->
-            <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
-                <button
-                    id="generate-quick"
-                    class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
-                    onclick="showLoading()"
-                >
-                    Craft Your Plan
-                </button>
-                <div id="loadingText" class="loading-container text-center text-white">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
-            </div>
+                <div class="mt-6 lg:mt-auto flex flex-col gap-4 pb-2">
+                    <button
+                            id="generate-quick"
+                            class="bottom-10 left-0 w-full p-3 bg-custom-blue text-white rounded-2xl flex justify-center items-center font-medium cursor-pointer"
+                            onclick="showLoading()"
+                    >
+                        Craft Your Plan
+                    </button>
+                    <div id="loadingText" class="loading-container text-center text-white">Loading<span
+                            class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+                </div>
 
             </div>
-        </div>      
         </div>
+    </div>
 
 </main>
 <script>
-// Loading Animation
-// function showLoading() {
-//     let loadingText = document.getElementById("loadingText");
-//     loadingText.classList.add("show");
+    // Loading Animation
+    // function showLoading() {
+    //     let loadingText = document.getElementById("loadingText");
+    //     loadingText.classList.add("show");
 
-//     // Simulate loading process (hide after 3 seconds)
-//     setTimeout(() => {
-//         loadingText.classList.remove("show");
-//     }, 300000);
-// }
-// Function to get CSRF token from cookies
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    //     // Simulate loading process (hide after 3 seconds)
+    //     setTimeout(() => {
+    //         loadingText.classList.remove("show");
+    //     }, 300000);
+    // }
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
         }
-    }
-    return cookieValue;
-}
-
-
-document.getElementById("generate-quick").addEventListener("click", async function () {
-    console.log("🚀 Button Clicked: Generating Quick Plan...");
-    
-    const button = document.getElementById("generate-quick");
-    button.disabled = true;  // Disable button
-    button.textContent = "Creating Plan..."; // Change button text
-
-    const location = document.getElementById("box-location").value.trim();
-    const date = document.getElementById("box-date").value.trim();
-    const time = document.getElementById("preferred-time").value.trim();
-    const attendees = document.getElementById("guests").value.trim();
-
-    if (!date || !time || !attendees) {
-        alert("🚨 Please fill in Date, Time of Day, and Guests before crafting your plan!");
-        button.disabled = false; // Re-enable button if validation fails
-        button.textContent = "Craft Your Plan";
-        return;
+        return cookieValue;
     }
 
-    const apiUrl = "/quick_plan/";
-    
-    const activity = document.getElementById("pulled-activity").textContent.trim();
-    const occasion = document.getElementById("pulled-Ocasion").textContent.trim();
-    const order = document.getElementById("pulled-order").textContent.trim();
-    
-    const dietaryRestrictions = document.getElementById("user-dietary-restrictions-box").textContent.trim();
-    const favoriteFoods = document.getElementById("user-fav-foods-box").textContent.trim();
-    const interests = document.getElementById("user-interests-box").textContent.trim();
+    document.addEventListener("DOMContentLoaded", function () {
+        const dateInput = document.getElementById("box-date");
+        const nowCST = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Chicago"}));
+        const today = nowCST.toISOString().split('T')[0];
+        dateInput.value = today;
+        dateInput.min = today;
+    });
 
 
+    document.getElementById("generate-quick").addEventListener("click", async function () {
+        console.log("🚀 Button Clicked: Generating Quick Plan...");
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            body: JSON.stringify({
-                location,
-                date,
-                time,
-                attendees,
-                activity,
-                ocasion: occasion,
-                order,
-                dietary_restrictions: dietaryRestrictions,
-                favorite_interests: interests,
-            }),
-        });
+        const button = document.getElementById("generate-quick");
+        button.disabled = true;  // Disable button
+        button.textContent = "Creating Plan..."; // Change button text
 
-        console.log("✅ API Response Status:", response.status);
+        const location = document.getElementById("box-location").value.trim();
+        const date = document.getElementById("box-date").value.trim();
+        const time = document.getElementById("preferred-time").value.trim();
+        const attendees = document.getElementById("guests").value.trim();
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!date || !time || !attendees) {
+            alert("🚨 Please fill in Date, Time of Day, and Guests before crafting your plan!");
+            button.disabled = false; // Re-enable button if validation fails
+            button.textContent = "Craft Your Plan";
+            return;
         }
 
-        const data = await response.json();
-        console.log("📩 Response Data:", data);
+        const apiUrl = "/quick_plan/";
 
-        if (data.plan_data) {
-            localStorage.setItem("planData", JSON.stringify(data.plan_data));
+        const activity = document.getElementById("pulled-activity").textContent.trim();
+        const occasion = document.getElementById("pulled-Ocasion").textContent.trim();
+        const order = document.getElementById("pulled-order").textContent.trim();
+
+        const dietaryRestrictions = document.getElementById("user-dietary-restrictions-box").textContent.trim();
+        const favoriteFoods = document.getElementById("user-fav-foods-box").textContent.trim();
+        const interests = document.getElementById("user-interests-box").textContent.trim();
+
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                body: JSON.stringify({
+                    location,
+                    date,
+                    time,
+                    attendees,
+                    activity,
+                    ocasion: occasion,
+                    order,
+                    dietary_restrictions: dietaryRestrictions,
+                    favorite_interests: interests,
+                }),
+            });
+
+            console.log("✅ API Response Status:", response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("📩 Response Data:", data);
+
+            if (data.plan_data) {
+                localStorage.setItem("planData", JSON.stringify(data.plan_data));
+            }
+
+            if (data.redirect_url) {
+                console.log("🔀 Redirecting to:", data.redirect_url);
+                window.location.href = data.redirect_url;
+            } else {
+                alert("✅ Plan generated successfully! Check the console for details.");
+            }
+
+        } catch (error) {
+            console.error("❌ Fetch error:", error);
+            alert(`Error creating plan: ${error.message}`);
+        } finally {
+            button.disabled = false; // Re-enable button after request is complete
+            button.textContent = "Craft Your Plan"; // Restore original button text
         }
-
-        if (data.redirect_url) {
-            console.log("🔀 Redirecting to:", data.redirect_url);
-            window.location.href = data.redirect_url;
-        } else {
-            alert("✅ Plan generated successfully! Check the console for details.");
-        }
-
-    } catch (error) {
-        console.error("❌ Fetch error:", error);
-        alert(`Error creating plan: ${error.message}`);
-    } finally {
-        button.disabled = false; // Re-enable button after request is complete
-        button.textContent = "Craft Your Plan"; // Restore original button text
-    }
-});
+    });
     //// fetched plan data    
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -639,7 +654,7 @@ document.getElementById("generate-quick").addEventListener("click", async functi
         }, 1000);
     });
 
-//  GOOGLE STUFF ////
+    //  GOOGLE STUFF ////
     async function loadGoogleMaps() {
         try {
             const response = await fetch("/api/getGoogleMapsApiKey/");
@@ -661,88 +676,89 @@ document.getElementById("generate-quick").addEventListener("click", async functi
             console.error("Error fetching Google Maps API Key:", error);
         }
     }
+
     function initializeAutocomplete() {
-    const input = document.getElementById("box-location");
+        const input = document.getElementById("box-location");
 
-    if (!input) {
-        console.error("Location input field not found.");
-        return;
-    }
-
-    let userPreferredLocation = localStorage.getItem("location") || "Search City";
-    input.value = userPreferredLocation; // Set default value
-
-    // Enable Google Places Autocomplete
-    const autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ["(cities)"], // Restrict to cities
-    });
-
-    autocomplete.addListener("place_changed", function () {
-        const place = autocomplete.getPlace();
-        
-        if (!place.geometry) {
-            alert("No details available for: " + place.name);
+        if (!input) {
+            console.error("Location input field not found.");
             return;
         }
 
-        // Extract city and country
-        let city = "";
-        let country = "";
+        let userPreferredLocation = localStorage.getItem("location") || "Search City";
+        input.value = userPreferredLocation; // Set default value
 
-        place.address_components.forEach(component => {
-            if (component.types.includes("locality")) {
-                city = component.long_name; // City
-            }
-            if (component.types.includes("country")) {
-                country = component.long_name; // Country
-            }
+        // Enable Google Places Autocomplete
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["(cities)"], // Restrict to cities
         });
 
-        // Ensure both city and country are shown
-        const fullLocation = `${city}, ${country}`;
-        input.value = fullLocation; // Display in input field
-        localStorage.setItem("location", fullLocation); // Store in localStorage
-    });
+        autocomplete.addListener("place_changed", function () {
+            const place = autocomplete.getPlace();
 
-    // Ensure dropdown width matches input
-    google.maps.event.addListener(autocomplete, "place_changed", function () {
-        const pacContainer = document.querySelector(".pac-container");
-        if (pacContainer) {
-            pacContainer.style.width = input.offsetWidth + "px";
-        }
-    });
-}
+            if (!place.geometry) {
+                alert("No details available for: " + place.name);
+                return;
+            }
+
+            // Extract city and country
+            let city = "";
+            let country = "";
+
+            place.address_components.forEach(component => {
+                if (component.types.includes("locality")) {
+                    city = component.long_name; // City
+                }
+                if (component.types.includes("country")) {
+                    country = component.long_name; // Country
+                }
+            });
+
+            // Ensure both city and country are shown
+            const fullLocation = `${city}, ${country}`;
+            input.value = fullLocation; // Display in input field
+            localStorage.setItem("location", fullLocation); // Store in localStorage
+        });
+
+        // Ensure dropdown width matches input
+        google.maps.event.addListener(autocomplete, "place_changed", function () {
+            const pacContainer = document.querySelector(".pac-container");
+            if (pacContainer) {
+                pacContainer.style.width = input.offsetWidth + "px";
+            }
+        });
+    }
 
     document.addEventListener("DOMContentLoaded", loadGoogleMaps);
-    
-    document.addEventListener("DOMContentLoaded", function () {
-    // Fetch user profile data from Django template variables
-    const favoriteFoods = "{{ favorite_foods|escapejs }}";
-    const dietaryRestrictions = "{{ dietary_restrictions|escapejs }}";
-    const interests = "{{ interests|escapejs }}";
 
-    // Update the page with user data
-    document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
-    document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
-    document.getElementById("user-interests-box").textContent = interests || "Not Set";
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        // Fetch user profile data from Django template variables
+        const favoriteFoods = "{{ favorite_foods|escapejs }}";
+        const dietaryRestrictions = "{{ dietary_restrictions|escapejs }}";
+        const interests = "{{ interests|escapejs }}";
+
+        // Update the page with user data
+        document.getElementById("user-fav-foods-box").textContent = favoriteFoods || "Not Set";
+        document.getElementById("user-dietary-restrictions-box").textContent = dietaryRestrictions || "Not Set";
+        document.getElementById("user-interests-box").textContent = interests || "Not Set";
+    });
     ////////////////////////////////////// Header Script /////////////////////////////////////
 
 
     const userDropdownButton = document.getElementById("userDropdownButton");
-        const userDropdownMenu = document.getElementById("userDropdownMenu");
+    const userDropdownMenu = document.getElementById("userDropdownMenu");
 
-        userDropdownButton.addEventListener("click", function () {
-            userDropdownMenu.classList.toggle("hidden");
-        });
+    userDropdownButton.addEventListener("click", function () {
+        userDropdownMenu.classList.toggle("hidden");
+    });
 
-        // Close dropdown if clicking outside
-        document.addEventListener("click", function (event) {
-            if (!userDropdownButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
-                userDropdownMenu.classList.add("hidden");
-            }
-        });
-    
+    // Close dropdown if clicking outside
+    document.addEventListener("click", function (event) {
+        if (!userDropdownButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+            userDropdownMenu.classList.add("hidden");
+        }
+    });
+
 
     document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
