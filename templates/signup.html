@@ -357,6 +357,28 @@
     </section>
 </main>
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Mobile menu toggle
+    const mobileMenu = document.getElementById("mobileMenu");
+    const openMobileMenu = document.getElementById("openMobileMenu");
+    const closeMobileMenu = document.getElementById("closeMobileMenu");
+
+    openMobileMenu.addEventListener("click", () => mobileMenu.classList.remove("hidden"));
+    closeMobileMenu.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+
+    // Mobile company dropdown toggle
+    const mobileCompanyButton = document.getElementById("mobileCompanyButton");
+    const mobileCompanyDropdown = document.getElementById("mobileCompanyDropdown");
+    mobileCompanyButton.addEventListener("click", () => mobileCompanyDropdown.classList.toggle("hidden"));
+
+    // Mobile user dropdown toggle (if logged in)
+    const mobileUserDropdownButton = document.getElementById("mobileUserDropdownButton");
+    const mobileUserDropdownMenu = document.getElementById("mobileUserDropdownMenu");
+    if (mobileUserDropdownButton) {
+        mobileUserDropdownButton.addEventListener("click", () => mobileUserDropdownMenu.classList.toggle("hidden"));
+    }
+});
     document.addEventListener("DOMContentLoaded", function () {
         const toggleButton = document.getElementById("companyButton");
         const dropdownMenu = document.getElementById("companyDropdownMenu");

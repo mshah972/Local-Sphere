@@ -218,65 +218,91 @@
         </nav>
     
         <!-- Mobile menu, show/hide based on menu open state. -->
-        <div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
-            <div class="fixed inset-0 z-10"></div>
-            <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
-                <div class="flex items-center justify-between">
-                    <a href="#" class="-m-1.5 p-1.5">
-                        <span class="sr-only">Local Sphere</span>
-                        <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
-                    </a>
-                    <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                        <span class="sr-only">Close menu</span>
-                        <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                             aria-hidden="true" data-slot="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mt-6 flow-root">
-                    <div class="-my-6 divide-y divide-gray-500/10">
-                        <div class="space-y-2 py-6">
-                            <a href="#"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Explore</a>
-                            <a href="{% url 'SphereAi' %}"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base/7 font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
-                            <a href="{% url 'login' %}"
-                               class="font-mulish -mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-bold text-custom-blue hover:bg-gray-50">Log
-                                in</a>
-                            <div class="-mx-3">
-                                <button id="mobileCompanyButton" type="button"
-                                        class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-bold text-custom-blue hover:bg-gray-50"
-                                        aria-controls="disclosure-1" aria-expanded="false">
-                                    Company
-                                    <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
-                                         fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path id="mobileArrowPath" fill-rule="evenodd"
-                                              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                                <div id="mobileCompanyDropdown"
-                                     class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                                    <a href="{% url 'about' %}"
-                                       class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-custom-blue hover:bg-gray-50">About
-                                        Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="py-6">
-                            <div>
-                                <button class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white outline transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
-                                    <span class="font-poppins text-base text-sm/6 font-medium pr-2">Start Exploring</span>
-                                    <span class="font-mulish text-base text-sm/6 font-medium pr-2">It's Free</span>
-                                    <span aria-hidden="true">&rarr;</span>
-                                </button>
-                            </div>
+<div id="mobileMenu" class="lg:hidden hidden" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 z-10"></div>
+    <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-custom-white px-6 py-6 sm:max-w sm:ring-1 sm:ring-gray-900/10 transition duration-300 ease-in-out">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'index' %}" class="-m-1.5 p-1.5">
+                <span class="sr-only">Local Sphere</span>
+                <img class="h-15 w-auto" src="../static/logo1.svg" alt="">
+            </a>
+            <button id="closeMobileMenu" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                <span class="sr-only">Close menu</span>
+                <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                     aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/10">
+                <div class="space-y-2 py-6">
+                    <a href="{% url 'SphereAi' %}"
+                       class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
+
+                    <!-- Company Dropdown -->
+                    <div class="-mx-3">
+                        <button id="mobileCompanyButton" type="button"
+                                class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-bold text-custom-blue hover:bg-gray-50"
+                                aria-expanded="false">
+                            Company
+                            <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                 fill="currentColor" aria-hidden="true">
+                                <path id="mobileArrowPath" fill-rule="evenodd"
+                                      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div id="mobileCompanyDropdown" class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                            <a href="{% url 'about' %}"
+                               class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-custom-blue hover:bg-gray-50">About Us</a>
                         </div>
                     </div>
+
+                    {% if user.is_authenticated %}
+                    <!-- LOGGED-IN USER MENU -->
+                    <div class="-mx-3">
+                        <button id="mobileUserDropdownButton" type="button"
+                                class="flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-bold text-custom-blue hover:bg-gray-50">
+                            <span>
+                                <img src="{% if user.picture %}{{ user.picture.url }}{% else %}/static/defaultProfile.png{% endif %}"
+                                     class="w-8 h-8 rounded-full object-cover mr-2 inline">
+                                {{ user.first_name }} {{ user.last_name }}
+                            </span>
+                            <svg id="mobileUserDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
+                                 fill="currentColor" aria-hidden="true">
+                                <path id="mobileUserArrowPath" fill-rule="evenodd"
+                                      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <div id="mobileUserDropdownMenu"
+                             class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
+                            <a href="{% url 'profilePage' %}"
+                               class="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-custom-blue hover:bg-gray-50">Profile</a>
+                            <a href="{% url 'logout' %}"
+                               class="block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-custom-blue hover:bg-gray-50">Logout</a>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- NOT LOGGED-IN MENU -->
+                    <a href="{% url 'login' %}"
+                       class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base font-bold text-custom-blue hover:bg-gray-50">Log in</a>
+                    <div class="py-6">
+                        <a href="{% url 'signup' %}"
+                           class="flex items-center justify-center rounded-md p-2.5 bg-custom-blue text-white transition duration-300 ease-in-out hover:bg-custom-white hover:text-custom-blue cursor-pointer">
+                            <span class="font-poppins text-base font-medium pr-2">Start Exploring</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+    </div>
+</div>
     </header>
     <!-- NEW PAGE COPY THIS UP  -->
     <!-- Hero Section -->
@@ -1001,6 +1027,28 @@
 
 </main>
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Mobile menu toggle
+    const mobileMenu = document.getElementById("mobileMenu");
+    const openMobileMenu = document.getElementById("openMobileMenu");
+    const closeMobileMenu = document.getElementById("closeMobileMenu");
+
+    openMobileMenu.addEventListener("click", () => mobileMenu.classList.remove("hidden"));
+    closeMobileMenu.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+
+    // Mobile company dropdown toggle
+    const mobileCompanyButton = document.getElementById("mobileCompanyButton");
+    const mobileCompanyDropdown = document.getElementById("mobileCompanyDropdown");
+    mobileCompanyButton.addEventListener("click", () => mobileCompanyDropdown.classList.toggle("hidden"));
+
+    // Mobile user dropdown toggle (if logged in)
+    const mobileUserDropdownButton = document.getElementById("mobileUserDropdownButton");
+    const mobileUserDropdownMenu = document.getElementById("mobileUserDropdownMenu");
+    if (mobileUserDropdownButton) {
+        mobileUserDropdownButton.addEventListener("click", () => mobileUserDropdownMenu.classList.toggle("hidden"));
+    }
+});
 
 function saveActivity(activity, occasion, order) {
         localStorage.setItem("selectedActivity", activity);
