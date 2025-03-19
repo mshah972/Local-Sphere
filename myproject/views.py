@@ -419,7 +419,7 @@ def generate_date_plan(request):
         print(f"📨 Received Data: {data}")
 
         # ✅ Validate required inputs
-        required_fields = ["location", "date", "time", "attendees", "food", "ocasion", "order"]
+        required_fields = ["location", "date", "time", "attendees", "ocasion", "order"]
         for field in required_fields:
             if not data.get(field):
                 return JsonResponse({"error": f"Missing required field: {field}"}, status=400)
@@ -428,7 +428,6 @@ def generate_date_plan(request):
         date = data["date"]
         time = data["time"]
         attendees = data["attendees"]
-        food = data["food"]
         ocasion = data["ocasion"]  # New field
         order = data["order"]  # New field
 
@@ -454,7 +453,7 @@ def generate_date_plan(request):
                 {
                     "role": "user",
                     "content": f"""
-                    Generate a JSON object for a **{ocasion}** date plan in {location} on {date} at {time} for {attendees} people, featuring {food} cuisine.
+                    Generate a JSON object for a **{ocasion}** date plan in {location} on {date} at {time} for {attendees} people.
 
                     The user wants the order of the plan to be: **{order}**.
 
