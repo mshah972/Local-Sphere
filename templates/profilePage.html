@@ -466,13 +466,31 @@ async function fetchPlan() {
 
         const result = await response.json();
         console.log("Server Response:", result); // ✅ Log backend response
+        updateFavoritesUI(planId, isFavorite);
+
 
     } catch (error) {
         console.error("Error updating favorite status:", error);
     }
 
 }
+function updateFavoritesUI(planId, isFavorite) {
+    const favoritesList = document.getElementById("favorites-list");
 
+    // Find the card in the main list
+    const planCard = document.querySelector(`[data-id='${planId}']`);
+
+    if (isFavorite) {
+        // Clone and move to favorites
+        const clonedCard = planCard.cloneNode(true);
+        clonedCard.querySelector(".like-button").classList.add("selected-button");
+        favoritesList.appendChild(clonedCard);
+    } else {
+        // Remove from favorites list
+        const favoriteCard = favoritesList.querySelector(`[data-id='${planId}']`);
+        if (favoriteCard) favoriteCard.remove();
+    }
+}
 
 
 
