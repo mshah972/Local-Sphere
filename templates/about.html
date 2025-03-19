@@ -379,24 +379,13 @@
                     <a href="{% url 'SphereAi' %}"
                        class="font-mulish -mx-3 block rounded-lg px-3 py-2 text-base font-bold text-custom-blue hover:bg-gray-50">SphereAi</a>
 
-                    <!-- Company Dropdown -->
-                    <div class="-mx-3">
-                        <button id="mobileCompanyButton" type="button"
-                                class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-bold text-custom-blue hover:bg-gray-50"
-                                aria-expanded="false">
-                            Company
-                            <svg id="mobileDropdownIcon" class="size-5 flex-none" viewBox="0 0 20 20"
-                                 fill="currentColor" aria-hidden="true">
-                                <path id="mobileArrowPath" fill-rule="evenodd"
-                                      d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-                                      clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                        <div id="mobileCompanyDropdown" class="hidden mt-2 space-y-2 transition duration-300 ease-in-out">
-                            <a href="{% url 'about' %}"
-                               class="font-poppins block rounded-lg py-2 pr-3 pl-6 text-sm font-semibold text-custom-blue hover:bg-gray-50">About Us</a>
-                        </div>
-                    </div>
+                    <!-- Company Button (Direct Link) -->
+<div class="-mx-3">
+    <a href="{% url 'about' %}"
+       class="font-mulish flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base font-bold text-custom-blue hover:bg-gray-50">
+        Company
+    </a>
+</div>
 
                     {% if user.is_authenticated %}
                     <!-- LOGGED-IN USER MENU -->
@@ -618,10 +607,6 @@ document.addEventListener("DOMContentLoaded", function () {
     openMobileMenu.addEventListener("click", () => mobileMenu.classList.remove("hidden"));
     closeMobileMenu.addEventListener("click", () => mobileMenu.classList.add("hidden"));
 
-    // Mobile company dropdown toggle
-    const mobileCompanyButton = document.getElementById("mobileCompanyButton");
-    const mobileCompanyDropdown = document.getElementById("mobileCompanyDropdown");
-    mobileCompanyButton.addEventListener("click", () => mobileCompanyDropdown.classList.toggle("hidden"));
 
     // Mobile user dropdown toggle (if logged in)
     const mobileUserDropdownButton = document.getElementById("mobileUserDropdownButton");
